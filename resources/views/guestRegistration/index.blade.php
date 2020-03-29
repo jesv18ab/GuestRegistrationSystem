@@ -1,72 +1,5 @@
 @extends('layouts.app')
-<style>
 
-.headline{
-    text-align: center;
-   background: #c6c8ca;
-}
-
-    .guestTable td, #customers th {
-        text-align: center;
-    }
-    .guestTable tr:nth-child(even){
-        background-color: #f2f2f2;}
-    .guestTable tr:hover {
-        background-color: #ddd;}
-    .guestTable th {
-        height: 1px;
-        width: 20%;
-        padding-top: 0.7%;
-        text-align: center;
-        background-color: #1f6fb2;
-        color: white;
-    }
-    .guestTable thead{
-        border-top: 1px solid #1b1e21;
-        border-left: 1px solid #1b1e21;
-        border-right: 1px solid #1b1e21;
-        alignment: right;
-        margin-right: 5%;
-    }
-    .guestTable tbody{
-        border-bottom: 1px solid #1b1e21;
-        border-left: 1px solid #1b1e21;
-        border-right: 1px solid #1b1e21;
-        alignment: right;
-        margin-right: 5%;
-    }
-    .alignButtons{
-        width: 30%;
-        height: 80%;
-        float: left;
-        margin-inside: 10%;
-
-    }
-    .filterDiv{
-     width: 31%;
-        margin-left: 3%;
-    }
-    .buttonDiv{
-       float: left;
-        width: 70%;
-        margin-left: 25%;
-        margin-bottom: 20%;
-        height: 0.05px;
-        margin-right: 20% ;
-
-    }
-    .tablesDiv{
-        margin-top: 2%;
-        height: 100%;
-        width: 60%;
-        float: top;
-        float: right;
-        margin-right: 5%;
-
-
-    }
-
-</style>
 
 @section('content')
     <div class="headline"  > <h1> <b>Gæste oversigten</b> </h1>
@@ -76,7 +9,7 @@
         <form method="get" >
             @csrf
 
-            <table id="expected" class="guestTable" text="Hej"  align="center" style="display: table" value="true" >
+            <table id="expected" class="guestTable"  align="center" style="display: table" value="true" >
                 <thead>
                 <tr>
                     <th><h5>Name</h5></th>
@@ -130,17 +63,17 @@
         </form>
     </div>
 <div class="filterDiv">
-    <input  type="text" id="guestInputExpected" onkeyup="findGuestExpected()" style="display: block" placeholder="Find sig selv her.." title="Type in a name" >
-    <input  type="text" id="guestInputArrived" onkeyup="findGuestArrived()" style="display: none" placeholder="Find sig selv her.." title="Type in a name" >
-    <input  type="text" id="guestInputDeparted" onkeyup="findGuestDeparted()" style="display: none" placeholder="Find sig selv her.." title="Type in a name" >
+    <input class="form-control"  type="text" id="guestInputExpected" onkeyup="findGuestExpected()" style="display: block" placeholder="Find gæst her.." title="Type in a name" >
+    <input class="form-check-input" type="text" id="guestInputArrived" onkeyup="findGuestArrived()" style="display: none" placeholder="Find gæst her.." title="Type in a name" >
+    <input class="form-check-input" type="text" id="guestInputDeparted" onkeyup="findGuestDeparted()" style="display: none" placeholder="Find gæst her.." title="Type in a name" >
 
 </div>
 
     <div>
         <div class="alignButtons">
-            <div class="buttonDiv"> <button type="button" class="btn btn-primary" id="showExpected" onclick="expected()" >Vis forventede ankomster</button></div>
-            <div class="buttonDiv"> <button type="button" class="btn btn-primary" id="showArrived" onclick="arrived()">Vis gæster lige nu</button></div>
-            <div class="buttonDiv"><button type="button" class="btn btn-primary" id="showDeparted" onclick="departed()">Vis tidligere gæster</button></div>
+            <div class="buttonDiv"> <button type="button" class="btn btn-primary btn-block" id="showExpected" onclick="expected()" >Vis forventede ankomster</button></div>
+            <div class="buttonDiv"> <button type="button" class="btn btn-primary btn-block" id="showArrived" onclick="arrived()">Vis gæster lige nu</button></div>
+            <div class="buttonDiv"><button type="button" class="btn btn-primary btn-block" id="showDeparted" onclick="departed()">Vis tidligere gæster</button></div>
         </div>
 
 

@@ -49,7 +49,7 @@ Route::get('/guests/create', 'GuestController@create');
 Route::get('/registerGuest', 'GuestController@showForm');
 Route::get('/guests', 'GuestController@index');
 Route::post('/guests', 'GuestController@store');
-Route::put('/guests/{guest}/edit', 'GuestController@edit');
+Route::put('/guests/{guest}/{guestCard}/edit', 'GuestController@edit');
 Route::delete('/delete/{guest}', 'GuestController@delete');
 Route::get('/guestsRegistration', 'GuestController@guestPage');
 
