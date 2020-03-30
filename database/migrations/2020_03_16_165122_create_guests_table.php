@@ -16,9 +16,9 @@ class CreateGuestsTable extends Migration
         Schema::create('guests', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->date('expected_at')->nullable("null");
-            $table->date('updated_at')->nullable()->default(null);
-            $table->date('created_at')->nullable()->default(null);
+            $table->date('expected_at')->nullable(null);
+            $table->date('updated_at')->nullable(true)->default(null);
+            $table->date('created_at')->nullable(true)->default(null);
             $table->time('time')->nullable();
             $table->integer('status')->nullable()->default(0);
         });

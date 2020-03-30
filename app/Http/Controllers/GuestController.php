@@ -33,11 +33,11 @@ class GuestController extends Controller
     }
     public function guestPage(){
 
-        $guestsToCheckOut = DB::select('select * from guests where status = 2');
+        $guestsToCheckOut = DB::select('Select guests.name, guestId, guest_cards.id from guest_cards inner join guests where guests.id = guest_cards.guestId');
         $guestsToCheckIn = DB::select('select * from guests where status = 1');
         $cardsAvailable   = DB::select('select * from guest_cards where status = 1');
-        $cardsInUse   = DB::select('select * from guest_cards where status = 2');
-        return view('guestRegistration.registrate', ['guestsToCheckIn'=> $guestsToCheckIn, 'guestsToCheckOut'=> $guestsToCheckOut, 'cardsAvailable' => $cardsAvailable, 'cardsInUse'=> $cardsInUse]);
+
+        return view('guestRegistration.registrate', ['guestsToCheckIn'=> $guestsToCheckIn, 'cardsAvailable' => $cardsAvailable, 'guestsToCheckOut'=>$guestsToCheckOut]);
     }
 
     // viser et view som skaber et objekt
@@ -56,22 +56,18 @@ class GuestController extends Controller
 
     //Denne vil gemme et objekt
     public function store(){
-
-
         $guest = new Guest();
         $guest->name = request('name');
         $guest->expected_at = date(request('expected_at'));
         $guest->time = request('time');
         $guest->status = 1;
         $guest->save();
-
         return view('welcome');
         //Man skal vise en from for at kunne justere en eksisterende resource
     }
 
     public function edit( Guest $guest, GuestCard $guestCard)
     {
-        dd($guestCard->id);
         $i = $guest->status + 1;
         DB::update("UPDATE guests SET status = $i where guests.id = $guest->id");
         if ($guestCard->status == 1 ){
@@ -79,7 +75,6 @@ class GuestController extends Controller
         } else{
             DB::update("UPDATE guest_cards SET status = 1 , guestId = null where id = $guestCard->id  ");
         }
-
         return redirect('/guestsRegistration');
     }
 

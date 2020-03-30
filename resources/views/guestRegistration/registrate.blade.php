@@ -25,10 +25,9 @@
 <body>
 
 
+
 <div class="container">
-    <?php
-    $cardValue = 0;
-    ?>
+
 
     <div style="margin-top: 20%;"   >
     <input id="guestInputCheckIn"  class="input-group-text" placeholder="Indtast dit navn her...."  onkeyup="findGuest()"  type="text"   style="display: none;width: 1000px; height: 80px">
@@ -39,79 +38,76 @@
         <div class="btnGuests">  <a  type="submit"   onclick="checkIn()"><p > <b class="p">Check in</b> </p> </a></div>
    <div class="btnGuests"> <a  type="submit"   onclick="checkOut()">  <b class="p">Check Out</b> </a></div>
     </div>
-        <form id="checkInForm" method="POST" action="guests/edit" >
-            @csrf
-            @method("PUT")
-            <div class="control" id="guestsCheckIn" style="display: none" >
-                <div class="field">
-                        <div>
-                            <table id="searchIn" style="display: none"  >
-                                <tbody >
-                                @foreach($guestsToCheckIn as $guest)
-                                    <tr id="guest">
-                                        <td>{{ $guest->name }}</td>
-
-                                              <td>  <p>
-                                                    <select class="dropdown" id="guestCards" style="margin-left: 30%; margin-right: 70%" required="required"  >
-                                                        <option class="dropdown-item" value=""> Find ID-nummeret herunder..... </option>
-                                                        (@foreach($cardsAvailable as $guestCard)
-                                                            <option class="dropdown-item" value="{{ $guestCard->id }}"> {{ $guestCard->id }}</option>
-                                                        @endforeach
-                                                    </select>
-                                            </p>
-                                               <td style="display: none"> <p><input type="text" id="txtValue" /></p></td>
-                                            <td>  <button class="btn btn-primary" type="submit" value="Show Index" onclick="showSelected( {{ $guest->id }});"  style="width: 150%; height: 150%; margin-left: 100%" > check In</button></td>
-
-                                    </tr>
-                              @endforeach
-                                </tbody>
-
-                            </table>
-
+    <form id="executeCheckIn" method="POST" action="/guests/edit">
+        @csrf
+        @method("PUT")
+        <div class="field">
+                            <div class="control" id="guestsCheckIn" style="display: none" >
+                                <p>
+                                    <select id="cardIsPicked" required="required">
+                                        <option value="">Vælg Id-kort herunder....</option>
+                                        @foreach($cardsAvailable as $guestCard)
+                                            <option value="{{ $guestCard->id }}">{{ $guestCard->id }}</option>
+                                        @endforeach
+                                    </select>
+                                </p>
+                                <p style="display: none"> <input  type="text" id="txtValue" /></p>
+                        <table id="searchIn" style="display: none">
+                            <tbody>
+                            @foreach($guestsToCheckIn as $guest)
+                            <tr>
+                                <td id="{{ $guest->id }}" > {{ $guest->name }}</td>
+                                <td><button class="btn btn-primary" style="width: 150px; height: 50px" type="submit" value="Show Index" onclick="showSelected({{ $guest->id }});"> Check in </button></td>
+                            </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                         </div>
                         </div>
-
-                    </div>
-
+    </form>
             </div>
-
-        </form>
 
         <form method="Post">
             @csrf
             @method("PUT")
         <div  id="guestsCheckOut" style="display: none">
         <table id="searchOut" style="display: none"  >
+            <thead>
+            <tr>
+                <th><h5>Name</h5></th>
+                <th><h5>GæsteKort ID</h5></th>
+            </tr>
+            </thead>
             <tbody >
-            @foreach($guestsToCheckOut as $guest)
+            @foreach($guestsToCheckOut as $checkOut )
                 <tr>
-                    <td>{{ $guest->name }}</td>
-                    <td ><button type="submit"  class="btn btn-primary btn-block" formaction="guests/edit">Check out</button> </td>
+                <tr>
+                    <td>{{ $checkOut->name }}</td>
+                     <td> {{ $checkOut->id }} </td>
+                    <td ><button type="submit"  class="btn btn-primary btn-block" formaction="guests/{{ $checkOut->guestId }}/{{ $checkOut->id }} }}/edit">Check out</button> </td>
                 </tr>
+                @endforeach
 
             </tbody>
-            @endforeach
+
         </table>
         </div>
         </form>
 
-</div>
 
 </body>
 
 <script>
 
-    function showSelected( $i)
+    function showSelected( id )
     {
-        var c =$i
-        var selObj = document.getElementById('guestCards');
-        var txtIndexObj = document.getElementById('txtIndex');
+        var c;
+        var selObj = document.getElementById('cardIsPicked');
         var txtValueObj = document.getElementById('txtValue');
-        var txtTextObj = document.getElementById('txtText');
-
         var selIndex = selObj.selectedIndex;
-        var test = txtValueObj.value = selObj.options[selIndex].value;
+        var guestCardID = txtValueObj.value = selObj.options[selIndex].value;
+        document.getElementById('executeCheckIn').action = "guests/"+id +"/" + guestCardID + "/edit";
 
-        document.getElementById('checkInForm').action = "guests/" + c + "/"+ test  + "/edit";
     }
 
 
@@ -146,14 +142,6 @@
                 }
             }
         }
-        /*
-    <select id="cards">
-
-            <option class=" btn btn-primary" selected="selected">{{ $guestCard->id }}</option>
-            <input type="text" style="display: none">
-
-            </select>
-        */
 
         checkBox()
     }
