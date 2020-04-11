@@ -1802,25 +1802,26 @@ pre code {
     }
 }
 
-.table {
-    width: 100%;
+.createTable {
+    width: 80%;
+    margin-bottom: 1rem;
     margin-bottom: 1rem;
     color: #212529;
 }
 
-.table th,
-.table td {
+.createTable th,
+.createTable td {
     padding: 0.75rem;
     vertical-align: top;
     border-top: 1px solid #dee2e6;
 }
 
-.table thead th {
+.createTable thead th {
     vertical-align: bottom;
     border-bottom: 2px solid #dee2e6;
 }
 
-.table tbody + tbody {
+.createTable tbody + tbody {
     border-top: 2px solid #dee2e6;
 }
 
@@ -1850,7 +1851,7 @@ pre code {
     border: 0;
 }
 
-.table-striped tbody tr:nth-of-type(odd) {
+.createTable-striped tbody tr:nth-of-type(odd) {
     background-color: rgba(0, 0, 0, 0.05);
 }
 
@@ -2050,13 +2051,13 @@ pre code {
     background-color: rgba(0, 0, 0, 0.075);
 }
 
-.table .thead-dark th {
+.createTable .thead-dark th {
     color: #fff;
     background-color: #343a40;
     border-color: #454d55;
 }
 
-.table .thead-light th {
+.createTable .thead-light th {
     color: #495057;
     background-color: #e9ecef;
     border-color: #dee2e6;
@@ -2077,7 +2078,7 @@ pre code {
     border: 0;
 }
 
-.table-dark.table-striped tbody tr:nth-of-type(odd) {
+.table-dark.createTable-striped tbody tr:nth-of-type(odd) {
     background-color: rgba(255, 255, 255, 0.05);
 }
 
@@ -10657,6 +10658,7 @@ button.bg-dark:focus {
 
 .font-weight-bold {
     font-weight: 700 !important;
+    font-size: 160%;
 }
 
 .font-weight-bolder {
@@ -10855,12 +10857,12 @@ a.text-dark:focus {
         border: 1px solid #000;
     }
 
-    .table {
+    .createTable {
         border-collapse: collapse !important;
     }
 
-    .table td,
-    .table th {
+    .createTable td,
+    .createTable th {
         background-color: #fff !important;
     }
 
@@ -10880,7 +10882,7 @@ a.text-dark:focus {
         border-color: #dee2e6;
     }
 
-    .table .thead-dark th {
+    .createTable .thead-dark th {
         color: inherit;
         border-color: #dee2e6;
     }

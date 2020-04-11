@@ -49,6 +49,9 @@ Route::get('/guests/create', 'GuestController@create');
 Route::get('/registerGuest', 'GuestController@showForm');
 Route::get('/guests', 'GuestController@index');
 Route::post('/guests', 'GuestController@store');
+Route::post('guests/unregisteredCheckIn', 'GuestController@createUnexpectedGuests');
+Route::post('/ajaxRequest', 'GuestController@ajaxRequestPost');
+
 Route::put('/guests/{guest}/{guestCard}/edit', 'GuestController@edit');
 Route::delete('/delete/{guest}', 'GuestController@delete');
 Route::get('/guestsRegistration', 'GuestController@guestPage');
@@ -61,6 +64,12 @@ Route::get('/posts/{post}','PostsController@create');
 
 //POST
 Route::post('/articles', 'GuestController@store');
+
+Route::get('/ajaxRequest', 'GuestController@ajaxRequest');
+Route::post('/ajaxRequest/{name}', 'GuestController@ajaxRequestPost');
+Route::put('/ajaxRequest/{guest}/{guestCard}/edit', 'GuestController@ajaxRequestPut');
+
+
 
 
 

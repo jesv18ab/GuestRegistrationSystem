@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
     <div>
         @forelse($articles as $article)
         <form action="/action_page.php">

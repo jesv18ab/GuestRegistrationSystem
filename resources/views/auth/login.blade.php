@@ -1,30 +1,38 @@
 @extends('layouts.app')
 
-<style>
-    .bg-img {
-        /* The image used */
-        background-image: url("resources/Images/Search_001.png");
+    <div class="rgba-gradient" style="width: 100%; height: 100%">
 
-        min-height: 380px;
-        /* Center and scale the image nicely */
-        background-position: center;
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Launch demo modal
+        </button>
 
-        background-size: cover;
-        /* Needed to position the navbar */
-        position: relative;
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    }
-
-
-</style>
-@section('content')
-
-<div class="container" >
+        <div class="container" >
+    <div >
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
+            <div class="card" style="margin-top: 20% ">
                 <div class="card-header">{{ __('Login') }}</div>
-
 
                 <div class="card-body">
 
@@ -90,6 +98,6 @@
             </div>
         </div>
     </div>
+    </div>
 </div>
-
-@endsection
+    </div>
