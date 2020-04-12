@@ -77,5 +77,4 @@
     </footer>
     <!---->
     <!--contact ends-->
-    <script  src="{{ asset('assets/js/ajaxCalls.js') }}" defer></script>
 @endsection

@@ -119,11 +119,12 @@
     text-align: center;
 }
 .btnGuests{
+    background-color: #e4dfdf;
     display: inline-block;
     text-decoration: none;
     color: #FFF;
-    width: 200px;
-    height: 200px;
+    width: 300px;
+    height: 300px;
     line-height: 150px;
     border-radius: 50%;
     text-align: center;
@@ -131,16 +132,35 @@
     font-size: xx-large;
     vertical-align: middle;
     overflow: hidden;
-    background-image: -webkit-linear-gradient(45deg, #709dff 0%, #91fdb7 100%);
-    background-image: linear-gradient(45deg, #709dff 0%, #91fdb7 100%);
-    background:#ebebe4;
     transition: .4s;
-    margin-left: 22%;
+    margin-left: 15.5%;
+    border: 1px solid black;
 }
-.btnGuests:hover{
-    -webkit-transform: rotate(10deg);
-    -ms-transform: rotate(10deg);
-    transform: rotate(10deg);
+.btnGuests:hover {
+    background-color: dodgerblue;
+}
+
+
+.btnGuests2{
+    margin-left: 16%;
+    background-color: #e4dfdf;
+    display: inline-block;
+    text-decoration: none;
+    color: #FFF;
+    width: 300px;
+    height: 300px;
+    line-height: 150px;
+    border-radius: 50%;
+    text-align: center;
+    text-decoration-color: white;
+    font-size: xx-large;
+    vertical-align: middle;
+    overflow: hidden;
+    transition: .4s;
+    border: 1px solid black;
+}
+.btnGuests2:hover {
+    background-color: dodgerblue;
 }
 
 .p{
@@ -148,7 +168,7 @@
 }
 .checkInAndOut{
     alignment: center;
-    margin-top: 12%;
+    margin-top: 1%;
     height: 100%;
     width: 100%;
     float: left;
@@ -761,4 +781,31 @@ fieldset:disabled a.btnBrew2 {
     font-size: x-large;
     color: black;
 
+}
+
+.text-Check-In{
+    text-align: center;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    border-bottom: 1px solid black;
+    font-size: x-large;
+    color: black;
+    font-weight: 500;
+    background-color: #e3e3df;
+}
+
+.margin-Buttons{
+    margin-top: 21%;
+}
+
+.padding-button{
+    padding-top: 21.9%;
+    padding-right: 21.9%;
+    padding-bottom: 21.9%;
+    padding-left: 23%;
+}
+.padding-button-2{
+   width: 100%;
+    height: 100%;
+    padding-top: 20%;
 }

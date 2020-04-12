@@ -6,8 +6,9 @@
     <header style="background-image:url({{ asset('/Images/light-Background.jpg') }});  background-size: cover; opacity: 0.9; display: block " ></header>
     <body style=" display: block">
 
-    <div class="container2 shadow" style="border: 1px solid black;  margin-left: 15%; height: 500px; width: 1100px; margin-top: 7%; background-color: #7b797f0f" >
-    <div id="inputBoxes" style=" padding-top: 5px; display: none">
+    <div class="container2 shadow" style="border: 1px solid black;  margin-left: 15%; height: 500px; width: 1100px; margin-top: 7%; background-color: white" >
+        <p class="text-Check-In">Vælg venligst Check ind eller check ud</p>
+        <div id="inputBoxes" style=" padding-top: 5px; display: none">
          <div id="checkInOpen" class="search" style="display: none; border: 1px solid black">
         <input id="guestInputCheckIn" placeholder="Indtast dit navn her...." onkeyup="searchForGuest()" type="search" class="search-box" />
         <span class="search-button">
@@ -22,9 +23,11 @@
         </div>
     </div>
     <div id="checkButtons" class="checkInAndOut">
-        <div class="btnGuests rgba-gradient">  <a  type="submit"   onclick="checkIn()"><p > <b class="p">Check in</b> </p> </a></div>
-   <div class="btnGuests rgba-gradient"> <a  type="submit"   onclick="checkOut()">  <b class="p">Check Out</b> </a></div>
-    </div>
+        <div class="btnGuests shadow ">  <a class="padding-button-2"  type="submit"   onclick="checkIn()"><p > <b class="p">Check in</b> </p> </a></div>
+   <div class="btnGuests2 shadow">
+       <div class="padding-button" style="padding-top: 6.5%"><a class="padding-button-2"   type="submit"   onclick="checkOut()">  <b class="p">Check Out</b> </a></div>
+   </div>
+   </div>
     <form id="executeCheckIn" method="POST" action="/guests/edit">
         @csrf
         @method("PUT")
