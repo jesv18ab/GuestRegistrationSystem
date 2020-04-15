@@ -6,9 +6,80 @@
 <div class="container2" style="margin-top: 6%">
 
     <div class="tablesDiv2 shadow"  >
-        <form  method="get" >
+        <table id="expected_today" class="guestTable supplementNav2  "  align="center" style="display: table; width: 100%" value="true" >
+            <thead >
+            <tr>
+                <th class="supplementNav3"><h4>Name</h4></th>
+                <th class="supplementNav3"><h4>Ankomst klokken</h4></th>
+                <th class="supplementNav3"><h4>Virksomhed</h4></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($guests_Today_Check_In as $guest)
+                <tr>
+                    <td  style="height: 10px" >{{ $guest->name }}</td>
+                    <td> {{$guest->expected_at}} {{ $guest->time }}</td>
+                    <td>Test virksomhed</td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+        <table id="departed_today" class="guestTable supplementNav2 "  align="center" style="display: none; width: 100%" value="true" >
+            <thead  >
+            <tr>
+                <th class="supplementNav3"><h4>Name</h4></th>
+                <th class="supplementNav3"><h4>Forlod Amgrod klokken:</h4></th>
+                <th class="supplementNav3"><h4>Virksomhed</h4></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($guests_Today_Checked_Out as $guest)
+                <tr>
+                    <td  style="height: 10px" >{{ $guest->name }}</td>
+                    <td> {{$guest->created_at}} {{ $guest->time }}</td>
+                    <td>Test virksomhed</td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+        <table id="arrived_today" class="guestTable supplementNav2"  align="center"  style="display: none"  value="false"  >
+            <thead>
+            <th class="supplementNav3" > <h4>Navn</h4> </th>
+            <th class="supplementNav3"> <h4>Tidspunkt for ankomst</h4></th>
+            <th class="supplementNav3"> <h4>Kort Id</h4></th>
+            <th class="supplementNav3"><h4> Check out</h4></th>
+            </thead>
+            <tbody>
+            @foreach($guests_Today_arrived as $guest)
+                <tr >
+                    <td >{{ $guest->name }}</td>
+                    <td  > {{$guest->updated_at}} {{ $guest->time }}</td>
+                    <td>{{$guest->id}}</td>
+                    <td ><button class="btn btn-primary">Check out</button> </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+        <table id="departed_all" class="guestTable supplementNav2"  align="center"  style="display: none; width: 100%" value="false" >
+            <thead>
+            <th class="supplementNav3" > <h4>Name</h4> </th>
+            <th class="supplementNav3"> <h4>Sidste besøg</h4></th>
+            <th class="supplementNav3"> <h4>Virksomheds navn</h4></th>
+
+            </thead>
+            <tbody>
+            @foreach($guestsCheckedOut as $guest)
+                <tr >
+                    <td >{{ $guest->name }}</td>
+                    <td > {{$guest->created_at}} {{ $guest->time }}</td>
+                    <td > Virksomhedens navn</td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+        <form id="expected_all"  method="get" style="display: none;" >
             @csrf
-            <table id="expected" class="guestTable supplementNav2  "  align="center" style="display: table; width: 100%" value="true" >
+            <table id="expected_all_table"  class="guestTable supplementNav2 "  align="center" style=" width: 100%" value="true" >
                 <thead  >
                 <tr>
                     <th class="supplementNav3"><h4>Name</h4></th>
@@ -26,33 +97,33 @@
                 @endforeach
                 </tbody>
             </table>
-            <table id="arrived" class="guestTable supplementNav2"  align="center"  style="display: none"  value="false"  >
+        </form>
+        <form id="check_in"  method="get" style="display: none;" >
+            @csrf
+            <table id="check_in_table"  class="guestTable supplementNav2 "  align="center" style=" width: 100%" value="true" >
                 <thead>
-                <th class="supplementNav3" > <h4>Navn</h4> </th>
-                <th class="supplementNav3"> <h4>Tidspunkt for ankomst</h4></th>
-                <th class="supplementNav3"><h4> Check out</h4></th>
+                <tr>
+                    <th class="supplementNav3"><h4>Name</h4></th>
+                    <th class="supplementNav3"><h4>Ankomst klokken</h4></th>
+                    <th class="supplementNav3" colspan="2"; ><h4>Vælg Id kort til gæst og tryk "Vælg"</h4></th>
+                </tr>
                 </thead>
                 <tbody>
-                @foreach($guestsCheckedIn as $guest)
-                    <tr >
-                        <td >{{ $guest->name }}</td>
-                        <td  > {{$guest->updated_at}} {{ $guest->time }}</td>
-                        <td ><button class="btn btn-primary">Check out</button> </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-
-            <table id="departed" class="guestTable supplementNav2"  align="center"  style="display: none" value="false" >
-                <thead>
-                <th class="supplementNav3" > <h4>Name</h4> </th>
-                <th class="supplementNav3"> <h4>Sidste besøg</h4></th>
-                </thead>
-                <tbody>
-                @foreach($guestsCheckedOut as $guest)
-                    <tr >
-                        <td >{{ $guest->name }}</td>
-                        <td > {{$guest->created_at}} {{ $guest->time }}</td>
+                @foreach($guests as $guest)
+                    <tr>
+                        <td  style="height: 75px; " >{{ $guest->name }}</td>
+                        <td > {{$guest->expected_at}} {{ $guest->time }}</td>
+                        <td >
+                            <p style="width: 200px;" >
+                                <select class="custom-select" id="cardIsPicked2" style="margin-left: 9%; margin-top: 5%; width: 60%; height: 40%" required="required">
+                                    <option value="">Id-kort </option>
+                                    @foreach($cardsAvailable as $guestCard)
+                                        <option value="{{ $guestCard->id }}">{{ $guestCard->id }}</option>
+                                    @endforeach
+                                </select>
+                            </p>
+                        </td>
+                        <td ><button class="btn btn-light shadow" style="width: 200px; height: 50px">Vælg</button> </td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -62,7 +133,7 @@
 </div>
 
     <div class="vertical-nav-brew bg-white" id="sidebar" style="height: 570px; margin-left: 4%; ">
-        <p class="text-black-brew font-weight-bold text-uppercase-brew px-3 col-sm pb-4 mb-0" style=" text-align: center; padding: 0;   color: black">Gæsteoversigten</p>
+        <p class="text-black-brew font-weight-bold text-uppercase-brew px-3 col-sm mb-0 paddingChecker" style=" text-align: center;   color: black; font-size: 20px;">Gæsteoversigten</p>
         <div class="filterDiv">
             <div id="guest-Input-Div" class="input-group" style="width: 450px">
             <span class="input-group-addon">  <i class='fas fa-search' style='font-size:40px'>
@@ -71,48 +142,57 @@
             </div>
         </div>
 
-
-        <p class="text-gray-brew font-weight-bold text-uppercase-brew px-3 small py-4 mb-0" style="padding-top: 0.6rem">Gæster i dag</p>
+        <p class="text-gray-brew font-weight-bold text-uppercase-brew px-3 small mb-0 paddingChecker" style=" font-size: 18px">Gæster i dag</p>
         <ul class="nav flex-column bg-white mb-0 supplementNav">
             <li class="nav-item">
-                <a type="button" onclick="expected()" class="nav-link text-dark font-italic bg-light">
+                <a type="button" onclick="expected_today()" class="nav-link text-dark font-italic bg-light">
                     <i class='fas fa-clipboard-list' style='font-size:25px'></i>
-                    Vis forventede gæster
+                    Vis forventede gæster i dag
                 </a>
 
             </li>
             <li class="nav-item">
-                <a type="button" onclick="arrived()" class="nav-link text-dark font-italic bg-light">
+                <a type="button" onclick="arrived_today()" class="nav-link text-dark font-italic bg-light">
                     <i class='fas fa-clipboard-check' style='font-size:25px'></i>
-                    Vis gæster som er checket checket ind i dag
+                    Vis gæster som er checket  ind i dag
                 </a>
             </li>
 
             <li class="nav-item">
-                <a type="button" onclick="departed()" class="nav-link text-dark font-italic bg-light">
+                <a type="button" onclick="departed_today()" class="nav-link text-dark font-italic bg-light">
                     <i class='fas fa-door-open' style='font-size:25px'></i>
                     Vis tidligere besøgende i dag
                 </a>
             </li>
         </ul>
-        <p class="text-gray-brew font-weight-bold text-uppercase-brew px-3 small py-4 mb-0">Det generelle overblik</p>
-
+        <p class="text-gray-brew font-weight-bold text-uppercase-brew px-3 small  mb-0 paddingChecker " style="font-size: 18px">Det generelle overblik</p>
             <ul class="nav flex-column bg-white mb-0 supplementNav">
                 <li class="nav-item">
-                    <a type="button" onclick="expected()" class="nav-link text-dark font-italic bg-light">
+                    <a type="button" onclick="expected_all()" class="nav-link text-dark font-italic bg-light">
                         <i class='fas fa-clipboard-list' style='font-size:25px'></i>
                         Vis alle forventede gæster
                     </a>
-
                 </li>
-
                 <li class="nav-item">
-                    <a type="button" onclick="departed()" class="nav-link text-dark font-italic bg-light">
+                    <a type="button" onclick="departed_all()" class="nav-link text-dark font-italic bg-light">
                         <i class='fas fa-door-open' style='font-size:25px'></i>
-                        Vis alle tidligere gæster
+                        Alle tidligere besøgende
                     </a>
                 </li>
-        </ul>
+
+                <p class="text-gray-brew font-weight-bold text-uppercase-brew px-3 small  mb-0 paddingChecker " style="font-size: 18px">Check gæster ind på forhånd</p>
+                <li class="nav-item">
+                    <a type="button" onclick="in_advance_Check_in()" class="nav-link text-dark font-italic bg-light">
+                        <i class='fas fa-door-open' style='font-size:25px'></i>
+                        Check in
+                    </a>
+                </li> <li class="nav-item">
+                    <a type="button" onclick="check_out_from_admin()" class="nav-link text-dark font-italic bg-light">
+                        <i class='fas fa-door-open' style='font-size:25px'></i>
+                        Check out
+                    </a>
+                </li>
+            </ul>
     </div>
 
     <div>

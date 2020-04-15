@@ -53,8 +53,14 @@ Route::post('guests/unregisteredCheckIn', 'GuestController@createUnexpectedGuest
 Route::post('/ajaxRequest', 'GuestController@ajaxRequestPost');
 
 Route::put('/guests/{guest}/{guestCard}/edit', 'GuestController@edit');
+
+
 Route::delete('/delete/{guest}', 'GuestController@delete');
 Route::get('/guestsRegistration', 'GuestController@guestPage');
+
+Route::get('/ajaxGuestPage/guestsRegistration', 'GuestController@ajaxGuestPage');
+
+
 
 Route::get('/articles', 'ArticlesController@index');
 Route::get('/articles/create', 'ArticlesController@create');

@@ -28,9 +28,9 @@
        <div class="padding-button" style="padding-top: 6.5%"><a class="padding-button-2"   type="submit"   onclick="checkOut()">  <b class="p">Check Out</b> </a></div>
    </div>
    </div>
-    <form id="executeCheckIn" method="POST" action="/guests/edit">
+    <form id="executeCheckIn" method="POST" data-route="/guests/{{ $id ?? '' }}/{{ $guestCardId ?? '' }}" >
         @csrf
-        @method("PUT")
+        @method('PUT')
         <div class="field" >
                             <div class="control" id="guestsCheckIn" style="display: none; height: 100%  " >
                                 <div>
@@ -44,17 +44,16 @@
                                     <div id="searchIn2" style="float: right; margin-right: 1%; margin-top: 1%; height: 70px; width: 500px ">
                                         <table id="searchIn" class="table table-hover"  style="display: none; height: 100%; border-collapse: separate; border-spacing: 1em;">
                                             <tbody>
-                                            @foreach($guestsToCheckIn as $guest)
+                                            @foreach($guests_Today_Check_In as $guest)
                                                 <tr style="width: 100%; height: 100%;" >
-                                                    <td class="shadow" id="{{ $guest->id }}" style="background-color: white; width: 75%; " > <h3 style="font-weight: 900; text-align: center; color: black; height: 20px  "> {{ $guest->name }} </h3></td>
-                                                    <td class="shadow-lg" style="background-color: #3490dc"><button class="btnBrew2 btnBrew-primary " style="width: 150px; height: 20px; border: 0px; padding: 0px " type="submit" value="Show Index" onclick="showSelected({{ $guest->id }});"> <h3 style="margin-top: 1%" > <b style="color: black;  text-shadow: 0px 1px, 1px 0px, 1px 1px; font-weight: 300"> Check in</b></h3> </button></td>
+                                                    <td  class="shadow" id="{{ $guest->id }}" style="background-color: white; width: 75%; " > <h3 style="font-weight: 900; text-align: center; color: black; height: 20px  "> {{ $guest->name }} </h3></td>
+                                                    <td  class="shadow-lg" style="background-color: #3490dc"><button class="btnBrew2 btnBrew-primary " style="width: 150px; height: 20px; border: 0px; padding: 0px" name="{{ $guest->id }}" type="submit" onclick="guest_Check_in({{ $guest->id }})" > <h3 style="margin-top: 1%" > <b style="color: black;  text-shadow: 0px 1px, 1px 0px, 1px 1px; font-weight: 300"> Check in</b></h3> </button></td>
                                                 </tr>
                                             @endforeach
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-
                                 <p id="regsiteredTable" style="display: none"> <input  type="text" id="txtValue" /></p>
                          </div>
                         </div>
@@ -65,7 +64,7 @@
         <h3  > Opret dig her</h3>
     </button>
     </div>
-        <form method="Post" style="margin-left: 20%;" >
+        <form id="executeCheckOut" method="Post " data-route="/guests/{{ $guestId ?? '' }}/{{ $id ?? '' }}"; style="margin-left: 20%; " >
             @csrf
             @method("PUT")
             <div  id="guestsCheckOut" style="display: none">
@@ -78,12 +77,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($guestsToCheckOut as $checkOut )
+                        @foreach($guests_Today_Check_Out as $checkOut )
                             <tr style="width: 100%; height: 100%; ">
                                 <td style="background-color: white; width: 75%; box-shadow: 0 0 0 0.2rem black" > <h3 style="font-weight: 900; text-align: center; color: black  "> {{ $checkOut->name }} </h3></td>
                                 <td style="background-color: white; width: 75%; box-shadow: 0 0 0 0.2rem black" > <h3 style="font-weight: 900; text-align: center; color: black  ">{{ $checkOut->id }}</h3></td>
-                                <td ><button type="submit"  class="btnBrew2 btnBrew-primary"style="width: 250px; height: 65px; border: 0px; padding: 0px " formaction="guests/{{ $checkOut->guestId }}/{{ $checkOut->id }} }}/edit"> <h3 style="margin-top: 1%" > <b style="color: white;  text-shadow: 0px 1px, 1px 0px, 1px 1px; font-weight: 300">Check Out</b></h3></button> </td>
+                                <td ><button type="submit"  class="btnBrew2 btnBrew-primary"style="width: 250px; height: 65px; border: 0px; padding: 0px" onclick="guest_Check_out( {{$checkOut->guestId}}, {{ $checkOut->id }})"> <h3 style="margin-top: 1%" > <b style="color: white;  text-shadow: 0px 1px, 1px 0px, 1px 1px; font-weight: 300">Check Out</b></h3></button> </td>
                             </tr>
+
                         @endforeach
                         </tbody>
                     </table>

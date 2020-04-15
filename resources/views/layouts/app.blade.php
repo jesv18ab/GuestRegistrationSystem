@@ -14,27 +14,30 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <ul class="navbar-nav mr-auto navBarAmgros bg-cream">
-                    <li class="nav-item">
+                <ul class="navbar-nav mr-auto navBarAmgros bg-cream" style="padding-top: 1.5%">
+                    <li class="nav-item" style="padding-right: 40px">
                         <a class="nav-link font-navbar" href="guests" style="font-size: x-large; color: black"> Gæste overblikket </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" style="padding-right: 40px">
                         <a class="nav-link font-navbar" href="registerGuest" style="font-size: x-large; color: black"> Registrer ny gæst </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" style="padding-right: 40px">
+                        <a class="nav-link font-navbar" href="https://www.dst.dk/da/Statistik" style="font-size: x-large; color: black"> Statistikker </a>
+                    </li>
+                    <li class="nav-item" style="padding-right: 40px">
                         <a class="nav-link font-navbar" href="guestsRegistration" style="font-size: x-large; color: black"> Gæstesiden </a>
                     </li>
                 </ul>
                 <!-- Right Side Of Navbar -->
-                <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav ml-auto navBarAmgros bg-cream">
                     <!-- Authentication Links -->
                     @guest
-                        <li class="nav-item">
-                            <a class="nav-link font-navbar" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        <li class="nav-item" style="padding-right: 40px">
+                            <a class="nav-link font-navbar" style="font-size: x-large; color: black" href="{{ route('login') }}">{{ __('Login') }}</a>
                         </li>
                         @if (Route::has('register'))
-                            <li class="nav-item">
-                                <a class="nav-link font-navbar" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            <li class="nav-item" style="padding-right: 40px">
+                                <a class="nav-link font-navbar" style="font-size: x-large; color: black" href="{{ route('register') }}">{{ __('Register') }}</a>
                             </li>
                         @endif
                     @else

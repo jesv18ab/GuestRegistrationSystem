@@ -1,8 +1,4 @@
 
-window.FontAwesomeKitConfig = {"asyncLoading":{"enabled":true},"autoA11y":{"enabled":true},"baseUrl":"https://kit-free.fontawesome.com","license":"free","method":"css","minify":{"enabled":true},"v4shim":{"enabled":false},"version":"latest"};
-!function(){!function(){if(!(void 0===window.Element||"classList"in document.documentElement)){var e,t,n,i=Array.prototype,o=i.push,a=i.splice,s=i.join;r.prototype={add:function(e){this.contains(e)||(o.call(this,e),this.el.className=this.toString())},contains:function(e){return-1!=this.el.className.indexOf(e)},item:function(e){return this[e]||null},remove:function(e){if(this.contains(e)){for(var t=0;t<this.length&&this[t]!=e;t++);a.call(this,t,1),this.el.className=this.toString()}},toString:function(){return s.call(this," ")},toggle:function(e){return this.contains(e)?this.remove(e):this.add(e),this.contains(e)}},window.DOMTokenList=r,e=Element.prototype,t="classList",n=function(){return new r(this)},Object.defineProperty?Object.defineProperty(e,t,{get:n}):e.__defineGetter__(t,n)}function r(e){for(var t=(this.el=e).className.replace(/^\s+|\s+$/g,"").split(/\s+/),n=0;n<t.length;n++)o.call(this,t[n])}}();function f(e){var t,n,i,o;prefixesArray=e||["fa"],prefixesSelectorString="."+Array.prototype.join.call(e,",."),t=document.querySelectorAll(prefixesSelectorString),Array.prototype.forEach.call(t,function(e){n=e.getAttribute("title"),e.setAttribute("aria-hidden","true"),i=!e.nextElementSibling||!e.nextElementSibling.classList.contains("sr-only"),n&&i&&((o=document.createElement("span")).innerHTML=n,o.classList.add("sr-only"),e.parentNode.insertBefore(o,e.nextSibling))})}var e,t,u=function(e){var t=document.createElement("link");t.href=e,t.media="all",t.rel="stylesheet",document.getElementsByTagName("head")[0].appendChild(t)},m=function(e){!function(e,t,n){var i,o=window.document,a=o.createElement("link");if(t)i=t;else{var s=(o.body||o.getElementsByTagName("head")[0]).childNodes;i=s[s.length-1]}var r=o.styleSheets;a.rel="stylesheet",a.href=e,a.media="only x",function e(t){if(o.body)return t();setTimeout(function(){e(t)})}(function(){i.parentNode.insertBefore(a,t?i:i.nextSibling)});var l=function(e){for(var t=a.href,n=r.length;n--;)if(r[n].href===t)return e();setTimeout(function(){l(e)})};function c(){a.addEventListener&&a.removeEventListener("load",c),a.media=n||"all"}a.addEventListener&&a.addEventListener("load",c),(a.onloadcssdefined=l)(c)}(e)},n=function(e,t){var n=t&&void 0!==t.autoFetchSvg?t.autoFetchSvg:void 0,i=t&&void 0!==t.async?t.async:void 0,o=t&&void 0!==t.autoA11y?t.autoA11y:void 0,a=document.createElement("script"),s=document.scripts[0];a.src=e,void 0!==o&&a.setAttribute("data-auto-a11y",o?"true":"false"),n&&(a.setAttributeNode(document.createAttribute("data-auto-fetch-svg")),a.setAttribute("data-fetch-svg-from",t.fetchSvgFrom)),i&&a.setAttributeNode(document.createAttribute("defer")),s.parentNode.appendChild(a)};function h(e,t){var n=t&&t.shim?e.license+"-v4-shims":e.license,i=t&&t.minify?".min":"";return e.baseUrl+"/releases/"+("latest"===e.version?"latest":"v".concat(e.version))+"/"+e.method+"/"+n+i+"."+e.method}try{if(window.FontAwesomeKitConfig){var i=window.FontAwesomeKitConfig;"js"===i.method&&(t={async:(e=i).asyncLoading.enabled,autoA11y:e.autoA11y.enabled},"pro"===e.license&&(t.autoFetchSvg=!0,t.fetchSvgFrom=e.baseUrl+"/releases/"+("latest"===e.version?"latest":"v".concat(e.version))+"/svgs"),e.v4shim.enabled&&n(h(e,{shim:!0,minify:e.minify.enabled})),n(h(e,{minify:e.minify.enabled}),t)),"css"===i.method&&function(e){var t,n,i,o,a,s,r,l,c=f.bind(f,["fa","fab","fas","far","fal"]);e.autoA11y.enabled&&(n=c,o=[],a=document,s=a.documentElement.doScroll,r="DOMContentLoaded",(l=(s?/^loaded|^c/:/^loaded|^i|^c/).test(a.readyState))||a.addEventListener(r,i=function(){for(a.removeEventListener(r,i),l=1;i=o.shift();)i()}),l?setTimeout(n,0):o.push(n),t=c,"undefined"!=typeof MutationObserver&&new MutationObserver(t).observe(document,{childList:!0,subtree:!0})),e.v4shim.enabled&&(e.asyncLoading.enabled?m(h(e,{shim:!0,minify:e.minify.enabled})):u(h(e,{shim:!0,minify:e.minify.enabled})));var d=h(e,{minify:e.minify.enabled});e.asyncLoading.enabled?m(d):u(d)}(i)}}catch(e){}}();
-
-
 $(function () {
     $('#form-data').submit(function (e) {
         var guestId;
@@ -38,6 +34,86 @@ $(function () {
     })
 });
 
+function guest_Check_in(id){
+    $('#executeCheckIn').submit(function (e) {
+        var selObj = document.getElementById('cardIsPicked');
+        var txtValueObj = document.getElementById('txtValue');
+        var selIndex = selObj.selectedIndex;
+        var guestCardID = txtValueObj.value = selObj.options[selIndex].value;
+        var route = $('#executeCheckIn').data('route');
+        var form_data = $(this);
+        $.ajax({
+            type: 'put' ,
+            url: "/guests/" + id + "/" + guestCardID + "/edit",
+            data: form_data.serialize(),
+            success: function(data) {
+                $.ajax({
+                    type: 'GET' ,
+                    url: '/ajaxGuestPage/guestsRegistration',
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    success: function(data) {
+                        $("#searchIn").load(window.location + " #searchIn");
+                        alert("Du er hermed registreret! Du ønskes en rigtig god dag ")
+                    }
+                });
+            },
+        });
+        e.preventDefault();
+
+    });
+}
+function guest_Check_out(guest_id, card_id){
+    $('#executeCheckOut').submit(function (e) {
+        var route = $('#executeCheckOut').data('route');
+        var form_data = $(this);
+        $.ajax({
+            type: 'put' ,
+            url: "/guests/" + guest_id + "/" + card_id + "/edit",
+            data: form_data.serialize(),
+            success: function(data) {
+                $.ajax({
+                    type: 'GET' ,
+                    url: '/ajaxGuestPage/guestsRegistration',
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    success: function(data) {
+                        $("#searchIn").load(window.location + " #searchO");
+                        $("#searchOut").load(window.location + " #searchOut");
+                        alert("Du er hermed checket ud! Håber du har haft et godt besøg!")
+                    }
+                });
+            },
+        });
+        e.preventDefault();
+    });
+}
+
+function guest_Check_in_admins(guest_id, card_id){
+    $('#executeCheckOut').submit(function (e) {
+        var route = $('#executeCheckOut').data('route');
+        var form_data = $(this);
+        $.ajax({
+            type: 'put' ,
+            url: "/guests/" + guest_id + "/" + card_id + "/edit",
+            data: form_data.serialize(),
+            success: function(data) {
+                $.ajax({
+                    type: 'GET' ,
+                    url: '/ajaxGuestPage/guestsRegistration',
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    success: function(data) {
+                        $("#searchIn").load(window.location + " #searchO");
+                        $("#searchOut").load(window.location + " #searchOut");
+                        alert("Du er hermed checket ud! Håber du har haft et godt besøg!")
+                    }
+                });
+            },
+        });
+        e.preventDefault();
+
+    });
+}
+
+
 
 function  openSearchField(){
         $('.search-button').parent().toggleClass('open');
@@ -68,13 +144,22 @@ function quickCheckIn( id, card  )
     document.getElementById('executeCheckIn').action = "guests/"+id +"/" + card + "/edit";
 }
 
-function showSelected( id )
-{
+function showSelected( id ) {
+    var guestId;
     var selObj = document.getElementById('cardIsPicked');
-    var txtValueObj = document.getElementById('txtValue');
     var selIndex = selObj.selectedIndex;
     var guestCardID = txtValueObj.value = selObj.options[selIndex].value;
-    document.getElementById('executeCheckIn').action = "guests/"+id +"/" + guestCardID + "/edit";
+    var route = $('#executeCheckIn').data('route');
+    var form_data = $(this);
+    $.ajax({
+        type: 'get',
+        method:'PUT',
+        url: "/guests/" + id + "/" + guestCardID + "edit",
+        data: form_data.serialize(),
+        success: function (data) {
+            alert("Du har checket følgende person med dette ID ind" + id + "" + guestCardID2 + data);
+        },
+    });
 }
 
 function chosenCard() {
@@ -160,6 +245,7 @@ function guestPage() {
 function reBooK(){
     document.getElementById("newGuests").style.display = "none";
     document.getElementById("formerGuests").style.display = "";
+    document.getElementById("formerGuests_container").style.display = "";
     document.getElementById("formerGuestsTable").style.display = "";
 }
 function setName(guestName, guestId) {
@@ -198,66 +284,165 @@ function findGuest() {
 }
 
 
-function arrived() {
-    var showArrivedTable = document.getElementById("arrived");
-    var showExpectedTable = document.getElementById("expected");
-    var showDepartedTable = document.getElementById("departed");
+function arrived_today() {
+    var show_Expected_Table_Today = document.getElementById("expected_today");
+    var show_all_table_expected = document.getElementById("expected_all");
 
-    showExpectedTable.style.display = "none";
-   // filterBoxExpected.style.display = "none";
+    //arrived Tables
+    var show_Arrived_Table_today = document.getElementById("arrived_today");
 
-    showDepartedTable.style.display = "none";
-    //filterBoxDeparted.style.display = "none";
+    //Departed tables
+    var show_Departed_Table_Today = document.getElementById("departed_today");
+    var show_all_table_departed = document.getElementById("departed_all");
 
-    showArrivedTable.style.display = "table";
-    //filterBoxArrived.style.display = "";
+    show_Expected_Table_Today.style.display="none";
+    show_all_table_expected.style.display = "none";
+
+    show_all_table_departed.style.display = "none";
+    show_Departed_Table_Today.style.display="none";
+
+    show_Arrived_Table_today.style.display = "table";
+
 }
 
 
-function departed() {
-    alert("Dette er en test");
-    var showArrivedTable = document.getElementById("arrived");
-    var showExpectedTable = document.getElementById("expected");
-    var showDepartedTable = document.getElementById("departed");
+function departed_today() {
+    var show_Expected_Table_Today = document.getElementById("expected_today");
+    var show_all_table_expected = document.getElementById("expected_all");
 
-    showArrivedTable.style.display = "none";
-    //filterBoxArrived.style.display = "none";
+    //arrived Tables
+    var show_Arrived_Table_today = document.getElementById("arrived_today");
 
-    showExpectedTable.style.display = "none";
-    //filterBoxExpected.style.display = "none";
+    //Departed tables
+    var show_Departed_Table_Today = document.getElementById("departed_today");
+    var show_all_table_departed = document.getElementById("departed_all");
 
-    showDepartedTable.style.display = "table";
-    //filterBoxDeparted.style.display = "";
+    show_Expected_Table_Today.style.display="none";
+    show_all_table_expected.style.display = "none";
+
+    show_Arrived_Table_today.style.display = "none";
+
+    show_all_table_departed.style.display = "none";
+    show_Departed_Table_Today.style.display="table";
+
 }
 
-function expected() {
-    alert("Dette er en test");
-    var showArrivedTable = document.getElementById("arrived");
-    var showExpectedTable = document.getElementById("expected");
-    var showDepartedTable = document.getElementById("departed");
-    //   var filterBoxArrived     = document.getElementById("guestInputArrivedDiv");
-   // var filterBoxDeparted = document.getElementById("guestInputDepartedDiv");
-    showArrivedTable.style.display = "none";
-    //filterBoxArrived.style.display = "none";
-    showDepartedTable.style.display = "none";
-    //filterBoxDeparted.style.display = "none";
-    showExpectedTable.style.display = "table";
-    //ilterBoxExpected.style.display = "";
+function departed_all() {
+    var show_Expected_Table_Today = document.getElementById("expected_today");
+    var show_all_table_expected = document.getElementById("expected_all");
+
+    //arrived Tables
+    var show_Arrived_Table_today = document.getElementById("arrived_today");
+
+    //Departed tables
+    var show_Departed_Table_Today = document.getElementById("departed_today");
+    var show_all_table_departed = document.getElementById("departed_all");
+
+    show_Expected_Table_Today.style.display="none";
+    show_all_table_expected.style.display = "none";
+
+    show_Arrived_Table_today.style.display = "none";
+
+
+    show_Departed_Table_Today.style.display="none";
+    show_all_table_departed.style.display = "table";
 }
+function expected_today() {
+    //expected tables
+    var show_Expected_Table_Today = document.getElementById("expected_today");
+    var show_all_table_expected = document.getElementById("expected_all");
+
+    //arrived Tables
+    var show_Arrived_Table_today = document.getElementById("arrived_today");
+
+    //Departed tables
+    var show_Departed_Table_Today = document.getElementById("departed_today");
+    var show_all_table_departed = document.getElementById("departed_all");
+
+    show_Arrived_Table_today.style.display = "none";
+
+    show_Departed_Table_Today.style.display="none";
+    show_all_table_departed.style.display = "none";
+
+    show_all_table_expected.style.display = "none";
+    show_Expected_Table_Today.style.display="table";
+
+}
+
+
+function expected_all() {
+    //expected tables
+    var show_Expected_Table_Today = document.getElementById("expected_today");
+    var show_all_table_expected = document.getElementById("expected_all");
+
+
+    //arrived Tables
+    var show_Arrived_Table_today = document.getElementById("arrived_today");
+
+    //Departed tables
+    var show_Departed_Table_Today = document.getElementById("departed_today");
+    var show_all_table_departed = document.getElementById("departed_all");
+
+    show_Arrived_Table_today.style.display = "none";
+
+    show_Departed_Table_Today.style.display="none";
+    show_all_table_departed.style.display = "none";
+
+    show_Expected_Table_Today.style.display="none";
+    show_all_table_expected.style.display = "";
+}
+
+
+function in_advance_Check_in() {
+    //expeted tables
+    var show_Expected_Table_Today = document.getElementById("expected_today");
+    var show_all_table_expected = document.getElementById("expected_all");
+    var show_form_check_in = document.getElementById("check_in");
+
+    //arrived Tables
+    var show_Arrived_Table_today = document.getElementById("arrived_today");
+
+    //Departed tables
+    var show_Departed_Table_Today = document.getElementById("departed_today");
+    var show_all_table_departed = document.getElementById("departed_all");
+
+    show_Arrived_Table_today.style.display = "none";
+
+    show_Departed_Table_Today.style.display="none";
+    show_all_table_departed.style.display = "none";
+
+    show_Expected_Table_Today.style.display="none";
+    show_all_table_expected.style.display = "none";
+    show_form_check_in.style.display = "";
+
+}
+
+
+
+
 
 function findGuests() {
     var table;
-    var expected = document.getElementById("expected");
-    var arrived = document.getElementById("arrived");
-    var departed = document.getElementById("departed");
+    var expected_today = document.getElementById("expected_today");
+    var departed_all = document.getElementById("departed_all");
+    var departed_today = document.getElementById("departed_today");
+    var arrived = document.getElementById("arrived_today");
+    var expected_all_form = document.getElementById("expected_all");
+    var expected_all_table = document.getElementById("expected_all_table");
+
     // Declare variables
-    if (expected.style.display == "none" && arrived.style.display == "none" ){
-        table = departed;
-    } else if ( arrived.style.display == "none" && departed.style.display == "none" ){
-        table = expected;
-    } else if (departed.style.display == "none" && expected.style.display == "none"){
+    //expected All
+    if (expected_today.style.display == "none" && arrived.style.display == "none" && departed_today.style.display == "none" && departed_all.style.display == "none"  ){
+        table = expected_all_table;
+    } else if ( expected_all_form.style.display == "none" && arrived.style.display == "none" && departed_today.style.display == "none" && departed_all.style.display == "none"  ){
+        table = expected_today;
+    } else if (expected_today.style.display == "none" && arrived.style.display == "none" && expected_all_form.style.display == "none" && departed_all.style.display == "none"  ){
+        table = departed_today;
+    }else if (expected_today.style.display == "none" && arrived.style.display == "none" && expected_all_form.style.display == "none" && departed_today.style.display == "none"  ){
+        table = departed_all;
+    }else if (expected_today.style.display == "none" && departed_all.style.display == "none" && expected_all_form.style.display == "none" && departed_today.style.display == "none"  ){
         table = arrived;
-    }else {
+    } else {
         alert("Noget gik galt ");
         window.location = "guests";
     }
@@ -278,56 +463,3 @@ function findGuests() {
         }
     }
 }
-
-
-/* Dette er tidligere brug af filtre
-function findGuestArrived( ) {
-    var showArrived = document.getElementById("arrived");
-    // Declare variables
-    var input, filter, tr, td, i, txtValue;
-    input = document.getElementById("input-box");
-    filter = input.value.toUpperCase();
-    tr = showArrived.getElementsByTagName("tr");
-    // Loop through all table rows, and hide those who don't match the search query
-    for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[0];
-        if (td) {
-            txtValue = td.textContent || td.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
-        }
-    }
-}
-
-function findGuestDeparted( ) {
-    var showDeparted = document.getElementById("input-box");
-    // Declare variables
-    var input, filter, tr, td, i, txtValue;
-    input = document.getElementById("myInput");
-    filter = input.value.toUpperCase();
-    tr = showDeparted.getElementsByTagName("tr");
-    // Loop through all table rows, and hide those who don't match the search query
-    for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[0];
-        if (td) {
-            txtValue = td.textContent || td.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
-        }
-    }
-}
-
-*/
-
-
-
-
-
-
-
