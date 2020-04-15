@@ -5,7 +5,7 @@
 
 <div class="container2" style="margin-top: 6%">
 
-    <div class="tablesDiv2 shadow"  >
+    <div id="tableDiv2" class="tablesDiv2 shadow"  >
         <table id="expected_today" class="guestTable supplementNav2  "  align="center" style="display: table; width: 100%" value="true" >
             <thead >
             <tr>
@@ -98,39 +98,66 @@
                 </tbody>
             </table>
         </form>
-        <form id="check_in"  method="get" style="display: none;" >
+    </div>
+    <div class="tablesDiv4 shadow" id="check_in" style=" display: none; height: 40rem">
+    <div class="tablesDiv3 shadow" id="check_in">
+        <form >
             @csrf
-            <table id="check_in_table"  class="guestTable supplementNav2 "  align="center" style=" width: 100%" value="true" >
+            <table id="check_in_table"  class="guestTable2 supplementNav2 "  align="center" style=" width: 100%" value="true" >
                 <thead>
                 <tr>
                     <th class="supplementNav3"><h4>Name</h4></th>
                     <th class="supplementNav3"><h4>Ankomst klokken</h4></th>
-                    <th class="supplementNav3" colspan="2"; ><h4>Vælg Id kort til gæst og tryk "Vælg"</h4></th>
+                    <th class="supplementNav3" colspan="2"><h4>Vælg Id kort til gæst og tryk "Vælg"</h4></th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($guests as $guest)
-                    <tr>
+                    <tr >
                         <td  style="height: 75px; " >{{ $guest->name }}</td>
                         <td > {{$guest->expected_at}} {{ $guest->time }}</td>
                         <td >
                             <p style="width: 200px;" >
-                                <select class="custom-select" id="cardIsPicked2" style="margin-left: 9%; margin-top: 5%; width: 60%; height: 40%" required="required">
+                                <select id="{{ $guest->id }}" class="custom-select" id="cardIsPicked2" style="margin-left: 9%; margin-top: 5%; width: 60%; height: 40%" >
                                     <option value="">Id-kort </option>
                                     @foreach($cardsAvailable as $guestCard)
-                                        <option value="{{ $guestCard->id }}">{{ $guestCard->id }}</option>
+                                        <option  value="{{ $guestCard->id }}">{{ $guestCard->id }}</option>
                                     @endforeach
                                 </select>
                             </p>
                         </td>
-                        <td ><button class="btn btn-light shadow" style="width: 200px; height: 50px">Vælg</button> </td>
+                        <td ><button class="btn btn-light shadow" style="width: 200px; height: 50px" onclick="move_person(document.getElementById('{{$guest->id}}').options[document.getElementById('{{ $guest->id }}').selectedIndex].value,  {{ $guest->id }} )">Vælg</button> </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
         </form>
     </div>
+
+        <div class="in_Advance_Check_In">
+                <table id="check_in_table_chosen"  class="guestTable2 supplementNav2 "  align="center" style=" width: 100%" value="true" >
+                    <thead>
+                    <tr>
+                        <th class="supplementNav3"><h4>Person valgt til check in</h4></th>
+                        <th class="supplementNav3"><h4>Virsomhed valgt</h4></th>
+                        <th class="supplementNav3" ><h4>Kort tilknyttet gæst</h4></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($guests as $guest)
+                        <tr>
+                            <td  style="height: 75px; " >Navn på valgt person</td>
+                            <td > SønderJydske Idrætsforning</td>
+                            <td > Kort nummer 0000</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>      </div>
+<div style="text-align:center">
+        <button id="in_advance " class="btn btn-light shadow bg-cream " style="width: 71%; height: 50px; margin-top: 1%; background-color:#d2d2d0; border-color: #d2d2d0">Afslut check in</button>
 </div>
+    </div>
+    </div>
 
     <div class="vertical-nav-brew bg-white" id="sidebar" style="height: 570px; margin-left: 4%; ">
         <p class="text-black-brew font-weight-bold text-uppercase-brew px-3 col-sm mb-0 paddingChecker" style=" text-align: center;   color: black; font-size: 20px;">Gæsteoversigten</p>

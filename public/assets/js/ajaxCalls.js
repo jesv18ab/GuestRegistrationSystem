@@ -398,6 +398,7 @@ function in_advance_Check_in() {
     var show_Expected_Table_Today = document.getElementById("expected_today");
     var show_all_table_expected = document.getElementById("expected_all");
     var show_form_check_in = document.getElementById("check_in");
+    var show_div_for_Tables = document.getElementById("tableDiv2");
 
     //arrived Tables
     var show_Arrived_Table_today = document.getElementById("arrived_today");
@@ -413,6 +414,7 @@ function in_advance_Check_in() {
 
     show_Expected_Table_Today.style.display="none";
     show_all_table_expected.style.display = "none";
+    show_div_for_Tables.style.display = "none";
     show_form_check_in.style.display = "";
 
 }
@@ -462,4 +464,7 @@ function findGuests() {
             }
         }
     }
+}
+
+function move_person(card,row, id){
 }
