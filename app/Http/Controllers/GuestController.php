@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use phpDocumentor\Reflection\Types\Null_;
 use PhpParser\Node\Expr\List_;
 use function GuzzleHttp\Psr7\str;
+use function MongoDB\BSON\toJSON;
 use function Sodium\add;
 
 class GuestController extends Controller
@@ -43,7 +44,25 @@ class GuestController extends Controller
         return view('guestRegistration.index', ['guests' => $guestsExpected, 'guestsCheckedIn' => $guestsCheckedIn, 'guestsCheckedOut' => $guestsCheckedOut, "guests_Today_Check_In"=>$guests_Today_Check_In, "guests_Today_arrived" => $guests_Today_arrived, "guests_Today_Checked_Out"=>$guests_Today_Checked_Out, "cardsAvailable"=> $cardsAvailable  ] );
     }
 
+public function multiple_check_in(Request $request){
+   $cards = $request->get('arr2');
+     $persons = $request->get('arr');
 
+
+
+     $number_of_cards =count($persons);
+        for ($i = 0; $i< $number_of_cards; $i++){
+            $id = $persons[$i];
+            $card = $cards[$i];
+            DB::update("UPDATE guest_cards SET status = 2, guestId = $id where id =$card ");
+            DB::update("UPDATE guests SET updated_at = now(), status = 2 where guests.id = $id");
+        }
+
+return \response("Hej hej");
+
+
+
+}
         // Vis eret enkelt objekt
         public function showForm()
     {
@@ -66,7 +85,7 @@ class GuestController extends Controller
         $guestsToCheckOut = DB::select('Select guests.name, guestId, guest_cards.id from guest_cards inner join guests where guests.id = guest_cards.guestId');
         $guestsToCheckIn = DB::select('select * from guests where status = 1');
         $cardsAvailable   = DB::select('select * from guest_cards where status = 1');
-        return $guests_Today_Check_Out;
+        return response()->json(["guests_Today_Check_In" => $guests_Today_Check_In]);
     }
 
 
@@ -85,16 +104,12 @@ class GuestController extends Controller
 
     //Denne vil gemme et objekt
     public function store(){
-
         $guest = new Guest();
         $guest->name = request('name');
         $guest->expected_at = date(request('expected_at'));
         $guest->time = request('time');
         $guest->status = 1;
         $guest->save();
-
-
-
         return view('welcome');
         //Man skal vise en from for at kunne justere en eksisterende resource
     }
@@ -107,7 +122,7 @@ class GuestController extends Controller
 
     public function edit( Guest $guest, GuestCard $guestCard)
     {
-        $i = null;
+   /*     $i = null;
         //update guest
         if ( $guest->status == 3){
           $date =(integer)preg_replace('/-+/', '', request('expected_at'));
@@ -123,8 +138,7 @@ class GuestController extends Controller
         else if ($guest->status == 1){
             DB::update("UPDATE guests SET updated_at = now(), status = 2 where guests.id = $guest->id");
             DB::update("UPDATE guest_cards SET status = 2, guestId = $guest->id where id = $guestCard->id");
-        $i = 1;}
-      //  return i;
+        }*/
     }
 
     public function update(Article $article)
@@ -148,7 +162,6 @@ class GuestController extends Controller
             'cardNumber' => 'required',
         ]);
     }
-
 
     public function destroy()
     {
@@ -188,6 +201,43 @@ class GuestController extends Controller
         }
      return $formatted;
  }
+
+public function fill_check_in_advance_table(){
+
+        $data = DB::select("select * from guests where expected_At = curdate() AND status = 1");
+        $guests_Today_Check_In = $this->correctDateFormat($data);
+
+        $data = DB::select("Select guests.name, guestId, guest_cards.id, guests.updated_at, guests.time, guests.expected_at, guests.created_at   from guest_cards inner join guests where guests.id = guest_cards.guestId and expected_At = curdate() AND guests.status = 2");
+        $guests_Today_arrived = $this->correctDateFormat($data);
+
+        $data=DB::select('select * from guests where status = 1');$this->correctDateFormat($data);
+        $guestsExpected = $this->correctDateFormat($data);
+
+        $data = DB::select('select * from guests where status = 2');
+        $guestsCheckedIn = $this->correctDateFormat($data);
+
+        $data =  DB::select('select * from guests where status = 3 and created_at = curdate()');
+        $guests_Today_Checked_Out = $this->correctDateFormat($data);
+
+        $data = DB::select('select * from guests where status = 3');
+        $guestsCheckedOut = $this->correctDateFormat($data);
+
+        $cardsAvailable   = DB::select('select * from guest_cards where status = 1');
+        return $guestsCheckedOut;
+    }
+
+
+    public function regret_check_in( Guest $guest, GuestCard $guestCard)
+    {
+        $i = null;
+        DB::update("UPDATE guests set updated_at = null , status = 1 where guests.id = $guest->id");
+        DB::update("UPDATE guest_cards SET status = 1, guestId = null where id = $guestCard->id");
+    }
+
+
+
+
+
 
 
 }

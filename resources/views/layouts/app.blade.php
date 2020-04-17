@@ -27,6 +27,7 @@
                     <li class="nav-item" style="padding-right: 40px">
                         <a class="nav-link font-navbar" href="guestsRegistration" style="font-size: x-large; color: black"> Gæstesiden </a>
                     </li>
+
                 </ul>
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto navBarAmgros bg-cream">
@@ -63,6 +64,7 @@
             </div>
         </div>
     </nav>
+
 
     <main class="py-4">
         @yield('content')

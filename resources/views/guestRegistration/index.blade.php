@@ -99,64 +99,59 @@
             </table>
         </form>
     </div>
-    <div class="tablesDiv4 shadow" id="check_in" style=" display: none; height: 40rem">
+    <div class="tablesDiv4 shadow" id="check_in" style=" display: none; height: 30rem">
     <div class="tablesDiv3 shadow" id="check_in">
-        <form >
-            @csrf
+
+
+            @method("PUT")
             <table id="check_in_table"  class="guestTable2 supplementNav2 "  align="center" style=" width: 100%" value="true" >
                 <thead>
                 <tr>
+                    <th class="supplementNav3" ><h4>Personer valgt/Ikke valgt</h4></th>
                     <th class="supplementNav3"><h4>Name</h4></th>
                     <th class="supplementNav3"><h4>Ankomst klokken</h4></th>
                     <th class="supplementNav3" colspan="2"><h4>Vælg Id kort til gæst og tryk "Vælg"</h4></th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="check_in_table_body">
                 @foreach($guests as $guest)
-                    <tr >
-                        <td  style="height: 75px; " >{{ $guest->name }}</td>
+                    <tr id="tr{{ $guest->id }}" name="false" >
+                        <td id="td{{ $guest->id }}" style="display: none" >{{$guest->id}}</td>
+                        <td ><!-- Default unchecked -->
+                            <div class="custom-control custom-checkbox  ">
+                                <input id="checkbox{{$guest->id}}" value="false"  type="checkbox" class="custom-control-input">
+                                <label class="custom-control-label bg-white" for="tableDefaultCheck3"></label>
+                            </div>
+                        </td>
+                        <td   style="height: 75px; " >{{ $guest->name }}</td>
                         <td > {{$guest->expected_at}} {{ $guest->time }}</td>
-                        <td >
-                            <p style="width: 200px;" >
-                                <select id="{{ $guest->id }}" class="custom-select" id="cardIsPicked2" style="margin-left: 9%; margin-top: 5%; width: 60%; height: 40%" >
+                        <td id="td_select"{{ $guest->id }} >
+
+                                <select id="{{ $guest->id }}" class="custom-select" id="cardIsPicked2" style="margin-left: 9%; margin-top: 5%; width: 92px; height: 67%" >
                                     <option value="">Id-kort </option>
                                     @foreach($cardsAvailable as $guestCard)
                                         <option  value="{{ $guestCard->id }}">{{ $guestCard->id }}</option>
                                     @endforeach
                                 </select>
-                            </p>
                         </td>
-                        <td ><button class="btn btn-light shadow" style="width: 200px; height: 50px" onclick="move_person(document.getElementById('{{$guest->id}}').options[document.getElementById('{{ $guest->id }}').selectedIndex].value,  {{ $guest->id }} )">Vælg</button> </td>
+                        <td ><button id="check_btn{{ $guest->id }}" class="btn btn-light shadow"  type="submit" style="width: 200px; height: 50px; padding-left: 3%" onclick="select_row({{ $guest->id }})">Vælg</button>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
-        </form>
+
+
     </div>
 
-        <div class="in_Advance_Check_In">
-                <table id="check_in_table_chosen"  class="guestTable2 supplementNav2 "  align="center" style=" width: 100%" value="true" >
-                    <thead>
-                    <tr>
-                        <th class="supplementNav3"><h4>Person valgt til check in</h4></th>
-                        <th class="supplementNav3"><h4>Virsomhed valgt</h4></th>
-                        <th class="supplementNav3" ><h4>Kort tilknyttet gæst</h4></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($guests as $guest)
-                        <tr>
-                            <td  style="height: 75px; " >Navn på valgt person</td>
-                            <td > SønderJydske Idrætsforning</td>
-                            <td > Kort nummer 0000</td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>      </div>
+
 <div style="text-align:center">
-        <button id="in_advance " class="btn btn-light shadow bg-cream " style="width: 71%; height: 50px; margin-top: 1%; background-color:#d2d2d0; border-color: #d2d2d0">Afslut check in</button>
+    <form id="execute_move" method="Post " data-route="/guests/edit">
+        @csrf
+        <button id="in_advance " class="btn btn-light shadow bg-cream " onclick="move_person()" style="width: 71%; height: 50px; margin-top: 1%; background-color:#d2d2d0; border-color: #d2d2d0">Afslut check in</button>
+    </form>
+
 </div>
-    </div>
     </div>
 
     <div class="vertical-nav-brew bg-white" id="sidebar" style="height: 570px; margin-left: 4%; ">
@@ -193,38 +188,35 @@
             </li>
         </ul>
         <p class="text-gray-brew font-weight-bold text-uppercase-brew px-3 small  mb-0 paddingChecker " style="font-size: 18px">Det generelle overblik</p>
-            <ul class="nav flex-column bg-white mb-0 supplementNav">
-                <li class="nav-item">
-                    <a type="button" onclick="expected_all()" class="nav-link text-dark font-italic bg-light">
-                        <i class='fas fa-clipboard-list' style='font-size:25px'></i>
-                        Vis alle forventede gæster
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a type="button" onclick="departed_all()" class="nav-link text-dark font-italic bg-light">
-                        <i class='fas fa-door-open' style='font-size:25px'></i>
-                        Alle tidligere besøgende
-                    </a>
-                </li>
+        <ul class="nav flex-column bg-white mb-0 supplementNav">
+            <li class="nav-item">
+                <a type="button" onclick="expected_all()" class="nav-link text-dark font-italic bg-light">
+                    <i class='fas fa-clipboard-list' style='font-size:25px'></i>
+                    Vis alle forventede gæster
+                </a>
+            </li>
+            <li class="nav-item">
+                <a type="button" onclick="departed_all()" class="nav-link text-dark font-italic bg-light">
+                    <i class='fas fa-door-open' style='font-size:25px'></i>
+                    Alle tidligere besøgende
+                </a>
+            </li>
 
-                <p class="text-gray-brew font-weight-bold text-uppercase-brew px-3 small  mb-0 paddingChecker " style="font-size: 18px">Check gæster ind på forhånd</p>
-                <li class="nav-item">
-                    <a type="button" onclick="in_advance_Check_in()" class="nav-link text-dark font-italic bg-light">
-                        <i class='fas fa-door-open' style='font-size:25px'></i>
-                        Check in
-                    </a>
-                </li> <li class="nav-item">
-                    <a type="button" onclick="check_out_from_admin()" class="nav-link text-dark font-italic bg-light">
-                        <i class='fas fa-door-open' style='font-size:25px'></i>
-                        Check out
-                    </a>
-                </li>
-            </ul>
-    </div>
+            <p class="text-gray-brew font-weight-bold text-uppercase-brew px-3 small  mb-0 paddingChecker " style="font-size: 18px">Check gæster ind på forhånd</p>
+            <li class="nav-item">
+                <a type="button" onclick="in_advance_Check_in()" class="nav-link text-dark font-italic bg-light">
+                    <i class='fas fa-door-open' style='font-size:25px'></i>
+                    Check in
+                </a>
+            </li> <li class="nav-item">
+                <a type="button" onclick="check_out_from_admin()" class="nav-link text-dark font-italic bg-light">
+                    <i class='fas fa-door-open' style='font-size:25px'></i>
+                    Check out
+                </a>
+            </li>
+        </ul>
 
-    <div>
 
-    </div>
 
 
 

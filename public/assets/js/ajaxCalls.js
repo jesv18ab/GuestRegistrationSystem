@@ -1,4 +1,7 @@
 
+
+
+
 $(function () {
     $('#form-data').submit(function (e) {
         var guestId;
@@ -76,7 +79,7 @@ function guest_Check_out(guest_id, card_id){
                     url: '/ajaxGuestPage/guestsRegistration',
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     success: function(data) {
-                        $("#searchIn").load(window.location + " #searchO");
+                        $("#searchIn").load(window.location + " #searchIn");
                         $("#searchOut").load(window.location + " #searchOut");
                         alert("Du er hermed checket ud! Håber du har haft et godt besøg!")
                     }
@@ -466,5 +469,243 @@ function findGuests() {
     }
 }
 
-function move_person(card,row, id){
+function f(guests) {
+    $.ajax({
+        type: 'GET' ,
+        dataType: 'json',
+        url: "/ajaxRequest/guests",
+        success: function(data) {
+            alert("Vi er igennem");
+            var data2 = JSON.parse(data);
+            alert(data2);
+        },
+    });
+
+    alert(guests);
+var table = document.getElementById("check_in_table_body");
+$('#check_in_table_body').empty();
+
+
+var newRow   = table.insertRow();
+var newCell1 = newRow.insertCell(0);
+var newCell2 = newRow.insertCell(1);
+var newCell3 = newRow.insertCell(2);
+// Append a text node to the cell
+    var newText1  = document.createTextNode('Jesper');
+    var newText2  = document.createTextNode('Virksomhed');
+    var newText3  = document.createTextNode('kort id');
+    newCell1.appendChild(newText1);
+    newCell2.appendChild(newText2);
+    newCell3.appendChild(newText3);
 }
+
+function execute_alert(card, id) {
+    var txt;
+    if (confirm("Press a button!")) {
+        txt = "You pressed OK!";
+        move_person(card, id)
+    } else {
+        txt = "You pressed Cancel!";
+        document.getElementById("execute_move").action = "guestsRegistration";
+        document.getElementById("tableDiv2").style.display = "none";
+    }
+}
+
+function select_row(id) {
+var checkbox = "checkbox" + id;
+document.getElementById(checkbox).checked = true;
+document.getElementById(checkbox).setAttribute("value", "true");
+
+}
+
+
+function move_person() {
+    var table = document.getElementById("check_in_table_body");
+    alert("hej 2");
+    var persons =[];
+    var cards =[];
+    for (var i = 0; i<table.rows.length; i++){
+        var id = table.rows[i].cells.item(0).innerHTML;
+        var check_if_checked = "checkbox"+id;
+        if (document.getElementById(check_if_checked).getAttribute("value") == "true"){
+            var selected_index = document.getElementById(id).options[document.getElementById(id).selectedIndex].value
+            var guest = {id: id, card: selected_index };
+            persons.push(id);
+            cards.push(selected_index);
+        }else {
+            var c = "Vi indsætter ikke uvæstnlige rækker ";
+    }
+    }
+    alert("Jeg er hermed landet her");
+    $('#execute_move').submit(function (e) {
+        var route = $('#execute_move').data('route');
+        var form_data = $(this);
+        var data = persons;
+        var data2 = cards;
+        alert(data.length);
+        $.ajax({
+            type: 'put',
+            url: "/guests/edit",
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            data: { arr: data, arr2: data2},
+            success: function (data) {
+
+                alert("hej vi kom igennem det hele");
+                alert("Vi er igennem");
+                $("#check_in_table").load(window.location + " #check_in_table");
+            }, onFailure: function (data)
+            {
+               window.location = "guests";
+            }
+        });
+        e.preventDefault()
+    });
+
+
+
+}
+
+
+
+function creat_select_on_row(card, row){
+        row.deleteCell(4);
+
+    var select = document.createElement("select");
+    var option = document.createElement("option");
+    select.setAttribute("class", "custom-select");
+    select.setAttribute("id", "cardIsPicked2");
+    select.style.marginLeft = "9%";
+    select.style.marginTop = "5%";
+    select.style.width = "92px";
+    select.style.height = "67%";
+    option.value = card;
+    option.text = card;
+    select.add(option, select[0]);
+    cell = row.insertCell(4);
+    cell.appendChild(select);
+}
+
+    function adjust_table_cards(id, card_chosen){
+    var table = document.getElementById("check_in_table_body");
+    var row;
+    var i;
+    var n;
+    var row2;
+    var card;
+    var card_numbers_array = [];
+    var person_id_list =[];
+        for (i = 1; i<= document.getElementById(id).options.length-1; i++){
+            var card = document.getElementById(id).options[i].value;
+            if (card_chosen == card){
+                var p = "no push";
+            } else
+                card_numbers_array.push(card);
+        }
+        for (n = 0; n < table.rows.length; n++) {
+            row2 = table.rows[n].cells.item(0).innerHTML;
+            person_id_list.push(row2);
+        }
+
+        return card_numbers_array;
+    }
+
+function refresh_tables(cards_values, card){
+    var count;
+    var row;
+    var cell;
+    var test ="true";
+    var table = document.getElementById("check_in_table_body");
+        for (count = 0; count < table.rows.length; count++) {
+            alert(cards_values);
+            if ( test == table.rows[count].getAttribute("name")){
+                alert(table.rows[count].getAttribute("name"))
+                var c = "Vi sletter ikke noget i denne celle";
+            }else {
+                table.rows[count].deleteCell(4);
+            }
+        }
+            var select_created;
+            var cell;
+            for (var new_count = 0; new_count < table.rows.length; new_count++){
+                if (test == table.rows[new_count].getAttribute("name")){
+                    var w = "Vi indsætter ike noget i denne celle"
+                }else {
+                    select_created = make_select(cards_values);
+                    cell = table.rows[new_count].insertCell(4);
+                    cell.appendChild(select_created);
+                }
+
+            }
+
+}
+
+function make_select(cards_values) {
+    var select = document.createElement("select");
+    var option = document.createElement("option");
+    select.setAttribute("class", "custom-select");
+    select.setAttribute("id", "cardIsPicked2");
+    select.style.marginLeft = "9%";
+    select.style.marginTop = "5%";
+    select.style.width = "92px";
+    select.style.height = "67%";
+    option.text ="Id-kort";
+    select.add(option, select[0]);
+
+    for (var j = 0; j < cards_values.length; j++) {
+        var option_values = make_option(cards_values[j]);
+        select.add(option_values, select[j]);
+    }
+    return select;
+}
+
+
+function make_option( value){
+    var option = document.createElement("option");
+        option.value = value;
+        option.text = value;
+    return option
+}
+
+function adjust_table(){
+    var table = document.getElementById("check_in_table_body");
+    var row;
+    var n;
+    var person_id_list =[];
+    for (n = 0; n < table.rows.length; n++) {
+        row = table.rows[n].cells.item(0).innerHTML;
+        person_id_list.push(row);
+    }
+    return person_id_list;
+}
+
+
+$(function() {
+    alert("hej");
+    enable_cb();
+    $("#group1").click(enable_cb);
+});
+
+function update_options(cards_available)
+{
+    $("#all_cards_hidden").empty();
+    var select = document.getElementById("all_cards_hidden");
+    for (var j = 0; j < cards_available.length; j++) {
+        var option_values = make_option(cards_available[j]);
+        select.add(option_values, select[j]);
+    }
+    return select;
+}
+function get_update_options()
+{
+    var cards =[];
+    var select = document.getElementById("all_cards_hidden");
+    for (var j = 0; j < select.options.length; j++) {
+        var card_value = select.options[j].value;
+
+        cards.push(card_value);
+    }
+    return cards;
+}
+
+
+

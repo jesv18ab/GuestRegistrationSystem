@@ -53,12 +53,15 @@ Route::post('guests/unregisteredCheckIn', 'GuestController@createUnexpectedGuest
 Route::post('/ajaxRequest', 'GuestController@ajaxRequestPost');
 
 Route::put('/guests/{guest}/{guestCard}/edit', 'GuestController@edit');
-
+Route::put('/guests/{guest}/{guestCard}/regret', 'GuestController@regret_check_in');
+Route::put('/guests/edit', 'GuestController@multiple_check_in');
 
 Route::delete('/delete/{guest}', 'GuestController@delete');
 Route::get('/guestsRegistration', 'GuestController@guestPage');
 
 Route::get('/ajaxGuestPage/guestsRegistration', 'GuestController@ajaxGuestPage');
+Route::get('/ajaxRequest/guests', 'GuestController@fill_check_in_advance_table');
+
 
 
 
