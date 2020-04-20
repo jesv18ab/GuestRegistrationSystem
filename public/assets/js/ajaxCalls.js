@@ -37,12 +37,82 @@ $(function () {
     })
 });
 
-function guest_Check_in(id){
+function get_select_values(card) {
+   var values = [];
+    var select = document.getElementById('cardIsPicked');
+    for (var i=1; i < select.options.length; i++){
+        if (card == select.options[i].value ){
+            var s = "Denne værdi indsættes ikke";
+        } else {
+        var value = select.options[i].value;
+        values.push(value)
+        }
+    }
+
+
+    return values
+}
+
+function update_select(values){
+    var select = document.getElementById('cardIsPicked');
+    select.options.length =0;
+   select.options.length = values.length+1;
+    select.options[0].text = "Vælg dit Id kort her....";
+    select.options[0].value = "";
+    for (var n = 0; n < values.length; n++){
+        var value = values[n];
+         var text = values[n].toString();
+        select.options[n+1].value = value;
+        select.options[n+1].text = text;
+    }
+}
+
+function deleteRow(row) {
+    alert("hej1");
+    var i = row.parentNode.parentNode.rowIndex;
+    alert(i);
+    document.getElementById("searchIn").deleteRow(i);
+    alert("hej2");
+    document.getElementById("guestInputCheckIn").value ='';
+    alert("hej3");
+
+}
+
+function insertRow(card, name) {
+    var table_check_out = document.getElementById("searchOut");
+    var num = table_check_out.rows.length;
+    alert(num);
+    table_check_out.insertRow(num);
+    var row = table_check_out.rows[num];
+    row.style.width ="100%";
+    row.style.height ="100%";
+    alert("Vi er ved Row1");
+    var cell1 = row.insertCell(0);
+    alert("Vi er ved Row2");
+    var cell2 = row.insertCell(1);
+    alert("Vi er ved Row3");
+
+    cell1.style.boxShadow = "0 0 0 0.2rem black";
+    cell1.style.backgroundColor = "white";
+    cell1.style.width = "75%";
+
+    cell2.style.backgroundColor = "white";
+    cell2.style.width = "75%";
+    cell2.style.boxShadow = "0 0 0 0.2rem black";
+    cell1.innerHTML = "<h3 style='font-weight: 900; text-align: center; color: black ' >"+  name + "</h3>";
+    cell2.innerHTML = "<h3 style='font-weight: 900; text-align: center; color: black ' >"+  card + "</h3>";
+
+    alert("Vi er ved Row5 - slut");
+    alert(name + " " + card);
+}
+
+function guest_Check_in(id, row, name){
     $('#executeCheckIn').submit(function (e) {
         var selObj = document.getElementById('cardIsPicked');
         var txtValueObj = document.getElementById('txtValue');
         var selIndex = selObj.selectedIndex;
         var guestCardID = txtValueObj.value = selObj.options[selIndex].value;
+        var values = get_select_values(guestCardID);
         var route = $('#executeCheckIn').data('route');
         var form_data = $(this);
         $.ajax({
@@ -50,22 +120,20 @@ function guest_Check_in(id){
             url: "/guests/" + id + "/" + guestCardID + "/edit",
             data: form_data.serialize(),
             success: function(data) {
-                $.ajax({
-                    type: 'GET' ,
-                    url: '/ajaxGuestPage/guestsRegistration',
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    success: function(data) {
-                        $("#searchIn").load(window.location + " #searchIn");
-                        alert("Du er hermed registreret! Du ønskes en rigtig god dag ")
-                    }
-                });
-            },
+                alert("Hej");
+               update_select(values);
+                deleteRow(row);
+                insertRow(guestCardID, name);
+                alert("Du er hermed registreret! Du ønskes en rigtig god dag ");
+
+            }
         });
         e.preventDefault();
 
     });
 }
-function guest_Check_out(guest_id, card_id){
+
+function guest_Check_out(guest_id, card_id, row){
     $('#executeCheckOut').submit(function (e) {
         var route = $('#executeCheckOut').data('route');
         var form_data = $(this);
@@ -74,16 +142,9 @@ function guest_Check_out(guest_id, card_id){
             url: "/guests/" + guest_id + "/" + card_id + "/edit",
             data: form_data.serialize(),
             success: function(data) {
-                $.ajax({
-                    type: 'GET' ,
-                    url: '/ajaxGuestPage/guestsRegistration',
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    success: function(data) {
-                        $("#searchIn").load(window.location + " #searchIn");
-                        $("#searchOut").load(window.location + " #searchOut");
-                        alert("Du er hermed checket ud! Håber du har haft et godt besøg!")
-                    }
-                });
+                var i = row.parentNode.parentNode.rowIndex;
+                document.getElementById("searchOut").deleteRow(i);
+                alert("Du er hermed checket ud! Håber du har haft et godt besøg!")
             },
         });
         e.preventDefault();
@@ -290,19 +351,23 @@ function findGuest() {
 function arrived_today() {
     var show_Expected_Table_Today = document.getElementById("expected_today");
     var show_all_table_expected = document.getElementById("expected_all");
-
+    var show_form_check_in = document.getElementById("check_in");
+    var show_in_advance_check_out = document.getElementById("check_out_in_advance");
+    var show_div_for_Tables = document.getElementById("tableDiv2");
     //arrived Tables
     var show_Arrived_Table_today = document.getElementById("arrived_today");
-
     //Departed tables
     var show_Departed_Table_Today = document.getElementById("departed_today");
     var show_all_table_departed = document.getElementById("departed_all");
+    show_div_for_Tables.style.display = "";
 
-    show_Expected_Table_Today.style.display="none";
-    show_all_table_expected.style.display = "none";
-
-    show_all_table_departed.style.display = "none";
     show_Departed_Table_Today.style.display="none";
+
+    show_in_advance_check_out.style.display ="none";
+    show_form_check_in.style.display = "none";
+    show_all_table_expected.style.display = "none";
+    show_Expected_Table_Today.style.display="none";
+    show_all_table_departed.style.display = "none";
 
     show_Arrived_Table_today.style.display = "table";
 
@@ -312,100 +377,116 @@ function arrived_today() {
 function departed_today() {
     var show_Expected_Table_Today = document.getElementById("expected_today");
     var show_all_table_expected = document.getElementById("expected_all");
-
+    var show_form_check_in = document.getElementById("check_in");
+    var show_in_advance_check_out = document.getElementById("check_out_in_advance");
+    var show_div_for_Tables = document.getElementById("tableDiv2");
     //arrived Tables
     var show_Arrived_Table_today = document.getElementById("arrived_today");
-
     //Departed tables
     var show_Departed_Table_Today = document.getElementById("departed_today");
     var show_all_table_departed = document.getElementById("departed_all");
-
-    show_Expected_Table_Today.style.display="none";
-    show_all_table_expected.style.display = "none";
-
+    show_div_for_Tables.style.display = "";
     show_Arrived_Table_today.style.display = "none";
 
+
+    show_in_advance_check_out.style.display ="none";
+    show_form_check_in.style.display = "none";
+    show_all_table_expected.style.display = "none";
+    show_Expected_Table_Today.style.display="none";
     show_all_table_departed.style.display = "none";
+
     show_Departed_Table_Today.style.display="table";
 
 }
 
-function departed_all() {
-    var show_Expected_Table_Today = document.getElementById("expected_today");
-    var show_all_table_expected = document.getElementById("expected_all");
 
-    //arrived Tables
-    var show_Arrived_Table_today = document.getElementById("arrived_today");
-
-    //Departed tables
-    var show_Departed_Table_Today = document.getElementById("departed_today");
-    var show_all_table_departed = document.getElementById("departed_all");
-
-    show_Expected_Table_Today.style.display="none";
-    show_all_table_expected.style.display = "none";
-
-    show_Arrived_Table_today.style.display = "none";
-
-
-    show_Departed_Table_Today.style.display="none";
-    show_all_table_departed.style.display = "table";
-}
 function expected_today() {
     //expected tables
     var show_Expected_Table_Today = document.getElementById("expected_today");
     var show_all_table_expected = document.getElementById("expected_all");
-
+    var show_form_check_in = document.getElementById("check_in");
+    var show_in_advance_check_out = document.getElementById("check_out_in_advance");
+    var show_div_for_Tables = document.getElementById("tableDiv2");
     //arrived Tables
     var show_Arrived_Table_today = document.getElementById("arrived_today");
-
     //Departed tables
     var show_Departed_Table_Today = document.getElementById("departed_today");
     var show_all_table_departed = document.getElementById("departed_all");
-
+    show_div_for_Tables.style.display = "";
     show_Arrived_Table_today.style.display = "none";
 
     show_Departed_Table_Today.style.display="none";
+
+    show_in_advance_check_out.style.display ="none";
+    show_form_check_in.style.display = "none";
+    show_all_table_expected.style.display = "none";
     show_all_table_departed.style.display = "none";
 
-    show_all_table_expected.style.display = "none";
+
     show_Expected_Table_Today.style.display="table";
 
 }
 
 
-function expected_all() {
-    //expected tables
+
+function departed_all() {
     var show_Expected_Table_Today = document.getElementById("expected_today");
     var show_all_table_expected = document.getElementById("expected_all");
-
-
+    var show_form_check_in = document.getElementById("check_in");
+    var show_in_advance_check_out = document.getElementById("check_out_in_advance");
+    var show_div_for_Tables = document.getElementById("tableDiv2");
     //arrived Tables
     var show_Arrived_Table_today = document.getElementById("arrived_today");
-
     //Departed tables
     var show_Departed_Table_Today = document.getElementById("departed_today");
     var show_all_table_departed = document.getElementById("departed_all");
+    show_div_for_Tables.style.display = "";
+    show_Arrived_Table_today.style.display = "none";
 
+    show_Departed_Table_Today.style.display="none";
+
+    show_in_advance_check_out.style.display ="none";
+    show_form_check_in.style.display = "none";
+    show_all_table_expected.style.display = "none";
+    show_Expected_Table_Today.style.display="none";
+
+    show_all_table_departed.style.display = "table";
+}
+
+function expected_all() {
+    var show_Expected_Table_Today = document.getElementById("expected_today");
+    var show_all_table_expected = document.getElementById("expected_all");
+    var show_form_check_in = document.getElementById("check_in");
+    var show_in_advance_check_out = document.getElementById("check_out_in_advance");
+    var show_div_for_Tables = document.getElementById("tableDiv2");
+    //arrived Tables
+    var show_Arrived_Table_today = document.getElementById("arrived_today");
+    //Departed tables
+    var show_Departed_Table_Today = document.getElementById("departed_today");
+    var show_all_table_departed = document.getElementById("departed_all");
+    show_div_for_Tables.style.display = "";
     show_Arrived_Table_today.style.display = "none";
 
     show_Departed_Table_Today.style.display="none";
     show_all_table_departed.style.display = "none";
 
     show_Expected_Table_Today.style.display="none";
+
+    show_in_advance_check_out.style.display ="none";
+    show_form_check_in.style.display = "none";
+
     show_all_table_expected.style.display = "";
 }
 
 
 function in_advance_Check_in() {
-    //expeted tables
     var show_Expected_Table_Today = document.getElementById("expected_today");
     var show_all_table_expected = document.getElementById("expected_all");
     var show_form_check_in = document.getElementById("check_in");
+    var show_in_advance_check_out = document.getElementById("check_out_in_advance");
     var show_div_for_Tables = document.getElementById("tableDiv2");
-
     //arrived Tables
     var show_Arrived_Table_today = document.getElementById("arrived_today");
-
     //Departed tables
     var show_Departed_Table_Today = document.getElementById("departed_today");
     var show_all_table_departed = document.getElementById("departed_all");
@@ -418,8 +499,36 @@ function in_advance_Check_in() {
     show_Expected_Table_Today.style.display="none";
     show_all_table_expected.style.display = "none";
     show_div_for_Tables.style.display = "none";
-    show_form_check_in.style.display = "";
+    show_in_advance_check_out.style.display ="none";
 
+    show_form_check_in.style.display = "";
+}
+
+
+function check_out_from_admin() {
+    //expeted tables
+    var show_Expected_Table_Today = document.getElementById("expected_today");
+    var show_all_table_expected = document.getElementById("expected_all");
+    var show_form_check_in = document.getElementById("check_in");
+    var show_in_advance_check_out = document.getElementById("check_out_in_advance");
+    var show_div_for_Tables = document.getElementById("tableDiv2");
+    //arrived Tables
+    var show_Arrived_Table_today = document.getElementById("arrived_today");
+    //Departed tables
+    var show_Departed_Table_Today = document.getElementById("departed_today");
+    var show_all_table_departed = document.getElementById("departed_all");
+
+    show_Arrived_Table_today.style.display = "none";
+
+    show_Departed_Table_Today.style.display="none";
+    show_all_table_departed.style.display = "none";
+
+    show_Expected_Table_Today.style.display="none";
+    show_all_table_expected.style.display = "none";
+    show_div_for_Tables.style.display = "none";
+    show_form_check_in.style.display = "none";
+
+    show_in_advance_check_out.style.display ="";
 }
 
 
@@ -513,9 +622,12 @@ function execute_alert(card, id) {
 
 function select_row(id) {
 var checkbox = "checkbox" + id;
-document.getElementById(checkbox).checked = true;
-document.getElementById(checkbox).setAttribute("value", "true");
-
+if (document.getElementById(checkbox).checked == true){
+    document.getElementById(checkbox).checked = false;
+    document.getElementById(checkbox).setAttribute("value", "true");
+}else if (document.getElementById(checkbox).checked == false)
+    document.getElementById(checkbox).checked = true;
+    document.getElementById(checkbox).setAttribute("value", "false");
 }
 
 
@@ -549,7 +661,6 @@ function move_person() {
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: { arr: data, arr2: data2},
             success: function (data) {
-
                 alert("hej vi kom igennem det hele");
                 alert("Vi er igennem");
                 $("#check_in_table").load(window.location + " #check_in_table");
@@ -685,27 +796,7 @@ $(function() {
     $("#group1").click(enable_cb);
 });
 
-function update_options(cards_available)
-{
-    $("#all_cards_hidden").empty();
-    var select = document.getElementById("all_cards_hidden");
-    for (var j = 0; j < cards_available.length; j++) {
-        var option_values = make_option(cards_available[j]);
-        select.add(option_values, select[j]);
-    }
-    return select;
-}
-function get_update_options()
-{
-    var cards =[];
-    var select = document.getElementById("all_cards_hidden");
-    for (var j = 0; j < select.options.length; j++) {
-        var card_value = select.options[j].value;
 
-        cards.push(card_value);
-    }
-    return cards;
-}
 
 
 

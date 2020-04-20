@@ -101,9 +101,6 @@
     </div>
     <div class="tablesDiv4 shadow" id="check_in" style=" display: none; height: 30rem">
     <div class="tablesDiv3 shadow" id="check_in">
-
-
-            @method("PUT")
             <table id="check_in_table"  class="guestTable2 supplementNav2 "  align="center" style=" width: 100%" value="true" >
                 <thead>
                 <tr>
@@ -150,9 +147,59 @@
         @csrf
         <button id="in_advance " class="btn btn-light shadow bg-cream " onclick="move_person()" style="width: 71%; height: 50px; margin-top: 1%; background-color:#d2d2d0; border-color: #d2d2d0">Afslut check in</button>
     </form>
-
 </div>
     </div>
+    <div class="tablesDiv4 shadow" id="check_out_in_advance" style=" display: none; height: 30rem">
+        <div class="tablesDiv3 shadow" id="check_out_in_advance">
+            <table id="check_out__in_advance_table"  class="guestTable2 supplementNav2 "  align="center" style=" width: 100%" value="true" >
+                <thead>
+                <tr>
+                    <th class="supplementNav3" ><h4>Personer valgt/Ikke valgt</h4></th>
+                    <th class="supplementNav3"><h4>Name</h4></th>
+                    <th class="supplementNav3"><h4>Ankomst klokken</h4></th>
+                    <th class="supplementNav3" colspan="2"><h4>Vælg Id kort til gæst og tryk "Vælg"</h4></th>
+                </tr>
+                </thead>
+                <tbody id="check_in_table_body">
+                @foreach($guests_Today_arrived as $guest)
+                    <tr id="tr{{ $guest->id }}" name="false" >
+                        <td id="td{{ $guest->id }}" style="display: none" >{{$guest->id}}</td>
+                        <td ><!-- Default unchecked -->
+                            <div class="custom-control custom-checkbox  ">
+                                <input id="checkbox{{$guest->id}}" value="false"  type="checkbox" class="custom-control-input">
+                                <label class="custom-control-label bg-white" for="tableDefaultCheck3"></label>
+                            </div>
+                        </td>
+                        <td   style="height: 75px; " >{{ $guest->name }}</td>
+                        <td > {{$guest->expected_at}} {{ $guest->time }}</td>
+                        <td id="td_select"{{ $guest->id }} >
+
+                            <select id="{{ $guest->id }}" class="custom-select" id="cardIsPicked2" style="margin-left: 9%; margin-top: 5%; width: 92px; height: 67%" >
+                                <option value="">Id-kort </option>
+                                @foreach($cardsAvailable as $guestCard)
+                                    <option  value="{{ $guestCard->id }}">{{ $guestCard->id }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td ><button id="check_btn{{ $guest->id }}" class="btn btn-light shadow"  type="submit" style="width: 200px; height: 50px; padding-left: 3%" onclick="select_row({{ $guest->id }})">Vælg</button>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+
+
+        </div>
+
+
+        <div style="text-align:center">
+            <form id="execute_move" method="Post " data-route="/guests/edit">
+                @csrf
+                <button id="in_advance " class="btn btn-light shadow bg-cream " onclick="move_person()" style="width: 71%; height: 50px; margin-top: 1%; background-color:#d2d2d0; border-color: #d2d2d0">Afslut check in</button>
+            </form>
+        </div>
+    </div>
+
 
     <div class="vertical-nav-brew bg-white" id="sidebar" style="height: 570px; margin-left: 4%; ">
         <p class="text-black-brew font-weight-bold text-uppercase-brew px-3 col-sm mb-0 paddingChecker" style=" text-align: center;   color: black; font-size: 20px;">Gæsteoversigten</p>

@@ -107,7 +107,7 @@ return \response("Hej hej");
         $guest = new Guest();
         $guest->name = request('name');
         $guest->expected_at = date(request('expected_at'));
-        $guest->time = request('time');
+        $guest->time = request('time_expected');
         $guest->status = 1;
         $guest->save();
         return view('welcome');
@@ -122,8 +122,7 @@ return \response("Hej hej");
 
     public function edit( Guest $guest, GuestCard $guestCard)
     {
-   /*     $i = null;
-        //update guest
+/*
         if ( $guest->status == 3){
           $date =(integer)preg_replace('/-+/', '', request('expected_at'));
           $time = $this->findTime(strval($guest->time = request('time')));
