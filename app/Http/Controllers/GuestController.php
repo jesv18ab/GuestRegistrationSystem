@@ -107,7 +107,7 @@ return \response("Hej hej");
         $guest = new Guest();
         $guest->name = request('name');
         $guest->expected_at = date(request('expected_at'));
-        $guest->time = request('time_expected');
+        $guest->time_expected = request('time');
         $guest->status = 1;
         $guest->save();
         return view('welcome');
