@@ -24,7 +24,7 @@ class GuestController extends Controller
         $data = DB::select("select * from guests where expected_At = curdate() AND status = 1");
         $guests_Today_Check_In = $this->correctDateFormat($data);
 
-        $data = DB::select("Select guests.name, guestId, guest_cards.id, guests.updated_at, guests.time, guests.expected_at, guests.created_at   from guest_cards inner join guests where guests.id = guest_cards.guestId and expected_At = curdate() AND guests.status = 2");
+        $data = DB::select("Select guests.name, guestId, guest_cards.id, guests.updated_at, guests.time_arrived, guests.expected_at, guests.created_at   from guest_cards inner join guests where guests.id = guest_cards.guestId and expected_At = curdate() AND guests.status = 2");
         $guests_Today_arrived = $this->correctDateFormat($data);
 
         $data=DB::select('select * from guests where status = 1');$this->correctDateFormat($data);
@@ -47,7 +47,6 @@ class GuestController extends Controller
 public function multiple_check_in(Request $request){
    $cards = $request->get('arr2');
      $persons = $request->get('arr');
-
 
 
      $number_of_cards =count($persons);
@@ -107,6 +106,8 @@ return \response("Hej hej");
         $guest = new Guest();
         $guest->name = request('name');
         $guest->expected_at = date(request('expected_at'));
+        $guest->updated_at = null;
+        $guest->created_at = null;
         $guest->time_expected = request('time');
         $guest->status = 1;
         $guest->save();
@@ -122,22 +123,22 @@ return \response("Hej hej");
 
     public function edit( Guest $guest, GuestCard $guestCard)
     {
-/*
+
         if ( $guest->status == 3){
           $date =(integer)preg_replace('/-+/', '', request('expected_at'));
-          $time = $this->findTime(strval($guest->time = request('time')));
+          $time = $this->findTime(strval($guest->time_expected = request('time')));
             DB::update("UPDATE guests SET status = 1, expected_at = $date, time = $time where guests.id = $guest->id");
             $i = 3;
         }
         else if ($guest->status == 2){
-            DB::update("UPDATE guests SET time = null, created_at = now(), status = 3 where guests.id = $guest->id");
+            DB::update("UPDATE guests SET time_arrived = null, time_expected = null, created_at = now(), time_departed = CURRENT_TIME, status = 3 where guests.id = $guest->id");
             DB::update("UPDATE guest_cards SET status = 1, guestId = null where id = $guestCard->id");
             $i = 2;
         }
         else if ($guest->status == 1){
-            DB::update("UPDATE guests SET updated_at = now(), status = 2 where guests.id = $guest->id");
+            DB::update("UPDATE guests SET updated_at = now(), time_arrived =CURRENT_TIME ,status = 2 where guests.id = $guest->id");
             DB::update("UPDATE guest_cards SET status = 2, guestId = $guest->id where id = $guestCard->id");
-        }*/
+        }
     }
 
     public function update(Article $article)

@@ -18,7 +18,7 @@
             @foreach($guests_Today_Check_In as $guest)
                 <tr>
                     <td  style="height: 10px" >{{ $guest->name }}</td>
-                    <td> {{$guest->expected_at}} {{ $guest->time }}</td>
+                    <td> {{$guest->expected_at}} {{ $guest->time_expected }}</td>
                     <td>Test virksomhed</td>
                 </tr>
             @endforeach
@@ -28,7 +28,7 @@
             <thead  >
             <tr>
                 <th class="supplementNav3"><h4>Name</h4></th>
-                <th class="supplementNav3"><h4>Forlod Amgrod klokken:</h4></th>
+                <th class="supplementNav3"><h4>Forlod Amgros klokken:</h4></th>
                 <th class="supplementNav3"><h4>Virksomhed</h4></th>
             </tr>
             </thead>
@@ -36,7 +36,7 @@
             @foreach($guests_Today_Checked_Out as $guest)
                 <tr>
                     <td  style="height: 10px" >{{ $guest->name }}</td>
-                    <td> {{$guest->created_at}} {{ $guest->time }}</td>
+                    <td> {{$guest->created_at}} {{ $guest->time_departed}}</td>
                     <td>Test virksomhed</td>
                 </tr>
             @endforeach
@@ -53,7 +53,7 @@
             @foreach($guests_Today_arrived as $guest)
                 <tr >
                     <td >{{ $guest->name }}</td>
-                    <td  > {{$guest->updated_at}} {{ $guest->time }}</td>
+                    <td  > {{$guest->updated_at}} {{ $guest->time_arrived }}</td>
                     <td>{{$guest->id}}</td>
                     <td ><button class="btn btn-primary">Check out</button> </td>
                 </tr>
@@ -71,7 +71,7 @@
             @foreach($guestsCheckedOut as $guest)
                 <tr >
                     <td >{{ $guest->name }}</td>
-                    <td > {{$guest->created_at}} {{ $guest->time }}</td>
+                    <td > {{$guest->created_at}} {{ $guest->time_departed }}</td>
                     <td > Virksomhedens navn</td>
                 </tr>
             @endforeach
@@ -91,7 +91,7 @@
                 @foreach($guests as $guest)
                     <tr>
                         <td  style="height: 75px" >{{ $guest->name }}</td>
-                        <td > {{$guest->expected_at}} {{ $guest->time }}</td>
+                        <td > {{$guest->expected_at}} {{ $guest->time_expected }}</td>
                         <td ><button class="btn btn-light shadow" style="width: 200px; height: 50px">Check in</button> </td>
                     </tr>
                 @endforeach
@@ -121,7 +121,7 @@
                             </div>
                         </td>
                         <td   style="height: 75px; " >{{ $guest->name }}</td>
-                        <td > {{$guest->expected_at}} {{ $guest->time }}</td>
+                        <td > {{$guest->expected_at}} {{ $guest->time_expected }}</td>
                         <td id="td_select"{{ $guest->id }} >
 
                                 <select id="{{ $guest->id }}" class="custom-select" id="cardIsPicked2" style="margin-left: 9%; margin-top: 5%; width: 92px; height: 67%" >
@@ -171,7 +171,7 @@
                             </div>
                         </td>
                         <td   style="height: 75px; " >{{ $guest->name }}</td>
-                        <td > {{$guest->expected_at}} {{ $guest->time }}</td>
+                        <td > {{$guest->updated_at}} {{ $guest->time_arrived }}</td>
                         <td id="td_select"{{ $guest->id }} >
 
                             <select id="{{ $guest->id }}" class="custom-select" id="cardIsPicked2" style="margin-left: 9%; margin-top: 5%; width: 92px; height: 67%" >
