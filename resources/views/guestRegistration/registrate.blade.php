@@ -83,7 +83,6 @@
                                 <td style="background-color: white; width: 75%; box-shadow: 0 0 0 0.2rem black" > <h3 style="font-weight: 900; text-align: center; color: black  ">{{ $checkOut->id }}</h3></td>
                                 <td ><button id="test1" type="submit"  class="btnBrew2 btnBrew-primary"style="width: 250px; height: 65px; border: 0px; padding: 0px" onclick="guest_Check_out( '{{$checkOut->guestId}}', '{{ $checkOut->id }}', this)"> <h3 style="margin-top: 1%" > <b style="color: white;  text-shadow: 0px 1px, 1px 0px, 1px 1px; font-weight: 300">Check Out</b></h3></button> </td>
                             </tr>
-
                         @endforeach
                         </tbody>
                     </table>
@@ -136,6 +135,11 @@
     });
 </script>
     </body>
+
+
+
+
+
 @endsection
 
 

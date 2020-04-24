@@ -896,6 +896,16 @@ fieldset:disabled a.btnBrew2 {
   padding-top: 20%;
 }
 
+.headlineDiv {
+  text-align: center;
+  margin-right: 2%;
+  border-bottom: 1px solid;
+  border-top: 1px solid black;
+  width: 57%;
+  margin-bottom: 1%;
+  float: right;
+}
+
 /*!
  * Bootstrap v4.4.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors

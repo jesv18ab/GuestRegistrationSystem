@@ -18,9 +18,9 @@
                         <button class="btnBrew btnBrew-primary" onclick="guestOverview()"  style="border: 1px solid #1b1e21; width: 25%; height: 175px; float: left;  margin-right: 5.5%; margin-bottom: 2%; margin-left: 2%; ">
                             <h3> <b style="font-weight: 300;color: black;  text-shadow: 0px 1px, 1px 0px, 1px 1px;">Få gæsteoverblikket</b></h3>
                             <i class='fas fa-clipboard-list' style='font-size:75px; color: black'></i>                        </button>
-                        <button class="btnBrew btnBrew-primary" style="border: 1px solid #1b1e21; width: 25%; height: 175px; float: left; margin-bottom: 2%; margin-right: 5.5%;">
-                            <h3> <b style="font-weight: 300;color: black;  text-shadow: 0px 1px, 1px 0px, 1px 1px;">Se Statistikker</b></h3>
-                            <i class='fas fa-chart-line' style='font-size:75px;color:black'></i>
+                        <button class="btnBrew btnBrew-primary"  type="button" onclick="location.href='updateGuestInfo';" style="border: 1px solid #1b1e21; width: 25%; height: 175px; float: left; margin-bottom: 2%; margin-right: 5.5%;">
+                            <h3> <b style="font-weight: 300;color: black;  text-shadow: 0px 1px, 1px 0px, 1px 1px;">Ændre oplysninger</b></h3>
+                            <i class='fas fa-edit' style='font-size:75px;color:black'></i>
                         </button>
                         <button class="btnBrew btnBrew-primary" onclick="goToGuestRegistration()" style="border: 1px solid #1b1e21; width: 25%; height: 175px; float: left; margin-bottom: 2%;">
                              <h3> <b style="font-weight: 300;color: black;  text-shadow: 0px 1px, 1px 0px, 1px 1px;">Ny Gæsteregisrering</b></h3>

@@ -59,6 +59,8 @@ class ArticlesController extends Controller
         //Man skal vise en from for at kunne justere en eksisterende resource
     }
 
+
+
     protected function validateArticle(){
 
         return request()->validate([
@@ -69,6 +71,7 @@ class ArticlesController extends Controller
 
             ]);
     }
+
 
 
 

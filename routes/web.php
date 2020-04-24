@@ -46,12 +46,15 @@ Route::group(['middleware' => ['auth']], function() {
 });
 //HTTP GET
 Route::get('/guests/create', 'GuestController@create');
+Route::get('/updateGuestInfo', 'GuestController@update_page');
 Route::get('/registerGuest', 'GuestController@showForm');
 Route::get('/guests', 'GuestController@index');
 Route::post('/guests', 'GuestController@store');
 Route::post('guests/unregisteredCheckIn', 'GuestController@createUnexpectedGuests');
 Route::post('/ajaxRequest', 'GuestController@ajaxRequestPost');
 
+
+Route::put('/guests/update/{id}/{name}/{company}', 'GuestController@update_guest_info');
 Route::put('/guests/{guest}/{guestCard}/edit', 'GuestController@edit');
 Route::put('/guests/{guest}/{guestCard}/regret', 'GuestController@regret_check_in');
 Route::put('/guests/edit', 'GuestController@multiple_check_in');

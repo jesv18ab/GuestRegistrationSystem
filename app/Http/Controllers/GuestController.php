@@ -21,10 +21,10 @@ class GuestController extends Controller
 {
     public function index()
     {
-        $data = DB::select("select * from guests where expected_At = curdate() AND status = 1");
+        $data = DB::select("select * from guests where created_at = curdate() AND status = 1");
         $guests_Today_Check_In = $this->correctDateFormat($data);
 
-        $data = DB::select("Select guests.name, guestId, guest_cards.id, guests.updated_at, guests.time_arrived, guests.expected_at, guests.created_at   from guest_cards inner join guests where guests.id = guest_cards.guestId and expected_At = curdate() AND guests.status = 2");
+        $data = DB::select("Select guests.name, guestId, guest_cards.id, guests.updated_at, guests.time_updated, guests.created_at, guests.departed_at   from guest_cards inner join guests where guests.id = guest_cards.guestId and guests.updated_at = curdate() AND guests.status = 2");
         $guests_Today_arrived = $this->correctDateFormat($data);
 
         $data=DB::select('select * from guests where status = 1');$this->correctDateFormat($data);
@@ -33,7 +33,7 @@ class GuestController extends Controller
         $data = DB::select('select * from guests where status = 2');
         $guestsCheckedIn = $this->correctDateFormat($data);
 
-        $data =  DB::select('select * from guests where status = 3 and created_at = curdate()');
+        $data =  DB::select('select * from guests where status = 3 and departed_at = curdate()');
         $guests_Today_Checked_Out = $this->correctDateFormat($data);
 
         $data = DB::select('select * from guests where status = 3');
@@ -45,21 +45,18 @@ class GuestController extends Controller
     }
 
 public function multiple_check_in(Request $request){
+
    $cards = $request->get('arr2');
      $persons = $request->get('arr');
-
-
      $number_of_cards =count($persons);
+     dd($request);
         for ($i = 0; $i< $number_of_cards; $i++){
             $id = $persons[$i];
             $card = $cards[$i];
             DB::update("UPDATE guest_cards SET status = 2, guestId = $id where id =$card ");
-            DB::update("UPDATE guests SET updated_at = now(), status = 2 where guests.id = $id");
+            DB::update("UPDATE guests SET updated_at = now(), time_updated = CURRENT_TIME, status = 2 where guests.id = $id");
         }
-
 return \response("Hej hej");
-
-
 
 }
         // Vis eret enkelt objekt
@@ -69,8 +66,8 @@ return \response("Hej hej");
         return view('guestRegistration.create',['earlierGuests'=> $earlierGuests ]);
     }
     public function guestPage(){
-        $guests_Today_Check_In =DB::select("select * from guests where expected_At = curdate() AND status = 1");
-        $guests_Today_Check_Out =DB::select("Select guests.name, guestId, guest_cards.id from guest_cards inner join guests where guests.id = guest_cards.guestId and expected_At = curdate() AND guests.status = 2");
+        $guests_Today_Check_In =DB::select("select * from guests where created_At = curdate() AND status = 1");
+        $guests_Today_Check_Out =DB::select("Select guests.name, guestId, guest_cards.id from guest_cards inner join guests where guests.id = guest_cards.guestId and guests.created_at = curdate() AND guests.status = 2");
         $guestsToCheckOut = DB::select('Select guests.name, guestId, guest_cards.id from guest_cards inner join guests where guests.id = guest_cards.guestId');
         $guestsToCheckIn = DB::select('select * from guests where status = 1');
         $cardsAvailable   = DB::select('select * from guest_cards where status = 1');
@@ -79,8 +76,8 @@ return \response("Hej hej");
     }
 
     public function ajaxGuestPage(){
-        $guests_Today_Check_In =DB::select("select * from guests where expected_At = curdate() AND status = 1");
-        $guests_Today_Check_Out =DB::select("Select guests.name, guestId, guest_cards.id from guest_cards inner join guests where guests.id = guest_cards.guestId and expected_At = curdate() AND guests.status = 2");
+        $guests_Today_Check_In =DB::select("select * from guests where created_At = curdate() AND status = 1");
+        $guests_Today_Check_Out =DB::select("Select guests.name, guestId, guest_cards.id from guest_cards inner join guests where guests.id = guest_cards.guestId and created_At = curdate() AND guests.status = 2");
         $guestsToCheckOut = DB::select('Select guests.name, guestId, guest_cards.id from guest_cards inner join guests where guests.id = guest_cards.guestId');
         $guestsToCheckIn = DB::select('select * from guests where status = 1');
         $cardsAvailable   = DB::select('select * from guest_cards where status = 1');
@@ -105,10 +102,10 @@ return \response("Hej hej");
     public function store(){
         $guest = new Guest();
         $guest->name = request('name');
-        $guest->expected_at = date(request('expected_at'));
+        $guest->created_at = date(request('created_at'));
         $guest->updated_at = null;
-        $guest->created_at = null;
-        $guest->time_expected = request('time');
+        $guest->departed_at = null;
+        $guest->time_created = request('time');
         $guest->status = 1;
         $guest->save();
         return view('welcome');
@@ -125,13 +122,13 @@ return \response("Hej hej");
     {
 
         if ( $guest->status == 3){
-          $date =(integer)preg_replace('/-+/', '', request('expected_at'));
-          $time = $this->findTime(strval($guest->time_expected = request('time')));
-            DB::update("UPDATE guests SET status = 1, expected_at = $date, time = $time where guests.id = $guest->id");
+          $date =(integer)preg_replace('/-+/', '', request('created_at'));
+          $time = $this->findTime(strval($guest->time_created = request('time')));
+            DB::update("UPDATE guests SET status = 1, created_at = $date, time = $time where guests.id = $guest->id");
             $i = 3;
         }
         else if ($guest->status == 2){
-            DB::update("UPDATE guests SET time_arrived = null, time_expected = null, created_at = now(), time_departed = CURRENT_TIME, status = 3 where guests.id = $guest->id");
+            DB::update("UPDATE guests SET time_updated = null, time_created = null, departed_at = now(), time_departed = CURRENT_TIME, status = 3 where guests.id = $guest->id");
             DB::update("UPDATE guest_cards SET status = 1, guestId = null where id = $guestCard->id");
             $i = 2;
         }
@@ -141,12 +138,7 @@ return \response("Hej hej");
         }
     }
 
-    public function update(Article $article)
-    {
-        $article->update($this->validateGuest());
-        return redirect('/articles/' . $article->id);
-        //Man skal vise en from for at kunne justere en eksisterende resource
-    }
+
 
     public function createUnexpectedGuests(){
         $guest = new Guest();
@@ -177,7 +169,7 @@ return \response("Hej hej");
     {
         $guest = new Guest();
         $guest->name = $name;
-        $guest->expected_at = today();
+        $guest->created_at = today();
         $guest->status =1;
         $guest->save();
         return $guest->id;
@@ -194,9 +186,9 @@ return \response("Hej hej");
  public function correctDateFormat($unFormatted){
         $formatted = [];
      foreach ($unFormatted as $toFormat){
-            $toFormat->expected_at = date_create($toFormat->expected_at)->format('d-m-y');
-            $toFormat->updated_at = date_create($toFormat->updated_at)->format('d-m-y');
             $toFormat->created_at = date_create($toFormat->created_at)->format('d-m-y');
+            $toFormat->updated_at = date_create($toFormat->updated_at)->format('d-m-y');
+            $toFormat->departed_at = date_create($toFormat->departed_at)->format('d-m-y');
             array_push($formatted, $toFormat);
         }
      return $formatted;
@@ -204,10 +196,10 @@ return \response("Hej hej");
 
 public function fill_check_in_advance_table(){
 
-        $data = DB::select("select * from guests where expected_At = curdate() AND status = 1");
+        $data = DB::select("select * from guests where created_At = curdate() AND status = 1");
         $guests_Today_Check_In = $this->correctDateFormat($data);
 
-        $data = DB::select("Select guests.name, guestId, guest_cards.id, guests.updated_at, guests.time, guests.expected_at, guests.created_at   from guest_cards inner join guests where guests.id = guest_cards.guestId and expected_At = curdate() AND guests.status = 2");
+        $data = DB::select("Select guests.name, guestId, guest_cards.id, guests.updated_at, guests.time_updated, guests.created_at, guests.departed_at   from guest_cards inner join guests where guests.id = guest_cards.guestId and created_at = curdate() AND guests.status = 2");
         $guests_Today_arrived = $this->correctDateFormat($data);
 
         $data=DB::select('select * from guests where status = 1');$this->correctDateFormat($data);
@@ -216,7 +208,7 @@ public function fill_check_in_advance_table(){
         $data = DB::select('select * from guests where status = 2');
         $guestsCheckedIn = $this->correctDateFormat($data);
 
-        $data =  DB::select('select * from guests where status = 3 and created_at = curdate()');
+        $data =  DB::select('select * from guests where status = 3 and departed_at = curdate()');
         $guests_Today_Checked_Out = $this->correctDateFormat($data);
 
         $data = DB::select('select * from guests where status = 3');
@@ -236,7 +228,17 @@ public function fill_check_in_advance_table(){
 
 
 
+    public function update_page(){
+        $guests = DB::select('select * from guests');
+        $guests = DB::select('select * from guests');
 
+        return view('guestRegistration.updateGuest',['guests'=> $guests ]);
+    }
+
+    public function update_guest_info($id, $name, $company){
+        DB::update("UPDATE guests set name ='$name', company = '$company'  where id = $id");
+        return redirect('/updateGuestInfo');
+    }
 
 
 

@@ -102,8 +102,7 @@ function insertRow(card, name) {
     cell1.innerHTML = "<h3 style='font-weight: 900; text-align: center; color: black ' >"+  name + "</h3>";
     cell2.innerHTML = "<h3 style='font-weight: 900; text-align: center; color: black ' >"+  card + "</h3>";
 
-    alert("Vi er ved Row5 - slut");
-    alert(name + " " + card);
+
 }
 
 function guest_Check_in(id, row, name){
@@ -624,26 +623,27 @@ function select_row(id) {
 var checkbox = "checkbox" + id;
 if (document.getElementById(checkbox).checked == true){
     document.getElementById(checkbox).checked = false;
-    document.getElementById(checkbox).setAttribute("value", "true");
+    document.getElementById(checkbox).setAttribute("value", "false");
 }else if (document.getElementById(checkbox).checked == false)
     document.getElementById(checkbox).checked = true;
-    document.getElementById(checkbox).setAttribute("value", "false");
+    document.getElementById(checkbox).setAttribute("value", "true");
 }
 
 
 function move_person() {
     var table = document.getElementById("check_in_table_body");
-    alert("hej 2");
     var persons =[];
     var cards =[];
     for (var i = 0; i<table.rows.length; i++){
         var id = table.rows[i].cells.item(0).innerHTML;
         var check_if_checked = "checkbox"+id;
         if (document.getElementById(check_if_checked).getAttribute("value") == "true"){
-            var selected_index = document.getElementById(id).options[document.getElementById(id).selectedIndex].value
+            var selected_index = document.getElementById(id).options[document.getElementById(id).selectedIndex].value;
             var guest = {id: id, card: selected_index };
+
             persons.push(id);
             cards.push(selected_index);
+
         }else {
             var c = "Vi indsætter ikke uvæstnlige rækker ";
     }
@@ -654,15 +654,12 @@ function move_person() {
         var form_data = $(this);
         var data = persons;
         var data2 = cards;
-        alert(data.length);
         $.ajax({
             type: 'put',
             url: "/guests/edit",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: { arr: data, arr2: data2},
             success: function (data) {
-                alert("hej vi kom igennem det hele");
-                alert("Vi er igennem");
                 $("#check_in_table").load(window.location + " #check_in_table");
             }, onFailure: function (data)
             {
@@ -796,6 +793,21 @@ $(function() {
     $("#group1").click(enable_cb);
 });
 
+
+function transfer_guest_data( id ,name, company){
+    document.getElementById("company_input_field").value = company;
+    document.getElementById("name_input_field").value = name;
+    document.getElementById("id_of_guest_to_change").value = id;
+}
+
+function update_guest_info(){
+    var form = document.getElementById("form-data_change_guest_info");
+    var company =document.getElementById("company_input_field").value;
+    var name = document.getElementById("name_input_field").value;
+    var id = document.getElementById("id_of_guest_to_change").value;
+
+    form.action = "guests/update/" +id +"/" + name + "/" + company;
+}
 
 
 
