@@ -138,7 +138,6 @@
                 </tbody>
             </table>
 
-
     </div>
 
 
@@ -206,7 +205,7 @@
         <div class="filterDiv">
             <div id="guest-Input-Div" class="input-group" style="width: 450px">
             <span class="input-group-addon">  <i class='fas fa-search' style='font-size:40px'>
-            </i></span>
+                </i></span>
                 <input class="form-control"  type="text" id="input-box" onkeyup="findGuests()"  placeholder="Find gæst her.." title="Type in a name" style="margin-bottom: 3%; height: 50px" >
             </div>
         </div>

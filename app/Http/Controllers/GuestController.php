@@ -41,7 +41,7 @@ class GuestController extends Controller
 
         $cardsAvailable   = DB::select('select * from guest_cards where status = 1');
 
-        return view('guestRegistration.index', ['guests' => $guestsExpected, 'guestsCheckedIn' => $guestsCheckedIn, 'guestsCheckedOut' => $guestsCheckedOut, "guests_Today_Check_In"=>$guests_Today_Check_In, "guests_Today_arrived" => $guests_Today_arrived, "guests_Today_Checked_Out"=>$guests_Today_Checked_Out, "cardsAvailable"=> $cardsAvailable  ] );
+        return view('AdminView.index', ['guests' => $guestsExpected, 'guestsCheckedIn' => $guestsCheckedIn, 'guestsCheckedOut' => $guestsCheckedOut, "guests_Today_Check_In"=>$guests_Today_Check_In, "guests_Today_arrived" => $guests_Today_arrived, "guests_Today_Checked_Out"=>$guests_Today_Checked_Out, "cardsAvailable"=> $cardsAvailable  ] );
     }
 
 public function multiple_check_in(Request $request){
@@ -63,7 +63,7 @@ return \response("Hej hej");
         public function showForm()
     {
         $earlierGuests = DB::select('select * from guests where status = 3');
-        return view('guestRegistration.create',['earlierGuests'=> $earlierGuests ]);
+        return view('AdminView.create',['earlierGuests'=> $earlierGuests ]);
     }
     public function guestPage(){
         $guests_Today_Check_In =DB::select("select * from guests where created_At = curdate() AND status = 1");
@@ -72,7 +72,7 @@ return \response("Hej hej");
         $guestsToCheckIn = DB::select('select * from guests where status = 1');
         $cardsAvailable   = DB::select('select * from guest_cards where status = 1');
 
-        return view('guestRegistration.registrate', ['guestsToCheckIn'=> $guestsToCheckIn, 'cardsAvailable' => $cardsAvailable, 'guestsToCheckOut'=>$guestsToCheckOut, "guests_Today_Check_In"=>$guests_Today_Check_In, "guests_Today_Check_Out" => $guests_Today_Check_Out]);
+        return view('AdminView.registrate', ['guestsToCheckIn'=> $guestsToCheckIn, 'cardsAvailable' => $cardsAvailable, 'guestsToCheckOut'=>$guestsToCheckOut, "guests_Today_Check_In"=>$guests_Today_Check_In, "guests_Today_Check_Out" => $guests_Today_Check_Out]);
     }
 
     public function ajaxGuestPage(){
@@ -102,14 +102,13 @@ return \response("Hej hej");
     public function store(){
         $guest = new Guest();
         $guest->name = request('name');
-        $guest->created_at = date(request('created_at'));
+        $guest->created_at = request('created_at');
         $guest->updated_at = null;
         $guest->departed_at = null;
         $guest->time_created = request('time');
         $guest->status = 1;
         $guest->save();
         return view('welcome');
-        //Man skal vise en from for at kunne justere en eksisterende resource
     }
 
 
@@ -133,7 +132,7 @@ return \response("Hej hej");
             $i = 2;
         }
         else if ($guest->status == 1){
-            DB::update("UPDATE guests SET updated_at = now(), time_arrived =CURRENT_TIME ,status = 2 where guests.id = $guest->id");
+            DB::update("UPDATE guests SET updated_at = now(), time_updated =CURRENT_TIME ,status = 2 where guests.id = $guest->id");
             DB::update("UPDATE guest_cards SET status = 2, guestId = $guest->id where id = $guestCard->id");
         }
     }
@@ -178,7 +177,7 @@ return \response("Hej hej");
     public function ajaxRequest()
 
     {
-        return view('guestRegistration.ajaxTest');
+        return view('AdminView.ajaxTest');
 
     }
 
@@ -232,14 +231,13 @@ public function fill_check_in_advance_table(){
         $guests = DB::select('select * from guests');
         $guests = DB::select('select * from guests');
 
-        return view('guestRegistration.updateGuest',['guests'=> $guests ]);
+        return view('AdminView.updateGuest',['guests'=> $guests ]);
     }
 
     public function update_guest_info($id, $name, $company){
         DB::update("UPDATE guests set name ='$name', company = '$company'  where id = $id");
-        return redirect('/updateGuestInfo');
+        return redirect('/updateUsers');
     }
-
 
 
 }

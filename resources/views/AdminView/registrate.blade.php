@@ -45,9 +45,10 @@
                                         <table id="searchIn" class="table table-hover"  style="display: none; height: 100%; border-collapse: separate; border-spacing: 1em;">
                                             <tbody>
                                             @foreach($guests_Today_Check_In as $guest)
+
                                                 <tr  style="width: 100%; height: 100%;" >
-                                                    <td  class="shadow" id="{{ $guest->id }}" style="background-color: white; width: 75%; " > <h3 style="font-weight: 900; text-align: center; color: black; height: 20px  "> {{ $guest->name }} </h3></td>
-                                                    <td  class="shadow-lg" style="background-color: #3490dc"><button class="btnBrew2 btnBrew-primary " style="width: 150px; height: 20px; border: 0px; padding: 0px" name="{{ $guest->id }}" type="submit" onclick="guest_Check_in('{{ $guest->id }}', this, '{{ $guest->name }}')" > <h3 style="margin-top: 1%" > <b style="color: black;  text-shadow: 0px 1px, 1px 0px, 1px 1px; font-weight: 300"> Check in</b></h3> </button></td>
+                                                    <td   id="{{ $guest->id }}" style="background-color: white; width: 75%; box-shadow: 0 0 0 0.2rem black" > <h3 style="font-weight: 900; text-align: center; color: black  "> {{ $guest->name }} </h3></td>
+                                                    <td   ><button class="btnBrew2 btnBrew-primary " style="width: 250px; height: 65px; border: 0px; padding: 0px" name="{{ $guest->id }}" type="submit" onclick="guest_Check_in('{{ $guest->id }}', this, '{{ $guest->name }}')" > <h3 style="margin-top: 1%" > <b style="color: black;  text-shadow: 0px 1px, 1px 0px, 1px 1px; font-weight: 300"> Check in</b></h3> </button></td>
                                                 </tr>
                                             @endforeach
                                             </tbody>

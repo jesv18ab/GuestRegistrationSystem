@@ -16,15 +16,14 @@ class CreateGuestsTable extends Migration
         Schema::create('guests', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('company');
+            $table->string('company')->nullable();
             $table->string('amgros_employee')->nullable();
-            $table->date('created_at')->nullable(null);
+            $table->date('created_at')->nullable(true);
             $table->date('updated_at')->nullable(true)->default(null);
             $table->date('departed_at')->nullable(true)->default(null);
             $table->time('time_created')->nullable();
             $table->time('time_updated')->nullable();
             $table->time('time_departed')->nullable();
-
             $table->integer('status')->nullable()->default(0);
         });
     }

@@ -97,9 +97,12 @@
     font-weight: 900;
     font-size: larger;
     color: black;
+    z-index: 50;
 }
 
 .guestTable2 thead {
+    position: -webkit-sticky;
+    position: sticky;
     border-top: 0px solid #1b1e21;
     border-left: 0px;
     border-right: 0px;
@@ -189,6 +192,7 @@
 
 
 .in_Advance_Check_In{
+
     display: grid;
     width: 100%;
     height: 13.2rem;
@@ -796,7 +800,9 @@ fieldset:disabled a.btnBrew2 {
 .paddingChecker{
     padding: 1%;
 }
-
+.paddingChecker2{
+    padding: 2%;
+}
 .btn-success-2 {
     color: #e3e3df;
     background-color: #e3e3df;

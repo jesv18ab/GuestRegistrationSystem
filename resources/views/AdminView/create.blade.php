@@ -18,10 +18,10 @@
             </div>
 
             <div class="paddingChecker" style="padding-bottom: 0; margin-top: 1% ">
-                <label align="center" for="expected_at" style="color: black;  height: 35px; margin-bottom: 0"><h5 style="margin-bottom: 0"><u>Indtast tid og dato for møde</u></h5></label>
+                <label align="center" for="created_at" style="color: black;  height: 35px; margin-bottom: 0"><h5 style="margin-bottom: 0"><u>Indtast tid og dato for møde</u></h5></label>
                 </div>
             <div class="paddingChecker" style="padding-bottom: 0; padding-top: 0" >
-                <input type="date" for="expected_at" name="expected_at" style="width: 250px; height: 40px">
+                <input type="date" for="created_at" name="created_at" style="width: 250px; height: 40px">
                 <input type="time" for="time" name="time" style="height: 40px">
             </div>
 <div class="field is-grouped paddingChecker">
@@ -54,10 +54,10 @@
             </div>
 
             <div>
-                <label align="center" for="expected_at" style="color: black;  height: 35px; margin-bottom: 0; margin-left: 2%"><h5 style="margin-bottom: 0"><u>Indtast tid og dato for møde</u></h5></label>
+                <label align="center" for="created_at" style="color: black;  height: 35px; margin-bottom: 0; margin-left: 2%"><h5 style="margin-bottom: 0"><u>Indtast tid og dato for møde</u></h5></label>
             </div>
             <div style="margin-left: 2%; margin-bottom: 3%" >
-                <input type="date" for="expected_at" name="expected_at" style="width: 250px; height: 40px">
+                <input type="date" for="created_at" name="created_at" style="width: 250px; height: 40px">
                 <input type="time" for="time" name="time" style="height: 40px">
             </div>
             <div class="field is-grouped" style="text-align: center">
@@ -67,18 +67,26 @@
                 </div>
         </form>
     </div>
-    <div id="formerGuestsTable"  class="guestRegistrationSecond" >
-        <form style="alignment: center; margin-left:" >
-            <h3> Tidligere gæst? Find gæsten herunder</h3>
-            <input class="input-group-text" type="text" id="searchForGuest" style="margin: 1%; place-self: center" onkeyup="findGuest()" placeholder="Søg efter gæst her.." title="Type in a name" />
+        <div class="headlineDiv" style="margin-top: 7%; margin-right: 1%; width: 52%">
+            <h2 > Tidligere gæst? Find gæsten herunder</h2>
+        </div>
+        <div>
+        <i class='fas fa-search' style='font-size:40px; margin-left: 2%;'>
+        </i>
+            <input class="input-group-text" type="text" id="searchForGuest" style="margin: 1%; place-self: center; width: 48%; height: 50px; float: right; width: 36%; margin-right: 14%; margin-left: 0%; margin-bottom: 0%; margin-top: 0%" onkeyup="findGuest()" placeholder="Søg efter gæst her.." title="Type in a name" />
+        </div>
+        <div class="tablesDiv4 shadow" id="check_in" style=" height: 20rem; width: 52%; margin-top: 1%">
+            <div class="tablesDiv3 " style="height: 20rem" >
+        <form style="alignment: center" >
+            <h3> </h3>
                 <form>
                     <div id="searchIn3" style="display: flex; height: 600px; width: 800px ">
-                        <table id="searcGuests" class="table table-hover"  style="height: 0%; width: 800px; border-collapse: separate; border-spacing: 1em;">
+                        <table id="searchGuest_create" class="guestTable2 supplementNav2"  style="height: 0%; width: 800px; border-collapse: separate; border-spacing: 1em;">
                             <thead>
                             <tr>
-                                <th ><h5 style="font-weight: 900; text-align: left; color: black; margin: 0px  "> Name </h5></th>
-                                <th ><h5 style="font-weight: 900; text-align: left; color: black; margin: 0px  "> Sidste besøg </h5></th>
-                                <th ><h5 style="font-weight: 900; text-align: left; color: black; margin: 0px  "> </h5></th>
+                                <th class="supplementNav3"><h4>Navn</h4></th>
+                                <th class="supplementNav3"><h4>Sidste besøg</h4></th>
+                                <th class="supplementNav3"><h4>Vælg person</h4></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -86,7 +94,7 @@
                                 <tr  style="width: 100%;  ">
                                     <td class="shadow " style="background-color: white; width: 75%; height: 1%" > <h5 style="font-weight: 900; text-align: center; color: black  "> {{ $guest->name }} </h5></td>
                                     <td class="shadow" style="background-color: white; width: 75%; height: 5% " > <h5 style="font-weight: 900; text-align: center; color: black  ">{{ $guest->created_at }}</h5></td>
-                                    <td class="shadow bg-cream" ><button id="retreiveName" type="submit"  class="btnBrew2 btnBrew-primary" style="width: 250px; height: 100%; border: 0px;" onclick="setName('{{$guest->name}}', '{{ $guest->id }}')"> <h3 style="margin-top: 1%" > <b style="color: black ;   font-weight: 300">Check in</b></h3></button> </td>
+                                    <td class="shadow bg-cream" ><button id="retreiveName" type="button"  class="btn btn-light shadow" style="width: 250px; height: 100%; border: 0px;" onclick="setName('{{$guest->name}}', '{{ $guest->id }}')"> <h3 style="margin-top: 1%" > <b style="color: black ;   font-weight: 300">Vælg</b></h3></button> </td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -95,7 +103,8 @@
                 </form>
         </form>
 
-    </div>
+            </div>
+        </div>
     </div>
 
 

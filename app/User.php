@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -16,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'username', 'password',
     ];
 
     /**
@@ -44,5 +45,9 @@ class User extends Authenticatable
     public function project(){
          return$this->hasMany(Project::class);
     }
-    //hasMany => Et objekt har mange af et andet objekt
+
+    public function isAdmin()
+    {
+        return $this->type;
+    }
 }

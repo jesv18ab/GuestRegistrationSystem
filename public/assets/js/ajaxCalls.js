@@ -107,6 +107,8 @@ function insertRow(card, name) {
 
 function guest_Check_in(id, row, name){
     $('#executeCheckIn').submit(function (e) {
+        var name_to_update = null;
+        name_to_update = name;
         var selObj = document.getElementById('cardIsPicked');
         var txtValueObj = document.getElementById('txtValue');
         var selIndex = selObj.selectedIndex;
@@ -119,10 +121,12 @@ function guest_Check_in(id, row, name){
             url: "/guests/" + id + "/" + guestCardID + "/edit",
             data: form_data.serialize(),
             success: function(data) {
-                alert("Hej");
                update_select(values);
                 deleteRow(row);
                 insertRow(guestCardID, name);
+                name = null;
+                guestCardID = null;
+                id = null;
                 alert("Du er hermed registreret! Du ønskes en rigtig god dag ");
 
             }
@@ -327,7 +331,7 @@ function executeBooking(){
 function findGuest() {
     // Declare variables
     var input, table, filter, tr, td, i, txtValue ;
-    table = document.getElementById("searcGuests");
+    table = document.getElementById("searchGuest_create");
     input = document.getElementById("searchForGuest");
     filter = input.value.toUpperCase();
     tr = table.getElementsByTagName("tr");
@@ -640,13 +644,10 @@ function move_person() {
         if (document.getElementById(check_if_checked).getAttribute("value") == "true"){
             var selected_index = document.getElementById(id).options[document.getElementById(id).selectedIndex].value;
             var guest = {id: id, card: selected_index };
-
             persons.push(id);
             cards.push(selected_index);
-
         }else {
-            var c = "Vi indsætter ikke uvæstnlige rækker ";
-    }
+            var c = "Vi indsætter ikke uvæstnlige rækker ";}
     }
     alert("Jeg er hermed landet her");
     $('#execute_move').submit(function (e) {
@@ -668,9 +669,6 @@ function move_person() {
         });
         e.preventDefault()
     });
-
-
-
 }
 
 
@@ -794,20 +792,7 @@ $(function() {
 });
 
 
-function transfer_guest_data( id ,name, company){
-    document.getElementById("company_input_field").value = company;
-    document.getElementById("name_input_field").value = name;
-    document.getElementById("id_of_guest_to_change").value = id;
-}
 
-function update_guest_info(){
-    var form = document.getElementById("form-data_change_guest_info");
-    var company =document.getElementById("company_input_field").value;
-    var name = document.getElementById("name_input_field").value;
-    var id = document.getElementById("id_of_guest_to_change").value;
-
-    form.action = "guests/update/" +id +"/" + name + "/" + company;
-}
 
 
 

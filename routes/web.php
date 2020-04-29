@@ -18,19 +18,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-/*
- *
+
 Route::get('/', function () {
     return view('auth.login');
 });
 
 
-*/
-/*
 Route::get('/', function () {
     return view('welcome');
 });
-*/
+
 
 Auth::routes();
 
@@ -43,30 +40,35 @@ Route::get('/test', function (){
 /** hvis du er logget gør views tilgængelige */
 Route::group(['middleware' => ['auth']], function() {
 
+
 });
 //HTTP GET
+Route::get('logout', 'AdminController@logout');
+Route::get('/createEmployeeView', 'AdminController@create_view');
 Route::get('/guests/create', 'GuestController@create');
-Route::get('/updateGuestInfo', 'GuestController@update_page');
+Route::get('/updateUsers', 'AdminController@update_page');
 Route::get('/registerGuest', 'GuestController@showForm');
 Route::get('/guests', 'GuestController@index');
+Route::post('/createEmployee/{type}', 'AdminController@create_employee');
 Route::post('/guests', 'GuestController@store');
 Route::post('guests/unregisteredCheckIn', 'GuestController@createUnexpectedGuests');
 Route::post('/ajaxRequest', 'GuestController@ajaxRequestPost');
 
 
+Route::put('/updateInfo/users', 'AdminController@update_user_info');
 Route::put('/guests/update/{id}/{name}/{company}', 'GuestController@update_guest_info');
 Route::put('/guests/{guest}/{guestCard}/edit', 'GuestController@edit');
 Route::put('/guests/{guest}/{guestCard}/regret', 'GuestController@regret_check_in');
 Route::put('/guests/edit', 'GuestController@multiple_check_in');
 
 Route::delete('/delete/{guest}', 'GuestController@delete');
+Route::delete('/updateInfo/users/delete', 'AdminController@delete_employee');
+Route::delete('/updateInfo/users/delete/guest', 'AdminController@delete_guest');
+
 Route::get('/guestsRegistration', 'GuestController@guestPage');
 
 Route::get('/ajaxGuestPage/guestsRegistration', 'GuestController@ajaxGuestPage');
 Route::get('/ajaxRequest/guests', 'GuestController@fill_check_in_advance_table');
-
-
-
 
 Route::get('/articles', 'ArticlesController@index');
 Route::get('/articles/create', 'ArticlesController@create');
@@ -80,10 +82,4 @@ Route::post('/articles', 'GuestController@store');
 Route::get('/ajaxRequest', 'GuestController@ajaxRequest');
 Route::post('/ajaxRequest/{name}', 'GuestController@ajaxRequestPost');
 Route::put('/ajaxRequest/{guest}/{guestCard}/edit', 'GuestController@ajaxRequestPut');
-
-
-
-
-
-
 // POST, GET, PUT, DELETE
