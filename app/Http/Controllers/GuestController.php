@@ -105,12 +105,23 @@ return \response("Hej hej");
         $guest->created_at = request('created_at');
         $guest->updated_at = null;
         $guest->departed_at = null;
+        $guest->company = request('company');
         $guest->time_created = request('time');
         $guest->status = 1;
         $guest->save();
         return view('welcome');
     }
 
+    public function rebook(){
+        $guest = new Guest();
+        $guest->id = request("idOfGuest");
+        $guest->name = request("name");
+        $guest->company = request("company");
+            $date =(integer)preg_replace('/-+/', '', request('created_at'));
+            $time = $this->findTime(strval($guest->time_created = request('time')));
+            DB::update("UPDATE guests SET status = 1, created_at = $date, time_created = $time, updated_at = null, departed_at = null, time_departed =null, time_updated =null where guests.id = $guest->id");
+        return redirect('registerGuest');
+    }
 
     public function ajaxRequestPut(Guest $guest, GuestCard $guestCard){
         DB::update("UPDATE guests SET updated_at = now(), status = 2 where guests.id = $guest->id");
@@ -119,7 +130,6 @@ return \response("Hej hej");
 
     public function edit( Guest $guest, GuestCard $guestCard)
     {
-
         if ( $guest->status == 3){
           $date =(integer)preg_replace('/-+/', '', request('created_at'));
           $time = $this->findTime(strval($guest->time_created = request('time')));

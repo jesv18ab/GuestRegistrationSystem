@@ -32,8 +32,10 @@
                             <h3> <b style="font-weight: 300;color: black;  text-shadow: 0px 1px, 1px 0px, 1px 1px;">Gå til gæstesiden</b></h3>
                             <i class='fa fa-calendar-check-o' style='font-size:75px;color:black'></i>
                         </button>
-                        <button class="btnBrew btnBrew-primary" style="border: 1px solid #1b1e21; width: 25%; height: 175px; float: left; margin-bottom: 5%; margin-right: 5.5%">
-                            <a class="nav-link " ><h3 style="color: black">GitHub</H3></a>
+                        <button class="btnBrew btnBrew-primary" onclick="location.href='createEmployeeView';" style="border: 1px solid #1b1e21; width: 25%; height: 175px; float: left; margin-bottom: 5%; margin-right: 5.5%">
+                            <h3 style="color: black"> <b>Medarbejder oprettelsen</b></h3>
+                            <i class='fas fa-address-card' style="font-size:75px;color:black"></i>
+
                         </button>
                         <form method="GET" action="logout" >
                             @csrf

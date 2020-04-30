@@ -315,9 +315,10 @@ function reBooK(){
     document.getElementById("formerGuests_container").style.display = "";
     document.getElementById("formerGuestsTable").style.display = "";
 }
-function setName(guestName, guestId) {
+function setName(guestName, guestId, company) {
     document.getElementById("nameInput").value = guestName;
     document.getElementById("guestId").value = guestId;
+    document.getElementById("company").value = company;
 }
 function executeBooking(){
     var name = document.getElementById("nameInput").value;

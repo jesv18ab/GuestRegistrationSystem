@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="registrationContainer" >
-        <div id="newGuests" class="guestRegistrationNewGuest">
+        <div  class="guestRegistrationNewGuest">
             <form id="make_employee_form"  method="POST" class="shadow"  style="; border:1px solid #ccc; margin-top: 13%; padding-bottom: 20px; height: 550px;">
                 @csrf
                 <div class="paddingChecker2" style="background-color: #e3e3df; text-align: center; height: 12% ">
@@ -44,7 +44,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="">Opret et password</span>
                         </div>
-                        <input type="text" class="form-control" name="password" placeholder="Skriv password her....">
+                        <input type="password" class="form-control" name="password" placeholder="Skriv password her....">
                     </div>
 
                 </div>

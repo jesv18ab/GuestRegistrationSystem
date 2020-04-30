@@ -5,50 +5,75 @@ function sort_update_page(table_id) {
     var employee_delete_table = document.getElementById("delete_employee");
     var guest_change_table = document.getElementById("change_guest");
     var guest_delete_table = document.getElementById("delete_guest");
+    var own_info = document.getElementById("own_info_div");
     var headline_1 = document.getElementById("change_info_empployee");
     var headline_2 = document.getElementById("remove_employee");
     var headline_3 = document.getElementById("change_info_guest");
     var headline_4 = document.getElementById("remove_guest");
+    var headline_5 = document.getElementById("own_info_headline");
+
 
     if (table_id == 1){
+        own_info.style.display = "none";
         employee_delete_table.style.display = "none";
         guest_change_table.style.display = "none";
         guest_delete_table.style.display = "none";
         headline_2.style.display = "none";
         headline_3.style.display="none";
         headline_4.style.display = "none";
+        headline_5.style.display = "none";
         employee_change_table.style.display="table";
         headline_1.style.display = "";
 
     }else if (table_id == 2){
+        own_info.style.display = "none";
         employee_change_table.style.display="none";
         guest_delete_table.style.display = "none";
         guest_change_table.style.display = "none";
         headline_1.style.display = "none";
         headline_3.style.display="none";
         headline_4.style.display = "none";
+        headline_5.style.display = "none";
         employee_delete_table.style.display = "table";
         headline_2.style.display = "";
     }else  if (table_id == 3){
+        own_info.style.display = "none";
         employee_delete_table.style.display = "none";
         employee_change_table.style.display="none";
         guest_delete_table.style.display = "none";
         headline_1.style.display = "none";
         headline_2.style.display="none";
         headline_4.style.display = "none";
+        headline_5.style.display = "none";
         guest_change_table.style.display = "table";
         headline_3.style.display = "";
     } else if (table_id == 4){
+        own_info.style.display = "none";
         employee_delete_table.style.display = "none";
         employee_change_table.style.display="none";
         guest_change_table.style.display = "none";
         headline_1.style.display = "none";
         headline_2.style.display="none";
         headline_3.style.display = "none";
+        headline_5.style.display = "none";
         guest_delete_table.style.display = "table";
         headline_4.style.display = "";
 
-    } else {
+    }else if (table_id == 5){
+        employee_delete_table.style.display = "none";
+        employee_change_table.style.display="none";
+        guest_change_table.style.display = "none";
+        headline_1.style.display = "none";
+        headline_2.style.display="none";
+        headline_3.style.display = "none";
+        guest_delete_table.style.display = "none";
+        headline_4.style.display = "none";
+        headline_5.style.display = "";
+        own_info.style.display = "";
+
+    }
+    else {
+        own_info.style.display = "none";
         employee_delete_table.style.display = "none";
         guest_change_table.style.display = "none";
         guest_delete_table.style.display = "none";

@@ -10,66 +10,76 @@
                 <div class="containerHeader bg-cream" style="height: 90px">
                     <div class="collapse navbar-collapse" id="navbarSupportedContent" style="display: flex">
                         <!-- Left Side Of Navbar -->
-                        <a class="navbar-brand " href="{{ url('/') }}">
+                        <a class="navbar-brand " href="{{ url('/') }}" style="margin-right: 0px">
                             <img src="../Images/logo.svg" height="100%" width="80%" >
                         </a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <ul class="navbar-nav mr-auto navBarAmgros bg-cream" style="padding-top: 1.5%">
-                            <li class="nav-item" style="padding-right: 40px">
-                                <a class="nav-link font-navbar" href="guests" style="font-size: x-large; color: black"> Gæste overblikket </a>
+                        <ul class="navbar-nav mr-auto navBarAmgros bg-cream " style="padding-top: 1.5%">
+                            <li class="nav-item padding_right" >
+                                <a class="nav-link font-navbar" href="guests" style="font-size: x-large; color: black"> Gæsteoverblikket </a>
                             </li>
-                            <li class="nav-item" style="padding-right: 40px">
+                            <li class="nav-item padding_right" >
                                 <a class="nav-link font-navbar" href="registerGuest" style="font-size: x-large; color: black"> Registrer ny gæst </a>
                             </li>
-                            <li class="nav-item" style="padding-right: 40px">
-                                <a class="nav-link font-navbar" href="https://www.dst.dk/da/Statistik" style="font-size: x-large; color: black"> Statistikker </a>
+                            <li class="nav-item padding_right" >
+                                <a class="nav-link font-navbar" href="updateUsers" style="font-size: x-large; color: black"> Opdateringer </a>
                             </li>
-                            <li class="nav-item" style="padding-right: 40px">
-                                <a class="nav-link font-navbar" href="guestsRegistration" style="font-size: x-large; color: black"> Gæstesiden </a>
+                            <li class="nav-item padding_right" >
+                                <a class="nav-link font-navbar" href="createEmployeeView" style="font-size: x-large; color: black"> Opret medarbejder</a>
                             </li>
 
                         </ul>
                         <!-- Right Side Of Navbar -->
-                        <ul class="navbar-nav ml-auto navBarAmgros bg-cream">
+                        <ul class="navbar-nav ml-auto navBarAmgros bg-cream" style="padding-top: 1.5%">
                             <!-- Authentication Links -->
-                            @guest
-                                <li class="nav-item" style="padding-right: 40px">
-                                    <a class="nav-link font-navbar" style="font-size: x-large; color: black" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            <li class="nav-item padding_right" >
+                                <a class="nav-link font-navbar" href="guestsRegistration" style="font-size: x-large; color: black"> Gæstesiden </a>
+                            </li>
+                                <li class="nav-item padding_right" >
+                                    <a class="nav-link font-navbar" style="font-size: x-large; color: black" href="{{ route('logout') }}">{{ __('logout') }}</a>
                                 </li>
-                                @if (Route::has('register'))
-                                    <li class="nav-item" style="padding-right: 40px">
-                                        <a class="nav-link font-navbar" style="font-size: x-large; color: black" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                    </li>
-                                @endif
-                            @else
-                                <li class="nav-item dropdown">
-                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                        {{ Auth::user()->name }} <span class="caret"></span>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{{ route('logout') }}"
-                                           onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            @csrf
-                                        </form>
-                                    </div>
-                                </li>
-                            @endguest
                         </ul>
                     </div>
                 </div>
             </nav>
-            Hello Admin
-        @else
-            Hello standard user
-@endif
+        @elseif(auth()->user()->isAdmin() == 1)
+            <nav class="navbar navbar-expand-md navbar-light bg-cream shadow-sm fixed-top " style="padding: 0">
+                <div class="containerHeader bg-cream" style="height: 90px">
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent" style="display: flex">
+                        <!-- Left Side Of Navbar -->
+                        <a class="navbar-brand " href="{{ url('/') }}" style="margin-right: 0px">
+                            <img src="../Images/logo.svg" height="49.044px" width="300px" >
+                        </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <ul class="navbar-nav mr-auto navBarAmgros bg-cream " style="padding-top: 1.5%">
+                            <li class="nav-item padding_right" >
+                                <a class="nav-link font-navbar" href="registerGuest" style="font-size: x-large; color: black"> Registrer ny gæst </a>
+                            </li>
+                            <li class="nav-item" style="padding-right: 40px">
+                                <a class="nav-link font-navbar" href="updateProfile" style="font-size: x-large; color: black"> Opdater profil </a>
+                            </li>
+                            <li class="nav-item" style="padding-right: 40px">
+                                <a class="nav-link font-navbar" href="updateProfile" style="font-size: x-large; color: black"> Se dine kommende aftaler </a>
+                            </li>
+
+                        </ul>
+                        <!-- Right Side Of Navbar -->
+                        <ul class="navbar-nav ml-auto navBarAmgros bg-cream" style="padding-top: 1.5%">
+                            <!-- Authentication Links -->
+                            <li class="nav-item padding_right" >
+                                <a class="nav-link font-navbar" style="font-size: x-large; color: black" href="{{ route('logout') }}">{{ __('logout') }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+
+                        @endif
 @endif
 
 

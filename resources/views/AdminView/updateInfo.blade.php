@@ -9,6 +9,7 @@
             <h2 id="remove_employee" style="display: none"> Fjern ansat</h2>
             <h2 id="change_info_guest" style="display: none"> Opdater gæsteoplysninger</h2>
             <h2 id="remove_guest" style="display: none" > Fjern gæst</h2>
+            <h2 id="own_info_headline" style="display: none" > Opdater egne oplysninger</h2>
         </div>
         <div class="tablesDiv4 shadow" id="check_in" style=" height: 30rem">
             <div class="tablesDiv3 " >
@@ -88,6 +89,55 @@
                     @endforeach
                     </tbody>
                 </table>
+
+                <div id="own_info_div" class="registrationContainer"  style="display: none" >
+                    <div  style="height: 100%">
+                        <form id="update_own_info_form"  method="POST" class="shadow" action="/updateInfo/admin"  style="; border:1px solid #ccc; height: 100% ">
+                            @csrf
+                            @method('PUT')
+                            <div style="background-color: rgba(255, 253, 253, 0);">
+                                <p class="paddingChecker3" style="font-size: x-large; margin-top: 0.5%; margin-bottom: 0.5%; color: black;font-weight: 500;">For at opdatere egne oplysninger, skal du udfylde de felter, du ønsker at ændre og afslutte ved at trykke "Opdater"</p>
+                                <div class="input-group paddingChecker3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="">Navn</span>
+                                    </div>
+                                    <input type="text" class="form-control" value="{{ $currentUser->name }}" name="own_name_change" >
+                                </div>
+                                <div class="input-group paddingChecker3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="">E-mail</span>
+                                    </div>
+                                    <input type="text" class="form-control" value="{{ $currentUser->email }}" name="own_email_change">
+                                </div>
+                                <hr style="margin-top: 0.5%; margin-bottom: 0.5%; border-bottom: 1px solid black">
+                                <p class="paddingChecker3" style="font-size: large; margin-top: 0.5%; margin-bottom: 0.5%; color: black;font-weight: 500;">For at ændre password, skal du først indtaste dit tidligere password og derefter skrive dit nye password</p>
+                                <div class="input-group paddingChecker3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="">Nuværende password</span>
+                                    </div>
+                                    <input type="password" class="form-control" placeholder="Skriv tidligere password her...." name="old_password" >
+                                </div>
+                                <div class="input-group paddingChecker3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="">Nyt password</span>
+                                    </div>
+                                    <input type="password" class="form-control" placeholder="Skriv nyt password her......" name="new_password" >
+                                </div><div class="input-group paddingChecker3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="">Gentag nyt password</span>
+                                    </div>
+                                    <input type="password" class="form-control" placeholder="Gentag password her....." name="new_password_repeat" >
+                                </div>
+                            </div>
+                            <div class="field is-grouped paddingChecker3">
+                                <div class="control" style=" text-align: center">
+                                    <button   type="submit" class="btn btn-secondary" style="height: 50px; width: 51%" >Opdater</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
         </div>
         </div>
 
@@ -167,7 +217,7 @@
         </div>
 
 
-        <div class="vertical-nav-brew bg-white" id="sidebar" style="height: 570px; margin-left: 4%; margin-top: 6% ">
+        <div class="vertical-nav-brew bg-white" id="sidebar" style="height: 596px; margin-left: 4%; margin-top: 4% ">
             <p class="text-black-brew font-weight-bold text-uppercase-brew px-3 col-sm mb-0 paddingChecker" style=" text-align: center;   color: black; font-size: 20px;">Oversigt</p>
             <div class="filterDiv">
                 <div id="guest-Input-Div" class="input-group" style="width: 450px">
@@ -180,19 +230,17 @@
             <p class="text-gray-brew font-weight-bold text-uppercase-brew px-3 small mb-0 paddingChecker" style=" font-size: 18px">Medarbejdere</p>
             <ul class="nav flex-column bg-white mb-0 supplementNav">
                 <li class="nav-item">
+                    <a type="button" onclick="sort_update_page(5) " class="nav-link text-dark font-italic bg-light">
+                        <i class='fas fa-user-check' style='font-size:25px'></i>
+                        Ændring af egne oplysninger
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a type="button" onclick="sort_update_page(1) " class="nav-link text-dark font-italic bg-light">
                         <i class='fas fa-clipboard-list' style='font-size:25px'></i>
                         Ændring af medarbejder
                     </a>
-
                 </li>
-                <li class="nav-item">
-                    <a type="button" onclick="arrived_today()" class="nav-link text-dark font-italic bg-light">
-                        <i class='fas fa-clipboard-check' style='font-size:25px'></i>
-                        Opret  medarbejder
-                    </a>
-                </li>
-
                 <li class="nav-item">
                     <a type="button" onclick="sort_update_page(2)" class="nav-link text-dark font-italic bg-light">
                         <i class='fas fa-door-open' style='font-size:25px'></i>
@@ -214,13 +262,25 @@
                         Slet gæst
                     </a>
                 </li>
+
+
+            </ul>
+
+            <p class="text-gray-brew font-weight-bold text-uppercase-brew px-3 small  mb-0 paddingChecker " style="font-size: 18px">Oprettelse af gæster og medarbejdere </p>
+            <ul class="nav flex-column bg-white mb-0 supplementNav">
+
+            <li class="nav-item">
+                <a type="button" onclick="departed_all()" class="nav-link text-dark font-italic bg-light">
+                    <i class='fas fa-door-open' style='font-size:25px'></i>
+                    Opret gæst
+                </a>
+            </li>
                 <li class="nav-item">
-                    <a type="button" onclick="departed_all()" class="nav-link text-dark font-italic bg-light">
-                        <i class='fas fa-door-open' style='font-size:25px'></i>
-                        Opret gæst
+                    <a type="button" onclick="arrived_today()" class="nav-link text-dark font-italic bg-light">
+                        <i class='fas fa-clipboard-check' style='font-size:25px'></i>
+                        Opret  medarbejder
                     </a>
                 </li>
-
             </ul>
         </div>
     </div>
@@ -309,6 +369,11 @@
             </div>
         </form>
     </div>
+
+
+
+
+
 
 
 

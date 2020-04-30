@@ -23,7 +23,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('welcome');
+        $return = null;
+        if (auth()->user()->isAdmin() == 2){
+            $return = view('welcome');
+        }else{
+            $return = redirect("registerGuest");
+        }
+        return $return;
     }
 
 
