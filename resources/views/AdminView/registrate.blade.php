@@ -34,21 +34,21 @@
         <div class="field" >
                             <div class="control" id="guestsCheckIn" style="display: none; height: 100%  " >
                                 <div>
-                                    <select class="custom-select" id="cardIsPicked" style="margin-left: 20%; margin-top: 2%; width: 25%; height: 70px; box-shadow: 0 0 0 0.2rem black; " required="required">
+                                    <select class="custom-select" id="cardIsPicked" style="margin-left: 10%; margin-top: 2%; width: 25%; height: 70px; box-shadow: 0 0 0 0.2rem black; " required="required">
                                         <option value="" ><p >Vælg dit Id kort her....</p>
                                         </option>
                                         @foreach($cardsAvailable as $guestCard)
                                             <option value="{{ $guestCard->id }}">{{ $guestCard->id }}</option>
                                         @endforeach
                                     </select>
-                                    <div id="searchIn2" style="float: right; margin-right: 1%; margin-top: 1%; height: 70px; width: 500px ">
-                                        <table id="searchIn" class="table table-hover"  style="display: none; height: 100%; border-collapse: separate; border-spacing: 1em;">
+                                    <div id="searchIn2" style="float: right; margin-right: 1%; margin-top: 1.5%; height: 95px; width: 626px ">
+                                        <table id="searchIn" class="guestTable2 supplementNav2"  style="display: none; width: 100%; ">
                                             <tbody>
                                             @foreach($guests_Today_Check_In as $guest)
-
                                                 <tr  style="width: 100%; height: 100%;" >
-                                                    <td   id="{{ $guest->id }}" style="background-color: white; width: 75%; box-shadow: 0 0 0 0.2rem black" > <h3 style="font-weight: 900; text-align: center; color: black  "> {{ $guest->name }} </h3></td>
-                                                    <td   ><button class="btnBrew2 btnBrew-primary " style="width: 250px; height: 65px; border: 0px; padding: 0px" name="{{ $guest->id }}" type="submit" onclick="guest_Check_in('{{ $guest->id }}', this, '{{ $guest->name }}')" > <h3 style="margin-top: 1%" > <b style="color: black;  text-shadow: 0px 1px, 1px 0px, 1px 1px; font-weight: 300"> Check in</b></h3> </button></td>
+                                                    <td   id="{{ $guest->id }}" style="height: 75px; font-size: x-large " > <b style="color: black">  {{ $guest->name }} </b> </td>
+                                                    <td > <b style="color: black; font-size: x-large">  {{ $guest->company }}  </b>  </td>
+                                                    <td  style="width: 41%"  ><button class="btn btn-secondary" name="{{ $guest->id }}" type="submit" style="width: 92%; height: 75%" onclick="guest_Check_in('{{ $guest->id }}', this, '{{ $guest->name }}')" >  Check in </button></td>
                                                 </tr>
                                             @endforeach
                                             </tbody>
@@ -59,10 +59,10 @@
                          </div>
                         </div>
     </form>
-    <div id="unexpected1" style="margin-top: 7%; width: 100%; display: none; text-align: center">
-     <h2 style="color: black" > Er du ikke i systemet! Så tryk på knappen herunder</h2>
-    <button type="button" class="btn-lg btn-primary" data-toggle="modal" data-target="#divForUnexpectedGuests" style="width: 45%; height: 45px; padding-top:6px ">
-        <h3  > Opret dig her</h3>
+    <div id="unexpected1" style="margin-top: 4%; width: 100%; display: none; text-align: center">
+     <h2 style="color: black; border-top: 1px solid black; padding-top: 2%" > Er du ikke i systemet! Så tryk på knappen herunder</h2>
+    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#divForUnexpectedGuests" style="width: 47%; height: 65px; padding-top:6px ">
+        <p style="font-size: xx-large"> Opret dig her</p>
     </button>
     </div>
         <form id="executeCheckOut" method="Post " data-route="/guests/{{ $guestId ?? '' }}/{{ $id ?? '' }}"; style="margin-left: 20%; " >
@@ -91,20 +91,32 @@
             </div>
 
         </form>
+<div class="modal fade" id="divForUnexpectedGuests" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="height: 110%"  >
 
-<div class="modal fade" id="divForUnexpectedGuests" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  >
-    <form id="form-data" method="post" data-route="/ajaxRequest/{{ $name ?? '' }}" action="/ajaxRequest/{{ $name ?? '' }}">
+
+    <form id="form-data" method="post" data-route="/ajaxRequest/{{ $name ?? '' }}" action="/ajaxRequest/{{ $name ?? '' }}" style="width: 39%;    margin-left: 26%; height: 73%  ">
         @csrf
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-dialog" role="document" style="height: 100%" >
+        <div class="modal-content" style="height: 92%; width: 143%">
             <div class="modal-header" style="background-color: #e3e3df">
-                <h5 class="modal-title" id="exampleModalLabel">Hurtig oprettelse og check in</h5>
+                <h3 class="modal-title" id="exampleModalLabel" style=" text-align: center; margin-left: 26%; color: black ">Hurtig oprettelse og check in</h3>
             </div>
-            <div class="modal-body" style="padding-top: 5%; padding-right: 10%;padding-left: 10%; ">
-                <p style="font-weight: bold"> Skriv venligst dit navn i feltet herunder og vælg dernæst dit gæstekort i mennuen</p>
-                    <input id="unexpectedGuest" name="guestName"   class="input-group-text" placeholder="Indtast dit navn her.... "  type="text"  style="width: 80%; height: 70px;margin: auto; border: 1px #1b1e21; " >
+            <div class="modal-body" style="padding-top: 5%; padding-right: 4%;padding-left: 1%; ">
+                <p style="color: black; font-size: larger"> Udfyld venligst alle felter i formularen, og afslut ved at trykke på "Opret og check in"</p>
+                <div class="input-group paddingChecker2">
+                    <div class="input-group-prepend" style="height: 60px">
+                        <span class="input-group-text" id="">Navn</span>
+                    </div>
+                    <input id="unexpectedGuest" name="guestName"   class="form-control" placeholder="Indtast dit navn her.... "  type="text" style="height: 60px"   >
+                </div>
+                <div class="input-group paddingChecker2">
+                    <div class="input-group-prepend" style="height: 60px">
+                        <span class="input-group-text" id="">Skriv venligst din arbejdsplads</span>
+                    </div>
+                    <input id="unexpectedGuest_company" name="company"   class="form-control" placeholder="Indtast din arbejdsplads/uddannelsessted/andet her.... "  type="text" style="height: 60px"   >
+                </div>
                 <p>
-                    <select class="custom-select" id="cardIsPicked2" style="margin-left: 9%; margin-top: 5%; width: 60%; height: 40%" required="required">
+                    <select class="custom-select" id="cardIsPicked2" style="margin-left: 2%; margin-top: 2%; width: 60%; height: 60px" required="required">
                         <option value="">Vælg Id-kort herunder....</option>
                         @foreach($cardsAvailable as $guestCard)
                             <option value="{{ $guestCard->id }}">{{ $guestCard->id }}</option>
@@ -112,12 +124,10 @@
                     </select>
                 </p>
                 <p id="regsiteredTable" style="display: none"> <input  type="text" id="txtValue2" /></p>
-            </div>
-            <div class="modal-footer" style="padding-bottom: 5%; padding-top: 5%" >
-                <button id="unexpectedGuestsBtn" class="btn btn-info btn-submit" style="width: 60%; height: 50%; display: block; margin: 0 auto"> <b> Opret! </b></button>
-            </div>
+                <button id="unexpectedGuestsBtn"  class="btn-lg btn-secondary" style="width: 350px; height: 61px; margin-left: 26%; margin-top: 5%" onclick="create_and_check_in()">  Opret og check in! </button>
         </div>
     </div>
+        </div>
     </form>
     <form id="form-data-Put" method="post" data-route="/ajaxRequest/{{ $id ?? '' }}/ {{ $card ?? '' }}/edit" action="/ajaxRequest/{{ $id ?? '' }}/ {{ $card ?? '' }}/edit" style="display: none">
         @csrf
@@ -125,6 +135,8 @@
     </form>
 </div>
 </div>
+
+
 
 
 

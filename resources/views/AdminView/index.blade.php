@@ -10,16 +10,16 @@
             <thead >
             <tr>
                 <th class="supplementNav3"><h4>Name</h4></th>
-                <th class="supplementNav3"><h4>Ankomst klokken</h4></th>
+                <th class="supplementNav3"><h4>Forventet tidspunkt for ankomst</h4></th>
                 <th class="supplementNav3"><h4>Virksomhed</h4></th>
             </tr>
             </thead>
             <tbody>
             @foreach($guests_Today_Check_In as $guest)
                 <tr>
-                    <td  style="height: 10px" >{{ $guest->name }}</td>
-                    <td> {{$guest->created_at}} {{ $guest->time_created }}</td>
-                    <td>Test virksomhed</td>
+                    <td style="height: 75px" >{{ $guest->name }}</td>
+                    <td> {{ $guest->time_created }}</td>
+                    <td>{{ $guest->company }}</td>
                 </tr>
             @endforeach
             </tbody>
@@ -35,9 +35,9 @@
             <tbody>
             @foreach($guests_Today_Checked_Out as $guest)
                 <tr>
-                    <td  style="height: 10px" >{{ $guest->name }}</td>
-                    <td> {{$guest->departed_at}} {{ $guest->time_departed}}</td>
-                    <td>Test virksomhed</td>
+                    <td  style="height: 75px">{{ $guest->name }}</td>
+                    <td> {{ $guest->time_departed}}</td>
+                    <td>{{ $guest->company }}</td>
                 </tr>
             @endforeach
             </tbody>
@@ -47,15 +47,13 @@
             <th class="supplementNav3" > <h4>Navn</h4> </th>
             <th class="supplementNav3"> <h4>Tidspunkt for ankomst</h4></th>
             <th class="supplementNav3"> <h4>Kort Id</h4></th>
-            <th class="supplementNav3"><h4> Check out</h4></th>
             </thead>
             <tbody>
             @foreach($guests_Today_arrived as $guest)
                 <tr >
-                    <td >{{ $guest->name }}</td>
-                    <td  > {{$guest->updated_at}} {{ $guest->time_updated }}</td>
+                    <td style="height: 75px" >{{ $guest->name }}</td>
+                    <td  >  {{ $guest->time_updated }}</td>
                     <td>{{$guest->id}}</td>
-                    <td ><button class="btn btn-primary">Check out</button> </td>
                 </tr>
             @endforeach
             </tbody>
@@ -70,9 +68,9 @@
             <tbody>
             @foreach($guestsCheckedOut as $guest)
                 <tr >
-                    <td >{{ $guest->name }}</td>
+                    <td style="height: 75px" >{{ $guest->name }}</td>
                     <td > {{$guest->departed_at}} {{ $guest->time_departed }}</td>
-                    <td > Virksomhedens navn</td>
+                    <td > {{ $guest->company }}</td>
                 </tr>
             @endforeach
             </tbody>
@@ -83,16 +81,16 @@
                 <thead  >
                 <tr>
                     <th class="supplementNav3"><h4>Name</h4></th>
-                    <th class="supplementNav3"><h4>Ankomst klokken</h4></th>
-                    <th class="supplementNav3"><h4>Check in</h4></th>
+                    <th class="supplementNav3"><h4>Forventet tidspunkt for ankomst</h4></th>
+                    <th class="supplementNav3"><h4>Dato for aftale</h4></th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($guests as $guest)
                     <tr>
                         <td  style="height: 75px" >{{ $guest->name }}</td>
-                        <td > {{$guest->created_at}} {{ $guest->time_created }}</td>
-                        <td ><button class="btn btn-light shadow" style="width: 200px; height: 50px">Check in</button> </td>
+                        <td >  {{ $guest->time_created }}</td>
+                        <td >{{$guest->created_at}}</td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -101,7 +99,8 @@
     </div>
     <div class="tablesDiv4 shadow" id="check_in" style=" display: none; height: 30rem">
     <div class="tablesDiv3 shadow" id="check_in">
-            <table id="check_in_table"  class="guestTable2 supplementNav2 "  align="center" style=" width: 100%" value="true" >
+            <table id="check_in_table"  class="guestTable2 supplementNav2 "  align="center" style=" width: 100%; display: none" value="true" >
+
                 <thead>
                 <tr>
                     <th class="supplementNav3" ><h4>Personer valgt/Ikke valgt</h4></th>
@@ -148,39 +147,34 @@
     </form>
 </div>
     </div>
-    <div class="tablesDiv4 shadow" id="check_out_in_advance" style=" display: none; height: 30rem">
+    <div class="tablesDiv4 shadow" id="check_out_in_advance" style=" display: none;  height: 30rem">
         <div class="tablesDiv3 shadow" id="check_out_in_advance">
-            <table id="check_out__in_advance_table"  class="guestTable2 supplementNav2 "  align="center" style=" width: 100%" value="true" >
+            <table id="check_out_in_advance_table"  class="guestTable2 supplementNav2 "  align="center" style=" width: 100%; display: none" value="true" >
                 <thead>
                 <tr>
                     <th class="supplementNav3" ><h4>Personer valgt/Ikke valgt</h4></th>
                     <th class="supplementNav3"><h4>Name</h4></th>
                     <th class="supplementNav3"><h4>Ankomst klokken</h4></th>
-                    <th class="supplementNav3" colspan="2"><h4>Vælg Id kort til gæst og tryk "Vælg"</h4></th>
+                    <th class="supplementNav3"><h4>Gæstens Id-kort"</h4></th>
+                    <th class="supplementNav3"><h4>Vælg gæst her"</h4></th>
                 </tr>
                 </thead>
-                <tbody id="check_in_table_body">
+                <tbody id="check_out_table_body">
                 @foreach($guests_Today_arrived as $guest)
-                    <tr id="tr{{ $guest->id }}" name="false" >
-                        <td id="td{{ $guest->id }}" style="display: none" >{{$guest->id}}</td>
+                    <tr id="tr{{ $guest->guestId }}" name="false" >
+                        <td id="td{{ $guest->guestId }}" style="display: none" >{{$guest->guestId}}</td>
                         <td ><!-- Default unchecked -->
                             <div class="custom-control custom-checkbox  ">
-                                <input id="checkbox{{$guest->id}}" value="false"  type="checkbox" class="custom-control-input">
+                                <input id="checkbox_check_out{{$guest->guestId}}" value="false"  type="checkbox" class="custom-control-input">
                                 <label class="custom-control-label bg-white" for="tableDefaultCheck3"></label>
                             </div>
                         </td>
                         <td   style="height: 75px; " >{{ $guest->name }}</td>
                         <td > {{$guest->updated_at}} {{ $guest->time_updated }}</td>
-                        <td id="td_select"{{ $guest->id }} >
-
-                            <select id="{{ $guest->id }}" class="custom-select" id="cardIsPicked2" style="margin-left: 9%; margin-top: 5%; width: 92px; height: 67%" >
-                                <option value="">Id-kort </option>
-                                @foreach($cardsAvailable as $guestCard)
-                                    <option  value="{{ $guestCard->id }}">{{ $guestCard->id }}</option>
-                                @endforeach
-                            </select>
+                        <td id="td_card"{{ $guest->id }} >
+                            {{ $guest->id}}
                         </td>
-                        <td ><button id="check_btn{{ $guest->id }}" class="btn btn-light shadow"  type="submit" style="width: 200px; height: 50px; padding-left: 3%" onclick="select_row({{ $guest->id }})">Vælg</button>
+                        <td ><button id="check_btn{{ $guest->guestId }}" class="btn btn-light shadow"  type="submit" style="width: 200px; height: 50px; padding-left: 3%" onclick="select_row_check_out({{ $guest->guestId }})">Vælg</button>
                         </td>
                     </tr>
                 @endforeach
@@ -190,11 +184,10 @@
 
         </div>
 
-
         <div style="text-align:center">
-            <form id="execute_move" method="Post " data-route="/guests/edit">
+            <form id="execute_move_check_out" method="Post " data-route="/guests/edit/checkOut">
                 @csrf
-                <button id="in_advance " class="btn btn-light shadow bg-cream " onclick="move_person()" style="width: 71%; height: 50px; margin-top: 1%; background-color:#d2d2d0; border-color: #d2d2d0">Afslut check in</button>
+                <button id="multiple_checkOut " class="btn btn-light shadow bg-cream " onclick="move_person_check_out()" style="width: 71%; height: 50px; margin-top: 1%; background-color:#d2d2d0; border-color: #d2d2d0">Afslut check Out</button>
             </form>
         </div>
     </div>
@@ -209,7 +202,6 @@
                 <input class="form-control"  type="text" id="input-box" onkeyup="findGuests()"  placeholder="Find gæst her.." title="Type in a name" style="margin-bottom: 3%; height: 50px" >
             </div>
         </div>
-
         <p class="text-gray-brew font-weight-bold text-uppercase-brew px-3 small mb-0 paddingChecker" style=" font-size: 18px">Gæster i dag</p>
         <ul class="nav flex-column bg-white mb-0 supplementNav">
             <li class="nav-item">

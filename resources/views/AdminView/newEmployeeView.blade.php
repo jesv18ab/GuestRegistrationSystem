@@ -16,7 +16,6 @@
                         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                              Medarbejdertype....
                         </button>
-
                         <div>
                         <input id="input_employee_position" name=""  class="input-group-text"  type="text"  style="width: 80%; height: 48px;margin: auto; border: 1px #1b1e21; display: none" readonly >
                         </div>

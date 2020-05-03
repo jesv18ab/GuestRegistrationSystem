@@ -14,7 +14,7 @@
             <div class="paddingChecker">
                 <div class="input-group paddingChecker4">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" >Gæstens navn</span>
+                        <span class="input-group-text" > Gæstens navn</span>
                     </div>
                     <input type="text" class="form-control" placeholder="Indtast navn" name="name" required >
                 </div>
@@ -98,12 +98,12 @@
         </form>
     </div>
         <div class="headlineDiv" style="margin-top: 7%; margin-right: 1%; width: 52%">
-            <h2 > Tidligere gæst? Find gæsten herunder</h2>
+            <h2 style="color: black" > Tidligere gæst? Find gæsten herunder</h2>
         </div>
         <div>
         <i class='fas fa-search' style='font-size:40px; margin-left: 2%;'>
         </i>
-            <input class="input-group-text" type="text" id="searchForGuest" style="margin: 1%; place-self: center; width: 48%; height: 50px; float: right; width: 36%; margin-right: 14%; margin-left: 0%; margin-bottom: 0%; margin-top: 0%" onkeyup="findGuest()" placeholder="Søg efter gæst her.." title="Type in a name" />
+            <input class="input-group-text" type="text" id="searchForGuest" style="margin: 1%; place-self: center; width: 48%; height: 50px; float: right; width: 36%; margin-right: 14%; margin-left: 0%; margin-bottom: 0%; margin-top: 0%" onkeyup="findGuest_create_from()" placeholder="Søg efter gæst her.." title="Type in a name" />
         </div>
         <div class="tablesDiv4 shadow" id="check_in" style=" height: 20rem; width: 52%; margin-top: 1%">
             <div class="tablesDiv3 " style="height: 20rem" >

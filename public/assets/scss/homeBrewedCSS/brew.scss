@@ -13,9 +13,7 @@
     background: #c6c8ca;
 }
 
-
 .guestTable{
-    height: 30rem;
     overflow: scroll;
     overflow-x: hidden;
     max-height: 35rem;
@@ -930,4 +928,18 @@ fieldset:disabled a.btnBrew2 {
 
 .padding_right{
     padding-right: 28px;
+}
+
+.employeeGuests{
+    margin-left: 21%;
+    width: 60%;
+    margin-top: 6%;
+    text-align: center;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+}
+
+
+.right-margin{
+    margin-right: 70px;
 }

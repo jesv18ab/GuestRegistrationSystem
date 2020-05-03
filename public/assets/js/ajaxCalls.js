@@ -2,41 +2,6 @@
 
 
 
-$(function () {
-    $('#form-data').submit(function (e) {
-        var guestId;
-        var selObj2 = document.getElementById('cardIsPicked2');
-        var txtValueObj2 = document.getElementById('txtValue2');
-        var selIndex2 = selObj2.selectedIndex;
-        var guestCardID2 = txtValueObj2.value = selObj2.options[selIndex2].value;
-        var route = $('#form-data').data('route');
-        var form_data = $(this);
-        var name = document.getElementById("unexpectedGuest").value;
-        $.ajax({
-            type: 'post' ,
-            url: "/ajaxRequest/" + name,
-            data: form_data.serialize(),
-            success: function(data) {
-                alert("første trin er udført" + data + "" + guestCardID2);
-                var route = $('#form-data-Put').data('route');
-                var form_data_put = $(this);
-                $.ajax({
-                    type: 'put' ,
-                    url: '/ajaxRequest/' + data +"/" + guestCardID2 +  '/edit',
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    data: form_data_put.serialize(),
-                    success: function(data) {
-                        alert("Du er checket ind");
-                        callBackFunction()
-                    }
-                });
-            },
-        });
-        e.preventDefault();
-
-    })
-});
-
 function get_select_values(card) {
    var values = [];
     var select = document.getElementById('cardIsPicked');
@@ -179,12 +144,7 @@ function guest_Check_in_admins(guest_id, card_id){
 
     });
 }
-
-
-
-function  openSearchField(){
-        $('.search-button').parent().toggleClass('open');
-    }
+    setTimeout($('.search-button_2').parent().toggleClass('open'));
 
 window.onscroll = function() {myFunction()};
 
@@ -268,9 +228,15 @@ function checkBox() {
         document.getElementById("searchIn").style.display = "none";
     }if (document.getElementById("guestInputCheckOut").value == ''){
         document.getElementById("searchOut").style.display = "none";
-
     }
 }
+
+function checkIn() {
+
+
+
+}
+
 function checkIn() {
     document.getElementById("checkInOpen").style.display ="";
     document.getElementById("guestsCheckIn").style.display ="block";
@@ -304,7 +270,7 @@ function guestOverview() {
     window.location = "guests";
 }
 function guestPage() {
-    window.location = "guestsRegistration";
+    window.location = "guestMenu";
 }
 
 
@@ -329,11 +295,28 @@ function executeBooking(){
 
 
 
-function findGuest() {
+function findGuests_update_page() {
+    var table;
+    var change_guest_info_table = document.getElementById("change_guest");
+    var change_employee_info_table = document.getElementById("change_employee");
+    var delete_guest_table = document.getElementById("delete_guest");
+    var delete_employee_table = document.getElementById("delete_employee");
+
+    if (change_employee_info_table.style.display =="none" && delete_guest_table.style.display == "none" && delete_employee_table.style.display == "none"){
+        table = change_guest_info_table;
+    } else if (change_guest_info_table.style.display =="none" && delete_guest_table.style.display == "none" && delete_employee_table.style.display == "none"){
+        table = change_employee_info_table;
+    } else if (change_employee_info_table.style.display =="none" && change_guest_info_table.style.display == "none" && delete_employee_table.style.display == "none"){
+        table = delete_guest_table;
+    } else if (change_employee_info_table.style.display =="none" && change_guest_info_table.style.display == "none" && delete_guest_table.style.display == "none"){
+        table = delete_employee_table;
+    } else {
+        alert("Noget gik galt ");
+        window.location = "guests";
+    }
     // Declare variables
-    var input, table, filter, tr, td, i, txtValue ;
-    table = document.getElementById("searchGuest_create");
-    input = document.getElementById("searchForGuest");
+    var input,  filter, tr, td, i, txtValue ;
+    input = document.getElementById("input-box_update_page");
     filter = input.value.toUpperCase();
     tr = table.getElementsByTagName("tr");
     for (i = 0; i < tr.length; i++) {
@@ -348,7 +331,6 @@ function findGuest() {
             }
         }
     }
-
 }
 
 
@@ -363,6 +345,9 @@ function arrived_today() {
     //Departed tables
     var show_Departed_Table_Today = document.getElementById("departed_today");
     var show_all_table_departed = document.getElementById("departed_all");
+    var check_in_table = document.getElementById("check_in_table");
+    var chech_out_table = document.getElementById("check_out_in_advance_table");
+
     show_div_for_Tables.style.display = "";
 
     show_Departed_Table_Today.style.display="none";
@@ -372,6 +357,8 @@ function arrived_today() {
     show_all_table_expected.style.display = "none";
     show_Expected_Table_Today.style.display="none";
     show_all_table_departed.style.display = "none";
+    chech_out_table.style.display = "none";
+    check_in_table.style.display = "none";
 
     show_Arrived_Table_today.style.display = "table";
 
@@ -389,6 +376,9 @@ function departed_today() {
     //Departed tables
     var show_Departed_Table_Today = document.getElementById("departed_today");
     var show_all_table_departed = document.getElementById("departed_all");
+    var check_in_table = document.getElementById("check_in_table");
+    var chech_out_table = document.getElementById("check_out_in_advance_table");
+
     show_div_for_Tables.style.display = "";
     show_Arrived_Table_today.style.display = "none";
 
@@ -398,6 +388,8 @@ function departed_today() {
     show_all_table_expected.style.display = "none";
     show_Expected_Table_Today.style.display="none";
     show_all_table_departed.style.display = "none";
+    chech_out_table.style.display = "none";
+    check_in_table.style.display = "none";
 
     show_Departed_Table_Today.style.display="table";
 
@@ -416,6 +408,8 @@ function expected_today() {
     //Departed tables
     var show_Departed_Table_Today = document.getElementById("departed_today");
     var show_all_table_departed = document.getElementById("departed_all");
+    var check_in_table = document.getElementById("check_in_table");
+    var chech_out_table = document.getElementById("check_out_in_advance_table");
     show_div_for_Tables.style.display = "";
     show_Arrived_Table_today.style.display = "none";
 
@@ -425,6 +419,8 @@ function expected_today() {
     show_form_check_in.style.display = "none";
     show_all_table_expected.style.display = "none";
     show_all_table_departed.style.display = "none";
+    chech_out_table.style.display = "none";
+    check_in_table.style.display = "none";
 
 
     show_Expected_Table_Today.style.display="table";
@@ -444,6 +440,8 @@ function departed_all() {
     //Departed tables
     var show_Departed_Table_Today = document.getElementById("departed_today");
     var show_all_table_departed = document.getElementById("departed_all");
+    var check_in_table = document.getElementById("check_in_table");
+    var chech_out_table = document.getElementById("check_out_in_advance_table");
     show_div_for_Tables.style.display = "";
     show_Arrived_Table_today.style.display = "none";
 
@@ -453,6 +451,8 @@ function departed_all() {
     show_form_check_in.style.display = "none";
     show_all_table_expected.style.display = "none";
     show_Expected_Table_Today.style.display="none";
+    chech_out_table.style.display = "none";
+    check_in_table.style.display = "none";
 
     show_all_table_departed.style.display = "table";
 }
@@ -468,6 +468,9 @@ function expected_all() {
     //Departed tables
     var show_Departed_Table_Today = document.getElementById("departed_today");
     var show_all_table_departed = document.getElementById("departed_all");
+    var check_in_table = document.getElementById("check_in_table");
+    var chech_out_table = document.getElementById("check_out_in_advance_table");
+
     show_div_for_Tables.style.display = "";
     show_Arrived_Table_today.style.display = "none";
 
@@ -478,6 +481,8 @@ function expected_all() {
 
     show_in_advance_check_out.style.display ="none";
     show_form_check_in.style.display = "none";
+    chech_out_table.style.display = "none";
+    check_in_table.style.display = "none";
 
     show_all_table_expected.style.display = "";
 }
@@ -494,6 +499,9 @@ function in_advance_Check_in() {
     //Departed tables
     var show_Departed_Table_Today = document.getElementById("departed_today");
     var show_all_table_departed = document.getElementById("departed_all");
+    var check_in_table = document.getElementById("check_in_table");
+    var chech_out_table = document.getElementById("check_out_in_advance_table");
+
 
     show_Arrived_Table_today.style.display = "none";
 
@@ -504,8 +512,11 @@ function in_advance_Check_in() {
     show_all_table_expected.style.display = "none";
     show_div_for_Tables.style.display = "none";
     show_in_advance_check_out.style.display ="none";
-
+    chech_out_table.style.display = "none";
+    check_in_table.style.display = "table";
     show_form_check_in.style.display = "";
+
+
 }
 
 
@@ -521,6 +532,8 @@ function check_out_from_admin() {
     //Departed tables
     var show_Departed_Table_Today = document.getElementById("departed_today");
     var show_all_table_departed = document.getElementById("departed_all");
+    var check_out_table = document.getElementById("check_out_in_advance_table");
+    var check_in_table = document.getElementById("check_in_table");
 
     show_Arrived_Table_today.style.display = "none";
 
@@ -531,12 +544,31 @@ function check_out_from_admin() {
     show_all_table_expected.style.display = "none";
     show_div_for_Tables.style.display = "none";
     show_form_check_in.style.display = "none";
+    check_in_table.style.display = "none";
 
     show_in_advance_check_out.style.display ="";
+    check_out_table.style.display = "table";
 }
 
-
-
+function findGuest_create_from(){
+    var input, filter, tr, td, i, txtValue, table;
+    table = document.getElementById("searchGuest_create");
+     input = document.getElementById("searchForGuest");
+     filter = input.value.toUpperCase();
+     tr = table.getElementsByTagName("tr");
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}
 
 
 function findGuests() {
@@ -547,24 +579,47 @@ function findGuests() {
     var arrived = document.getElementById("arrived_today");
     var expected_all_form = document.getElementById("expected_all");
     var expected_all_table = document.getElementById("expected_all_table");
+    var check_in_table = document.getElementById("check_in_table");
+    var check_out_table = document.getElementById("check_out_in_advance_table");
 
     // Declare variables
     //expected All
-    if (expected_today.style.display == "none" && arrived.style.display == "none" && departed_today.style.display == "none" && departed_all.style.display == "none"  ){
+    if (expected_today.style.display == "none" && arrived.style.display == "none" && departed_today.style.display == "none" && departed_all.style.display == "none" && check_in_table.style.display == "none" && check_out_table.style.display == "none"   ){
         table = expected_all_table;
-    } else if ( expected_all_form.style.display == "none" && arrived.style.display == "none" && departed_today.style.display == "none" && departed_all.style.display == "none"  ){
+    } else if ( expected_all_form.style.display == "none" && arrived.style.display == "none" && departed_today.style.display == "none" && departed_all.style.display == "none" && check_in_table.style.display == "none" && check_out_table.style.display == "none"  ){
         table = expected_today;
-    } else if (expected_today.style.display == "none" && arrived.style.display == "none" && expected_all_form.style.display == "none" && departed_all.style.display == "none"  ){
+    } else if (expected_today.style.display == "none" && arrived.style.display == "none" && expected_all_form.style.display == "none" && departed_all.style.display == "none" && check_in_table.style.display == "none" && check_out_table.style.display == "none"  ){
         table = departed_today;
-    }else if (expected_today.style.display == "none" && arrived.style.display == "none" && expected_all_form.style.display == "none" && departed_today.style.display == "none"  ){
+    }else if (expected_today.style.display == "none" && arrived.style.display == "none" && expected_all_form.style.display == "none" && departed_today.style.display == "none" && check_in_table.style.display == "none" && check_out_table.style.display == "none"  ){
         table = departed_all;
-    }else if (expected_today.style.display == "none" && departed_all.style.display == "none" && expected_all_form.style.display == "none" && departed_today.style.display == "none"  ){
+    }else if (expected_today.style.display == "none" && departed_all.style.display == "none" && expected_all_form.style.display == "none" && departed_today.style.display == "none" && check_in_table.style.display == "none" && check_out_table.style.display == "none"  ){
         table = arrived;
+    } else if (expected_today.style.display == "none" && departed_all.style.display == "none" && expected_all_form.style.display == "none" && departed_today.style.display == "none" && arrived.style.display == "none" && check_out_table.style.display == "none"  ){
+        table = check_in_table;
+    }else if (expected_today.style.display == "none" && departed_all.style.display == "none" && expected_all_form.style.display == "none" && departed_today.style.display == "none" && arrived.style.display == "none" && check_in_table.style.display == "none"  ){
+        table = check_out_table;
     } else {
         alert("Noget gik galt ");
         window.location = "guests";
     }
     var input, filter, tr, td, i, txtValue;
+    if (table == check_in_table || table == check_out_table){
+        input = document.getElementById("input-box");
+        filter = input.value.toUpperCase();
+        tr = table.getElementsByTagName("tr");
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }else {
     input = document.getElementById("input-box");
     filter = input.value.toUpperCase();
     tr = table.getElementsByTagName("tr");
@@ -581,7 +636,7 @@ function findGuests() {
         }
     }
 }
-
+}
 function f(guests) {
     $.ajax({
         type: 'GET' ,
@@ -634,6 +689,17 @@ if (document.getElementById(checkbox).checked == true){
     document.getElementById(checkbox).setAttribute("value", "true");
 }
 
+function select_row_check_out(id) {
+    var checkbox = "checkbox_check_out" + id;
+    if (document.getElementById(checkbox).checked == true){
+        document.getElementById(checkbox).checked = false;
+        document.getElementById(checkbox).setAttribute("value", "false");
+    }else if (document.getElementById(checkbox).checked == false)
+        document.getElementById(checkbox).checked = true;
+    document.getElementById(checkbox).setAttribute("value", "true");
+}
+
+
 
 function move_person() {
     var table = document.getElementById("check_in_table_body");
@@ -650,7 +716,6 @@ function move_person() {
         }else {
             var c = "Vi indsætter ikke uvæstnlige rækker ";}
     }
-    alert("Jeg er hermed landet her");
     $('#execute_move').submit(function (e) {
         var route = $('#execute_move').data('route');
         var form_data = $(this);
@@ -662,10 +727,49 @@ function move_person() {
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: { arr: data, arr2: data2},
             success: function (data) {
-                $("#check_in_table").load(window.location + " #check_in_table");
+                alert("Check in er gennemført. Vender tilbage til startmenuen");
+                location.reload();
             }, onFailure: function (data)
             {
-               window.location = "guests";
+                alert("En fejl er opstået på server siden. Tjek venligst din forboindelse");
+                window.location = "guests";
+            }
+        });
+        e.preventDefault()
+    });
+}
+
+
+function move_person_check_out() {
+    var table = document.getElementById("check_out_table_body");
+    var persons =[];
+    var cards =[];
+    for (var i = 0; i<table.rows.length; i++){
+        var id = table.rows[i].cells.item(0).innerHTML;
+        var card =  table.rows[i].cells.item(4).innerHTML;
+        var check_if_checked = "checkbox_check_out"+id;
+        if (document.getElementById(check_if_checked).getAttribute("value") == "true"){
+            persons.push(id);
+            cards.push(card);
+        }else {
+            var c = "Vi indsætter ikke uvæstnlige rækker ";}
+    }
+    $('#execute_move_check_out').submit(function (e) {
+        var route = $('#execute_move_check_out').data('route');
+        var form_data = $(this);
+        var data = persons;
+        var data2 = cards;
+        $.ajax({
+            type: 'put',
+            url: "/guests/edit/checkOut",
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            data: { arr: data, arr2: data2},
+            success: function (data) {
+                alert("Check out er gennemført. Vender tilbage til startmenuen");
+                location.reload();
+            }, onFailure: function (data)
+            {
+                window.location = "guests";
             }
         });
         e.preventDefault()

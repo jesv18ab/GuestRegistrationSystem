@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Appointment;
 use App\Guest;
 use App\GuestCard;
 use http\Env\Response;
@@ -16,63 +17,66 @@ use PhpParser\Node\Expr\List_;
 use function GuzzleHttp\Psr7\str;
 use function MongoDB\BSON\toJSON;
 use function Sodium\add;
+use Auth;
 
 class GuestController extends Controller
 {
-    public function index()
-    {
-        $data = DB::select("select * from guests where created_at = curdate() AND status = 1");
-        $guests_Today_Check_In = $this->correctDateFormat($data);
 
-        $data = DB::select("Select guests.name, guestId, guest_cards.id, guests.updated_at, guests.time_updated, guests.created_at, guests.departed_at   from guest_cards inner join guests where guests.id = guest_cards.guestId and guests.updated_at = curdate() AND guests.status = 2");
-        $guests_Today_arrived = $this->correctDateFormat($data);
 
-        $data=DB::select('select * from guests where status = 1');$this->correctDateFormat($data);
-        $guestsExpected = $this->correctDateFormat($data);
 
-        $data = DB::select('select * from guests where status = 2');
-        $guestsCheckedIn = $this->correctDateFormat($data);
-
-        $data =  DB::select('select * from guests where status = 3 and departed_at = curdate()');
-        $guests_Today_Checked_Out = $this->correctDateFormat($data);
-
-        $data = DB::select('select * from guests where status = 3');
-        $guestsCheckedOut = $this->correctDateFormat($data);
-
-        $cardsAvailable   = DB::select('select * from guest_cards where status = 1');
-
-        return view('AdminView.index', ['guests' => $guestsExpected, 'guestsCheckedIn' => $guestsCheckedIn, 'guestsCheckedOut' => $guestsCheckedOut, "guests_Today_Check_In"=>$guests_Today_Check_In, "guests_Today_arrived" => $guests_Today_arrived, "guests_Today_Checked_Out"=>$guests_Today_Checked_Out, "cardsAvailable"=> $cardsAvailable  ] );
+    public function guest_menu_checkIn(){
+        $return = null;
+        if (auth()->user()->isAdmin() == 2){
+            $guests_Today_Check_In =DB::select("select * from guests where created_At = curdate() AND status = 1");
+            $guestsToCheckIn = DB::select('select * from guests where status = 1');
+            $cardsAvailable   = DB::select('select * from guest_cards where status = 1');
+            $return = view('GuestView.checkinView', ['guestsToCheckIn'=> $guestsToCheckIn, 'cardsAvailable' => $cardsAvailable,  "guests_Today_Check_In"=>$guests_Today_Check_In]);
+        }else{
+            $return = redirect('/registerGuest');
+        }
+        return $return;
     }
 
-public function multiple_check_in(Request $request){
-
-   $cards = $request->get('arr2');
-     $persons = $request->get('arr');
-     $number_of_cards =count($persons);
-     dd($request);
-        for ($i = 0; $i< $number_of_cards; $i++){
-            $id = $persons[$i];
-            $card = $cards[$i];
-            DB::update("UPDATE guest_cards SET status = 2, guestId = $id where id =$card ");
-            DB::update("UPDATE guests SET updated_at = now(), time_updated = CURRENT_TIME, status = 2 where guests.id = $id");
+    public function guest_menu_checkOut(){
+        $return = null;
+        if (auth()->user()->isAdmin() == 2){
+            $guests_Today_Check_Out =DB::select("Select guests.name, guestId, guest_cards.id, company from guest_cards inner join guests where guests.id = guest_cards.guestId and guests.created_at = curdate() AND guests.status = 2");
+            $guestsToCheckOut = DB::select('Select guests.name, guestId, guest_cards.id from guest_cards inner join guests where guests.id = guest_cards.guestId');
+            $return = view('GuestView.checkOutView', ['guestsToCheckOut'=>$guestsToCheckOut, "guests_Today_Check_Out" => $guests_Today_Check_Out ]);
+        }else{
+            $return = redirect('/registerGuest');
         }
-return \response("Hej hej");
+        return $return;
+    }
 
-}
+
+
+
+
+    public function guest_menu(){
+        return view("GuestView.Menu");
+    }
+
         // Vis eret enkelt objekt
         public function showForm()
     {
         $earlierGuests = DB::select('select * from guests where status = 3');
         return view('AdminView.create',['earlierGuests'=> $earlierGuests ]);
     }
+
     public function guestPage(){
+            $return = null;
+        if (auth()->user()->isAdmin() == 2){
         $guests_Today_Check_In =DB::select("select * from guests where created_At = curdate() AND status = 1");
         $guests_Today_Check_Out =DB::select("Select guests.name, guestId, guest_cards.id from guest_cards inner join guests where guests.id = guest_cards.guestId and guests.created_at = curdate() AND guests.status = 2");
         $guestsToCheckOut = DB::select('Select guests.name, guestId, guest_cards.id from guest_cards inner join guests where guests.id = guest_cards.guestId');
         $guestsToCheckIn = DB::select('select * from guests where status = 1');
         $cardsAvailable   = DB::select('select * from guest_cards where status = 1');
-
-        return view('AdminView.registrate', ['guestsToCheckIn'=> $guestsToCheckIn, 'cardsAvailable' => $cardsAvailable, 'guestsToCheckOut'=>$guestsToCheckOut, "guests_Today_Check_In"=>$guests_Today_Check_In, "guests_Today_Check_Out" => $guests_Today_Check_Out]);
+        $return = view('AdminView.registrate', ['guestsToCheckIn'=> $guestsToCheckIn, 'cardsAvailable' => $cardsAvailable, 'guestsToCheckOut'=>$guestsToCheckOut, "guests_Today_Check_In"=>$guests_Today_Check_In, "guests_Today_Check_Out" => $guests_Today_Check_Out]);
+        }else{
+            $return = redirect('/registerGuest');
+        }
+        return $return;
     }
 
     public function ajaxGuestPage(){
@@ -100,6 +104,7 @@ return \response("Hej hej");
 
     //Denne vil gemme et objekt
     public function store(){
+        $user_id = auth()->user()->id;
         $guest = new Guest();
         $guest->name = request('name');
         $guest->created_at = request('created_at');
@@ -109,6 +114,11 @@ return \response("Hej hej");
         $guest->time_created = request('time');
         $guest->status = 1;
         $guest->save();
+        $user_id = auth()->user()->id;
+        $appointment = new Appointment();
+        $appointment->guestId = $guest->id;
+        $appointment->userId = $user_id;
+        $appointment->save();
         return view('welcome');
     }
 
@@ -117,6 +127,11 @@ return \response("Hej hej");
         $guest->id = request("idOfGuest");
         $guest->name = request("name");
         $guest->company = request("company");
+        $user_id = auth()->user()->id;
+        $appointment = new Appointment();
+        $appointment->guestId = $guest->id;
+        $appointment->userId = $user_id;
+        $appointment->save();
             $date =(integer)preg_replace('/-+/', '', request('created_at'));
             $time = $this->findTime(strval($guest->time_created = request('time')));
             DB::update("UPDATE guests SET status = 1, created_at = $date, time_created = $time, updated_at = null, departed_at = null, time_departed =null, time_updated =null where guests.id = $guest->id");
@@ -154,6 +169,11 @@ return \response("Hej hej");
         $guest->name = request('name');
         $guest->status = 2;
         $guest->save();
+        $user_id = auth()->user()->id;
+        $appointment = new Appointment();
+        $appointment->guestId = $guest->id;
+        $appointment->userId = $user_id;
+        $appointment->save();
     }
 
     protected function validateGuest()
@@ -178,9 +198,15 @@ return \response("Hej hej");
     {
         $guest = new Guest();
         $guest->name = $name;
+        $guest->company = request("company");
         $guest->created_at = today();
         $guest->status =1;
         $guest->save();
+        $user_id = auth()->user()->id;
+        $appointment = new Appointment();
+        $appointment->guestId = $guest->id;
+        $appointment->userId = $user_id;
+        $appointment->save();
         return $guest->id;
     }
 
@@ -190,7 +216,6 @@ return \response("Hej hej");
         return view('AdminView.ajaxTest');
 
     }
-
 
  public function correctDateFormat($unFormatted){
         $formatted = [];
@@ -236,6 +261,21 @@ public function fill_check_in_advance_table(){
     }
 
 
+    public function guest_check_in($id, $card )
+    {
+        DB::update("UPDATE guests SET updated_at = now(), time_updated =CURRENT_TIME, status = 2 where guests.id = $id");
+        DB::update("UPDATE guest_cards SET status = 2, guestId = $id where id = $card");
+        return redirect("guestMenu/checkIn");
+    }
+
+    public function guest_check_Out($id, $card )
+    {
+
+        DB::update("UPDATE guests SET time_updated = null, time_created = null, departed_at = now(), time_departed = CURRENT_TIME, status = 3 where guests.id = $id");
+        DB::update("UPDATE guest_cards SET status = 1, guestId = null where id = $card");
+
+        return redirect("guestMenu/checkOut");
+    }
 
     public function update_page(){
         $guests = DB::select('select * from guests');
@@ -248,6 +288,39 @@ public function fill_check_in_advance_table(){
         DB::update("UPDATE guests set name ='$name', company = '$company'  where id = $id");
         return redirect('/updateUsers');
     }
+
+
+    public function fast_create(){
+        $card = request("cardPicked");
+        $guest = new Guest();
+        $guest->name = request("guestName");
+        $guest->company = request("company");
+        $guest->created_at = today();
+        $guest->updated_at = today();
+        $guest->time_created = now();
+        $guest->time_updated = now();
+        $guest->status =2;
+        $guest->save();
+
+        $user_id = auth()->user()->id;
+        $appointment = new Appointment();
+        $appointment->guestId = $guest->id;
+        $appointment->userId = $user_id;
+        $appointment->save();
+
+        $cardandUser = [];
+        $cardandUser[0] = $guest->id;
+        $cardandUser[1] = $card;
+        return \response($cardandUser);
+
+    }
+
+    public function fast_update($cardId, $guestId){
+        DB::update("UPDATE guest_cards SET status = 2, guestId = $guestId where id = $cardId");
+}
+
+
+
 
 
 }

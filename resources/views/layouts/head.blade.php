@@ -17,6 +17,7 @@
     <script  src="{{ asset('assets/js/ajaxCalls.js') }}" defer></script>
     <script  src="{{ asset('assets/js/icons.js') }}" defer></script>
     <script  src="{{ asset('assets/js/admin.js') }}" defer></script>
+    <script  src="{{ asset('assets/js/guest.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">

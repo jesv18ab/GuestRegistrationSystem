@@ -35,7 +35,7 @@
                         <ul class="navbar-nav ml-auto navBarAmgros bg-cream" style="padding-top: 1.5%">
                             <!-- Authentication Links -->
                             <li class="nav-item padding_right" >
-                                <a class="nav-link font-navbar" href="guestsRegistration" style="font-size: x-large; color: black"> Gæstesiden </a>
+                                <a class="nav-link font-navbar" href="guestMenu" style="font-size: x-large; color: black"> Gæstesiden </a>
                             </li>
                                 <li class="nav-item padding_right" >
                                     <a class="nav-link font-navbar" style="font-size: x-large; color: black" href="{{ route('logout') }}">{{ __('logout') }}</a>
@@ -49,21 +49,21 @@
                 <div class="containerHeader bg-cream" style="height: 90px">
                     <div class="collapse navbar-collapse" id="navbarSupportedContent" style="display: flex">
                         <!-- Left Side Of Navbar -->
-                        <a class="navbar-brand " href="{{ url('/') }}" style="margin-right: 0px">
+                        <a class="navbar-brand right-margin " href="{{ url('/registerGuest') }}" style="margin-right: 4rem">
                             <img src="../Images/logo.svg" height="49.044px" width="300px" >
                         </a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <ul class="navbar-nav mr-auto navBarAmgros bg-cream " style="padding-top: 1.5%">
-                            <li class="nav-item padding_right" >
+                        <ul class="navbar-nav navBarAmgros bg-cream " style="padding-top: 1.5%">
+                            <li class="nav-item padding_right right-margin" >
                                 <a class="nav-link font-navbar" href="registerGuest" style="font-size: x-large; color: black"> Registrer ny gæst </a>
                             </li>
-                            <li class="nav-item" style="padding-right: 40px">
+                            <li class="nav-item right-margin" style="padding-right: 40px">
                                 <a class="nav-link font-navbar" href="updateProfile" style="font-size: x-large; color: black"> Opdater profil </a>
                             </li>
-                            <li class="nav-item" style="padding-right: 40px">
-                                <a class="nav-link font-navbar" href="updateProfile" style="font-size: x-large; color: black"> Se dine kommende aftaler </a>
+                            <li class="nav-item right-margin" style="padding-right: 40px">
+                                <a class="nav-link font-navbar" href="show_employeeGuests" style="font-size: x-large; color: black"> Se dine aftaler i dag </a>
                             </li>
 
                         </ul>
