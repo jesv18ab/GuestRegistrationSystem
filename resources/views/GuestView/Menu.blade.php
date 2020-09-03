@@ -57,11 +57,11 @@
             <div id="checkButtons" class="checkInAndOut">
 
                 <div class="btnGuests shadow">
-                    <a class="padding-button-2"  type="submit"  href="/guestMenu/checkIn" style="text-decoration: none" ><p > <b class="p" >Check in</b> </p> </a>
+                    <a class="padding-button-2"  type="submit"  href="/guestMenu/checkIn" style="text-decoration: none" ><p > <b class="p" >Check in her</b> </p> </a>
                 </div>
                 <div class="btnGuests2 shadow">
                     <div class="padding-button" style="padding-top: 6.5%">
-                        <a class="padding-button-2" href="/guestMenu/checkOut"  style="text-decoration: none"  type="submit" >  <b class="p">Check Out</b>
+                        <a class="padding-button-2" href="/guestMenu/checkOut"  style="text-decoration: none"  type="submit" >  <b class="p">Check Out her</b>
                         </a>
                     </div>
                 </div>
