@@ -7,16 +7,16 @@
     @if( Auth::User() )
         @if(auth()->user()->isAdmin() == 2);
             <nav class="navbar navbar-expand-md navbar-light bg-cream shadow-sm fixed-top " style="padding: 0">
-                <div class="containerHeader bg-cream" style="height: 90px">
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent" style="display: flex">
+                <div class="containerHeader bg-cream" style="height: 90px; padding-left: 1%; padding-right: 1%">
+                    <div class="collapse navbar-collapse bg-cream" id="navbarSupportedContent" style="display: flex">
                         <!-- Left Side Of Navbar -->
                         <a class="navbar-brand " href="{{ url('/') }}" style="margin-right: 0px">
-                            <img src="../Images/logo.svg" height="100%" width="80%" >
+                            <img src="../Images/logo.svg" height="100%" width="80%"  >
                         </a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <ul class="navbar-nav mr-auto navBarAmgros bg-cream " style="padding-top: 1.5%">
+                        <ul class="navbar-nav  navBarAmgros bg-cream " style="padding-top: 1.5%">
                             <li class="nav-item padding_right" >
                                 <a class="nav-link font-navbar" href="guests" style="font-size: x-large; color: black"> Gæsteoverblikket </a>
                             </li>
@@ -32,13 +32,18 @@
 
                         </ul>
                         <!-- Right Side Of Navbar -->
-                        <ul class="navbar-nav ml-auto navBarAmgros bg-cream" style="padding-top: 1.5%">
+                        <ul class="navbar-nav  navBarAmgros bg-cream" style="padding-top: 1.5%">
                             <!-- Authentication Links -->
                             <li class="nav-item padding_right" >
-                                <a class="nav-link font-navbar" href="guestMenu" style="font-size: x-large; color: black"> Gæstesiden </a>
+                                <a class="nav-link font-navbar" href="guestMenu" style="font-size: x-large; color: black"> Gæstesiden
+                                </a>
                             </li>
                                 <li class="nav-item padding_right" >
-                                    <a class="nav-link font-navbar" style="font-size: x-large; color: black" href="{{ route('logout') }}">{{ __('logout') }}</a>
+                                    <a class="nav-link font-navbar" style="font-size: x-large; color: black" href="{{ route('logout') }}">{{ __('logout') }}
+                                        <i class='fas fa-door-open' style='font-size:31px; color: black; margin-top: 0%'></i>
+
+                                    </a>
+
                                 </li>
                         </ul>
                     </div>
@@ -71,7 +76,10 @@
                         <ul class="navbar-nav ml-auto navBarAmgros bg-cream" style="padding-top: 1.5%">
                             <!-- Authentication Links -->
                             <li class="nav-item padding_right" >
-                                <a class="nav-link font-navbar" style="font-size: x-large; color: black" href="{{ route('logout') }}">{{ __('logout') }}</a>
+                                <a class="nav-link font-navbar" style="font-size: x-large; color: black" href="{{ route('logout') }}">{{ __('logout') }}
+                                    <i class='fas fa-door-open' style='font-size:31px; color: black; margin-top: 0%'></i>
+
+                                </a>
                             </li>
                         </ul>
                     </div>

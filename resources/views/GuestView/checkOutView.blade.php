@@ -66,6 +66,17 @@
     <main class="py-4">
 
         <div  class="container2 shadow" style="border: 1px solid black;  margin-left: 15%; height: 500px; width: 1100px; margin-top: 7%; background-color: white" >
+            @if(session()->has('success'))
+                <div id="messageBox" style="margin-top: 2%; height: 53px; position: absolute; z-index: 20">
+                    <div class="row" style="text-align: center; width: 670px; margin-left: 40%; margin-top: 4%;">
+                        <div class="alert alert-success" style="width: 100%">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <b> <strong>Notifikation:</strong></b>
+                            <b> {{ session()->get('success') }}</b>
+                        </div>
+                    </div>
+                </div>
+            @endif
             <p class="text-Check-In">Indtast venligst dit navn i tekstfeltet </p>
             <div id="inputBoxes" style=" padding-top: 5px">
                 <div class="input-group input-group-lg" style="width: 793px; margin-left: 14%; margin-top: 2%">
@@ -115,5 +126,15 @@
 
 
 </div>
+
+<script>
+    /*Succes besked skal fade ud*/
+    setTimeout(function () {
+            if ($('#messageBox').length){
+                $('#messageBox').fadeOut()
+            }
+        }
+        ,2000);
+</script>
 </body>
 

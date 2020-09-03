@@ -39,14 +39,16 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('logout',  'AdminController@logout')->name('logout');
         Route::get('/createEmployeeView', 'AdminController@create_view');
         Route::get('/guests/create', 'GuestController@create');
+        Route::get('/rebook', 'GuestController@rebookPage');
         Route::get('/updateUsers', 'AdminController@update_page');
         Route::get('/registerGuest', 'GuestController@showForm');
+    Route::post('/guests', 'GuestController@store');
         Route::get('/guests', 'AdminController@index');
         Route::get('/show_employeeGuests', 'EmployeeController@show_todays_Agreements');
         Route::get('/updateProfile', 'EmployeeController@show_profile');
         Route::post('/createEmployee/{type}', 'AdminController@create_employee');
         Route::post('/makeCard', 'AdminController@make_card');
-        Route::post('/guests', 'GuestController@store');
+
         Route::post('guests/unregisteredCheckIn', 'GuestController@createUnexpectedGuests');
         Route::post('/ajaxRequest', 'GuestController@ajaxRequestPost');
         Route::get('/guestMenu', 'GuestController@guest_menu');
@@ -66,7 +68,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::put('/guests/update/{id}/{name}/{company}', 'GuestController@update_guest_info');
     Route::put('/guests/{guest}/{guestCard}/edit', 'GuestController@edit');
 
-    Route::put('/guests/rebook', 'GuestController@rebook');
+    Route::put('/rebook/rebookGuest', 'GuestController@rebookGuest');
     Route::put('/guests/{guest}/{guestCard}/regret', 'GuestController@regret_check_in');
     Route::put('/guests/edit', 'AdminController@multiple_check_in');
     Route::put('/guests/edit/checkOut', 'AdminController@multiple_check_Out');

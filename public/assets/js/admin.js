@@ -155,7 +155,6 @@ function sort_update_page(table_id) {
 
 
 function transfer_data_employee( id, name, email, password,  type){
-    alert(type);
     if (type ==1 ){
     document.getElementById("name_employee_field").value = name;
     document.getElementById("email_employee_field").value = email;
@@ -197,6 +196,8 @@ function showPassword() {
 function transfer_info_employee(employee_position) {
 
  var input_field = document.getElementById("input_employee_position");
+ var position_check = document.getElementById("position_check");
+ position_check.style.display = "none";
  input_field.value = employee_position;
  input_field.style.display = "";
 
@@ -205,11 +206,16 @@ function transfer_info_employee(employee_position) {
 function make_employee(employee_position){
     var type;
     var form = document.getElementById("make_employee_form");
-if (employee_position == "Administrator"){
+    var position_field = document.getElementById("check_position");
+        if (employee_position == "Administrator"){
      type = 2;
 }else  if (employee_position == "Øvrige medarbejdere"){
      type = 1;
 }
-alert(type);
     form.action = "createEmployee/"+type;
+}
+
+
+function timeout(){
+setTimeout("Hej", 3000)
 }

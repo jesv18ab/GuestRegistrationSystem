@@ -60,8 +60,7 @@ class GuestController extends Controller
         // Vis eret enkelt objekt
         public function showForm()
     {
-        $earlierGuests = DB::select('select * from guests where status = 3');
-        return view('AdminView.create',['earlierGuests'=> $earlierGuests ]);
+        return view('AdminView.create');
     }
 
     public function guestPage(){
@@ -88,6 +87,11 @@ class GuestController extends Controller
         return response()->json(["guests_Today_Check_In" => $guests_Today_Check_In]);
     }
 
+    public function rebookPage(){
+        $earlierGuests = DB::select('select * from guests where status = 3');
+        return view('AdminView.rebook', ['earlierGuests'=> $earlierGuests]);
+    }
+
 
 
     // viser et view som skaber et objekt
@@ -104,7 +108,10 @@ class GuestController extends Controller
 
     //Denne vil gemme et objekt
     public function store(){
+                $return = null;
+            request()->validate(['name'=> 'required|regex:/^[\pL\s\-]+$/u', 'time'=>'required', 'company'=>'required', 'created_at'=> 'required'  ]);
         $user_id = auth()->user()->id;
+        $user_name = auth()->user()->name;
         $guest = new Guest();
         $guest->name = request('name');
         $guest->created_at = request('created_at');
@@ -112,6 +119,7 @@ class GuestController extends Controller
         $guest->departed_at = null;
         $guest->company = request('company');
         $guest->time_created = request('time');
+        $guest->amgros_employee = $user_name;
         $guest->status = 1;
         $guest->save();
         $user_id = auth()->user()->id;
@@ -119,10 +127,12 @@ class GuestController extends Controller
         $appointment->guestId = $guest->id;
         $appointment->userId = $user_id;
         $appointment->save();
-        return view('welcome');
+        session()->flash('notif', 'Gæsten er hermed registreret');
+        return redirect("registerGuest");
     }
 
-    public function rebook(){
+    public function rebookGuest(){
+        request()->validate(['name'=> 'required|regex:/^[\pL\s\-]+$/u', 'time'=>'required', 'company'=>'required', 'created_at'=> 'required'  ]);
         $guest = new Guest();
         $guest->id = request("idOfGuest");
         $guest->name = request("name");
@@ -135,7 +145,7 @@ class GuestController extends Controller
             $date =(integer)preg_replace('/-+/', '', request('created_at'));
             $time = $this->findTime(strval($guest->time_created = request('time')));
             DB::update("UPDATE guests SET status = 1, created_at = $date, time_created = $time, updated_at = null, departed_at = null, time_departed =null, time_updated =null where guests.id = $guest->id");
-        return redirect('registerGuest');
+        return redirect("rebook");
     }
 
     public function ajaxRequestPut(Guest $guest, GuestCard $guestCard){
@@ -265,6 +275,7 @@ public function fill_check_in_advance_table(){
     {
         DB::update("UPDATE guests SET updated_at = now(), time_updated =CURRENT_TIME, status = 2 where guests.id = $id");
         DB::update("UPDATE guest_cards SET status = 2, guestId = $id where id = $card");
+        session()->flash('success', 'Registreringen er udført. Du ønskes en god dag');
         return redirect("guestMenu/checkIn");
     }
 
@@ -273,7 +284,7 @@ public function fill_check_in_advance_table(){
 
         DB::update("UPDATE guests SET time_updated = null, time_created = null, departed_at = now(), time_departed = CURRENT_TIME, status = 3 where guests.id = $id");
         DB::update("UPDATE guest_cards SET status = 1, guestId = null where id = $card");
-
+        session()->flash('success', 'Udregistreringen er udført. Tak for besøget og på gensyn!');
         return redirect("guestMenu/checkOut");
     }
 

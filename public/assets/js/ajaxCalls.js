@@ -14,7 +14,6 @@ function get_select_values(card) {
         }
     }
 
-
     return values
 }
 
@@ -33,29 +32,22 @@ function update_select(values){
 }
 
 function deleteRow(row) {
-    alert("hej1");
     var i = row.parentNode.parentNode.rowIndex;
     alert(i);
     document.getElementById("searchIn").deleteRow(i);
-    alert("hej2");
     document.getElementById("guestInputCheckIn").value ='';
-    alert("hej3");
 
 }
 
 function insertRow(card, name) {
     var table_check_out = document.getElementById("searchOut");
     var num = table_check_out.rows.length;
-    alert(num);
     table_check_out.insertRow(num);
     var row = table_check_out.rows[num];
     row.style.width ="100%";
     row.style.height ="100%";
-    alert("Vi er ved Row1");
     var cell1 = row.insertCell(0);
-    alert("Vi er ved Row2");
     var cell2 = row.insertCell(1);
-    alert("Vi er ved Row3");
 
     cell1.style.boxShadow = "0 0 0 0.2rem black";
     cell1.style.backgroundColor = "white";
@@ -167,7 +159,6 @@ function callBackFunction() {
 
 function quickCheckIn( id, card  )
 {
-    alert(id + "" + card);
     document.getElementById('executeCheckIn').action = "guests/"+id +"/" + card + "/edit";
 }
 
@@ -275,12 +266,6 @@ function guestPage() {
 
 
 
-function reBooK(){
-    document.getElementById("newGuests").style.display = "none";
-    document.getElementById("formerGuests").style.display = "";
-    document.getElementById("formerGuests_container").style.display = "";
-    document.getElementById("formerGuestsTable").style.display = "";
-}
 function setName(guestName, guestId, company) {
     document.getElementById("nameInput").value = guestName;
     document.getElementById("guestId").value = guestId;
@@ -680,13 +665,27 @@ function execute_alert(card, id) {
 }
 
 function select_row(id) {
-var checkbox = "checkbox" + id;
-if (document.getElementById(checkbox).checked == true){
-    document.getElementById(checkbox).checked = false;
-    document.getElementById(checkbox).setAttribute("value", "false");
-}else if (document.getElementById(checkbox).checked == false)
-    document.getElementById(checkbox).checked = true;
-    document.getElementById(checkbox).setAttribute("value", "true");
+
+    if (check_chosen_cards() !== true){
+        alert("Husk at du ikke må have sat samme Id-kort flere steder")
+    } else {
+        if (document.getElementById(id).options[document.getElementById(id).selectedIndex].value == ""){
+            alert("Du skal vælge et gæstekort, før personen kan vælges");
+            document.getElementById(id).style.borderColor = "red";
+        }else {
+            document.getElementById(id).style.borderColor = "green";
+            var checkbox = "checkbox" + id;
+            if (document.getElementById(checkbox).checked == true){
+                document.getElementById(checkbox).checked = false;
+                document.getElementById(checkbox).setAttribute("value", "false");
+                document.getElementById(id).options.selectedIndex = 0;
+                document.getElementById(id).style.borderColor = "#ced4da";
+            }else if (document.getElementById(checkbox).checked == false)
+                document.getElementById(checkbox).checked = true;
+            document.getElementById(checkbox).setAttribute("value", "true");
+        }
+    }
+
 }
 
 function select_row_check_out(id) {
@@ -710,12 +709,13 @@ function move_person() {
         var check_if_checked = "checkbox"+id;
         if (document.getElementById(check_if_checked).getAttribute("value") == "true"){
             var selected_index = document.getElementById(id).options[document.getElementById(id).selectedIndex].value;
-            var guest = {id: id, card: selected_index };
             persons.push(id);
             cards.push(selected_index);
+
         }else {
             var c = "Vi indsætter ikke uvæstnlige rækker ";}
     }
+
     $('#execute_move').submit(function (e) {
         var route = $('#execute_move').data('route');
         var form_data = $(this);
@@ -829,7 +829,6 @@ function refresh_tables(cards_values, card){
         for (count = 0; count < table.rows.length; count++) {
             alert(cards_values);
             if ( test == table.rows[count].getAttribute("name")){
-                alert(table.rows[count].getAttribute("name"))
                 var c = "Vi sletter ikke noget i denne celle";
             }else {
                 table.rows[count].deleteCell(4);
@@ -891,14 +890,73 @@ function adjust_table(){
 
 
 $(function() {
-    alert("hej");
     enable_cb();
     $("#group1").click(enable_cb);
 });
 
 
+function check_chosen_cards() {
+    var boolean;
+    var count = 0;
+    var id;
+    var check;
+    var check2;
+    var id_numbers = [];
+    var chosen_options = [];
+    var matches = [];
+    var id_2;
+    var id_3;
+    var table = document.getElementById("check_in_table_body");
 
+    for (var i = 0; i< table.rows.length; i++){
+        id = table.rows[i].getAttribute("value");
+        id_numbers.push(id);
+    }
+    for (var n = 0; n< id_numbers.length; n++) {
+        if (document.getElementById(id_numbers[n]).options[document.getElementById(id_numbers[n]).selectedIndex].value !== "") {
+            chosen_options.push(document.getElementById(id_numbers[n]).options[document.getElementById(id_numbers[n]).selectedIndex].value);
+        }
+    }
+    for (var j = 0;  j< chosen_options.length; j++ ){
+        check = chosen_options[j];
+        for (var l = 0; l < chosen_options.length; l++ ){
+            if (l !== j && check == chosen_options[l] ){
+                for (var k = 0; k< id_numbers.length; k++){
+                    id_2 = id_numbers[k];
+                    if (check == document.getElementById(id_numbers[k]).options[document.getElementById(id_numbers[k]).selectedIndex].value  )
+                        document.getElementById(id_2).style.borderColor = "red";
+                }
+                count++
+            }
+        }
+    }
+    if (count == 0){
+        for (var h = 0;  h< chosen_options.length; h++ ) {
+            check2 = chosen_options[h];
+            for (var m = 0; m< id_numbers.length; m++){
+                id_3 = id_numbers[m];
+                if (check2 == document.getElementById(id_numbers[m]).options[document.getElementById(id_numbers[m]).selectedIndex].value  )
+                    document.getElementById(id_3).style.borderColor = "green";
+            }
+            boolean = true
+        }
+    }else {
+        boolean = false
+    }
 
+    return boolean
+}
 
+function checkbox_check(id) {
+    var boolean =  true;
+    var checkbox = "checkbox" + id;
+    if (document.getElementById(id).options[document.getElementById(id).selectedIndex].value == "" && document.getElementById(checkbox).checked == true){
+        document.getElementById(checkbox).checked = false;
+        document.getElementById(id).style.borderColor = "#ced4da";
+    }
+   else if (document.getElementById(id).options[document.getElementById(id).selectedIndex].value == ""){
+        document.getElementById(id).style.borderColor = "#ced4da";
+    }
 
+}
 

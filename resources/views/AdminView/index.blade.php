@@ -12,6 +12,7 @@
                 <th class="supplementNav3"><h4>Name</h4></th>
                 <th class="supplementNav3"><h4>Forventet tidspunkt for ankomst</h4></th>
                 <th class="supplementNav3"><h4>Virksomhed</h4></th>
+                <th class="supplementNav3"><h4>Møde arrangeret af:</h4></th>
             </tr>
             </thead>
             <tbody>
@@ -20,6 +21,12 @@
                     <td style="height: 75px" >{{ $guest->name }}</td>
                     <td> {{ $guest->time_created }}</td>
                     <td>{{ $guest->company }}</td>
+                    @if($guest->amgros_employee == null)
+                        <td > Kollege ikke registreret </td>
+                    @else
+                        <td > {{ $guest->amgros_employee }} </td>
+                    @endif
+
                 </tr>
             @endforeach
             </tbody>
@@ -63,7 +70,6 @@
             <th class="supplementNav3" > <h4>Name</h4> </th>
             <th class="supplementNav3"> <h4>Sidste besøg</h4></th>
             <th class="supplementNav3"> <h4>Virksomheds navn</h4></th>
-
             </thead>
             <tbody>
             @foreach($guestsCheckedOut as $guest)
@@ -83,6 +89,7 @@
                     <th class="supplementNav3"><h4>Name</h4></th>
                     <th class="supplementNav3"><h4>Forventet tidspunkt for ankomst</h4></th>
                     <th class="supplementNav3"><h4>Dato for aftale</h4></th>
+                    <th class="supplementNav3"><h4>Møde arrangeret af</h4></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -91,6 +98,11 @@
                         <td  style="height: 75px" >{{ $guest->name }}</td>
                         <td >  {{ $guest->time_created }}</td>
                         <td >{{$guest->created_at}}</td>
+                        @if($guest->amgros_employee == null)
+                        <td > Kollege ikke registreret </td>
+                            @else
+                            <td > {{ $guest->amgros_employee }} </td>
+                            @endif
                     </tr>
                 @endforeach
                 </tbody>
@@ -100,18 +112,18 @@
     <div class="tablesDiv4 shadow" id="check_in" style=" display: none; height: 30rem">
     <div class="tablesDiv3 shadow" id="check_in">
             <table id="check_in_table"  class="guestTable2 supplementNav2 "  align="center" style=" width: 100%; display: none" value="true" >
-
                 <thead>
                 <tr>
                     <th class="supplementNav3" ><h4>Personer valgt/Ikke valgt</h4></th>
                     <th class="supplementNav3"><h4>Name</h4></th>
+                    <th class="supplementNav3"><h4>Ankomst klokken</h4></th>
                     <th class="supplementNav3"><h4>Ankomst klokken</h4></th>
                     <th class="supplementNav3" colspan="2"><h4>Vælg Id kort til gæst og tryk "Vælg"</h4></th>
                 </tr>
                 </thead>
                 <tbody id="check_in_table_body">
                 @foreach($guests as $guest)
-                    <tr id="tr{{ $guest->id }}" name="false" >
+                    <tr id="tr{{ $guest->id }}" name="false" value="{{$guest->id}}" >
                         <td id="td{{ $guest->id }}" style="display: none" >{{$guest->id}}</td>
                         <td ><!-- Default unchecked -->
                             <div class="custom-control custom-checkbox  ">
@@ -122,11 +134,10 @@
                         <td   style="height: 75px; " >{{ $guest->name }}</td>
                         <td > {{$guest->created_at}} {{ $guest->time_created }}</td>
                         <td id="td_select"{{ $guest->id }} >
-
-                                <select id="{{ $guest->id }}" class="custom-select" id="cardIsPicked2" style="margin-left: 9%; margin-top: 5%; width: 92px; height: 67%" >
-                                    <option value="">Id-kort </option>
+                                <select id="{{ $guest->id }}" class="custom-select" id="cardIsPicked2" onchange="checkbox_check({{ $guest->id }})"   style="margin-left: 9%; margin-top: 5%; width: 92px; height: 67%"   >
+                                    <option value=""  >Id-kort </option>
                                     @foreach($cardsAvailable as $guestCard)
-                                        <option  value="{{ $guestCard->id }}">{{ $guestCard->id }}</option>
+                                        <option  value="{{ $guestCard->id }}"   >{{ $guestCard->id }}</option>
                                     @endforeach
                                 </select>
                         </td>

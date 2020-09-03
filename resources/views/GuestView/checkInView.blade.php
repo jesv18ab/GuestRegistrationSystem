@@ -34,6 +34,7 @@
 <div id="app">
 
 
+
 <nav class="navbar navbar-expand-md navbar-light bg-cream shadow-sm fixed-top " style="padding: 0">
     <div class="containerHeader bg-cream" style="height: 90px">
         <div class="collapse navbar-collapse" id="navbarSupportedContent" style="display: flex">
@@ -66,11 +67,27 @@
 </nav>
 
     <main class="py-4">
-        <div  class="container2 shadow" style="border: 1px solid black;  margin-left: 15%; height: 500px; width: 1100px; margin-top: 7%; background-color: white" >
+
+        <div  class="container2 shadow" style="border: 1px solid black;  margin-left: 15%; height: 597px; width: 1100px; margin-top: 6%; background-color: white" >
+
+
+            @if(session()->has('success'))
+                <div id="messageBox" style="margin-top: 2%; height: 53px; position: absolute; z-index: 20">
+                <div class="row" style="text-align: center; width: 670px; margin-left: 40%; margin-top: 4%;">
+                    <div class="alert alert-success" style="width: 100%">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <b> <strong>Notifikation:</strong></b>
+                        <b> {{ session()->get('success') }}</b>
+                    </div>
+                </div>
+                </div>
+            @endif
+
             <p class="text-Check-In">Indtast venligst dit navn i tekstfeltet </p>
+
             <div id="inputBoxes" style=" padding-top: 5px; ">
 
-                <div class="input-group input-group-lg" style="width: 793px; margin-left: 14%; margin-top: 2%">
+                <div class="input-group input-group-lg" style="width: 935px; margin-left: 6%; margin-top: 2%">
                     <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-lg"><i class='fas fa-search' style='font-size:40px'>
             </i></span>
@@ -83,20 +100,20 @@
                 @csrf
                 @method('PUT')
                 <div class="field" >
-                    <div class="control" style=" height: 100%  " >
+                    <div class="control" style=" height: 26%  " >
                         <div>
-                            <select class="custom-select" id="cardIsPicked_new" style="margin-left: 10%; margin-top: 2%; width: 25%; height: 70px; box-shadow: 0 0 0 0.2rem black; " required="required">
+                            <select class="custom-select" id="cardIsPicked_new" style="margin-left: 6%; margin-top: 2%; width: 25%; height: 70px; box-shadow: 0 0 0 0.01rem black; " required="required">
                                 <option value="" ><p >Vælg dit Id kort her....</p>
                                 </option>
                                 @foreach($cardsAvailable as $guestCard)
                                     <option name="card" id="{{ $guestCard->id }}" value="{{ $guestCard->id }}">{{ $guestCard->id }}</option>
                                 @endforeach
                             </select>
-                            <div id="searchIn2" style="float: right; margin-right: 1%; margin-top: 1.5%; height: 95px; width: 626px ">
-                                <table id="search_In" class="guestTable2 supplementNav2"  style="display: none; width: 100%; ">
+                            <div id="searchIn2" style="float: right; margin-right: 1%; margin-top: 1.5%; height: 95px; width: 705px ">
+                                <table id="search_In" class="guestTable2 supplementNav2"  style="display: none; width: 100%; border-spacing: 0px 14px; border-collapse: separate ">
                                     <tbody>
                                     @foreach($guests_Today_Check_In as $guest)
-                                        <tr  style="width: 100%; height: 100%;" >
+                                        <tr  style="width: 100%; height: 100%; background-color: white" >
                                             <td   id="{{ $guest->id }}" style="height: 75px; font-size: x-large " > <b style="color: black">  {{ $guest->name }} </b> </td>
                                             <td  > <b style="color: black; font-size: x-large">  {{ $guest->company }}  </b>  </td>
                                             <td  style="width: 41%" ><button class="btn btn-secondary"  type="submit" style="width: 92%; height: 75%" onclick= "check_in_guest( '{{ $guest->id }}')" >  Check in </button></td>
@@ -112,7 +129,7 @@
 
             </form>
             <div id="unexpected1" style="margin-top: 4%; width: 100%;  text-align: center">
-                <h2 style="color: black; border-top: 1px solid black; padding-top: 2%" > Er du ikke i systemet! Så tryk på knappen herunder</h2>
+                <h2 style="color: black; border-top: 1px solid black; padding-top: 1%; margin-top: 10%" > Er du ikke i systemet! Så tryk på knappen herunder</h2>
                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#div_For_Unexpected_Guests" style="width: 47%; height: 59px; padding-top:6px ">
                     <p style="font-size: x-large"> Opret dig her</p>
                 </button>
@@ -164,6 +181,15 @@
 
 
 </div>
+<script>
+    /*Succes besked skal fade ud*/
+    setTimeout(function () {
+            if ($('#messageBox').length){
+                $('#messageBox').fadeOut()
+            }
+        }
+        ,2000);
+</script>
 </body>
 
 

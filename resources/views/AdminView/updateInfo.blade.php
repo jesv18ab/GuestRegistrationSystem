@@ -1,7 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
-
+    @if(session()->has('guestdeleteSuccess'))
+        <div id="messageBox_deleteGuest" style="margin-top: 2%; height: 53px; position: absolute; z-index: 20">
+            <div class="row" style="    text-align: center; width: 626px;  margin-left: 83%;  margin-top: 3%; height: 67px;">
+                <div class="alert alert-success" style="    width: 100%; font-size: large;">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <b> <strong>Notifikation:</strong></b>
+                    <b> {{ session()->get('guestdeleteSuccess') }}</b>
+                </div>
+            </div>
+        </div>
+    @elseif(session()->has('employeedeleteSuccess'))
+        <div id="messageBox_deleteEmployee" style="margin-top: 2%; height: 53px; position: absolute; z-index: 20">
+            <div class="row" style="    text-align: center; width: 626px;  margin-left: 83%;  margin-top: 3%; height: 67px;">
+                <div class="alert alert-success" style="    width: 100%; font-size: large;">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <b> <strong>Notifikation:</strong></b>
+                    <b> {{ session()->get('employeedeleteSuccess') }}</b>
+                </div>
+            </div>
+        </div>
+    @endif
 
     <div class="registrationContainer">
         <div class="headlineDiv">
@@ -173,7 +193,8 @@
                                     <div class="input-group-prepend" style="height: 63px">
                                         <span class="input-group-text" id="">Id-nummer på gæstekort</span>
                                     </div>
-                                    <input type="text" class="form-control" name="Id" style="height: 63px " >
+                                    <input id="card_input_field" type="text" class="form-control @error('Id')  is-invalid @enderror" name="Id" style="height: 63px " >
+                                    <p class="  is-invalid" style="color: red; margin-left: 2%"> {{ $errors->first('Id') }}</p>
                                 </div>
                                 <div class="input-group-prepend paddingChecker3" style="height: 98px; margin-top: 2.5%">
                                     <span class="input-group-text" id="" style="height: 56px;">Brugte Id-numre</span>
@@ -188,7 +209,7 @@
                             </div>
                             <div class="field is-grouped paddingChecker3" style="margin-top: 2%">
                                 <div class="control" style=" text-align: center">
-                                    <button   type="submit" class="btn btn-secondary" style="height: 69px; width: 51%" >Opret gæstekort</button>
+                                    <button   type="button" class="btn btn-secondary" style="height: 69px; width: 51%" onclick="make_card()" >Opret gæstekort</button>
                                 </div>
                             </div>
                         </form>
@@ -436,7 +457,23 @@
 
 
 
+    <script>
+        /*Succes besked skal fade ud*/
+        setTimeout(function () {
+                if ($('#messageBox_deleteGuest').length){
+                    $('#messageBox_deleteGuest').fadeOut()
+                }
+            }
+            ,3000);
+        setTimeout(function () {
+                if ($('#messageBox_deleteEmployee').length){
+                    $('#messageBox_deleteEmployee').fadeOut()
+                }
+            }
+            ,3000);
 
+
+    </script>
 
 
 @endsection

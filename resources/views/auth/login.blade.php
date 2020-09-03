@@ -5,10 +5,16 @@
 
 
         <div class="container" >
+
+
     <div >
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card" style="margin-top: 20% ">
+            <div style="width: 100%">
+                <img src="../Images/logo.svg" height="80x" width="500px" style="    margin-left: 15%; margin-top: 9%; margin-bottom: 5%;" >
+            </div>
+
+            <div class="card" >
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
